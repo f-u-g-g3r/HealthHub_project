@@ -1,4 +1,4 @@
-package com.artjomkuznetsov.healthhub.model;
+package com.artjomkuznetsov.healthhub.models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
