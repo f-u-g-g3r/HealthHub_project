@@ -41,8 +41,10 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public User newUser(@RequestBody User newUser) {
-        return repository.save(newUser);
+    public ResponseEntity<?> newUser(@RequestBody User newUser) {
+        EntityModel<User> entityModel = assembler.toModel(repository.save(newUser));
+
+        return ResponseEntity
     }
 
     @GetMapping("/users/{id}")
