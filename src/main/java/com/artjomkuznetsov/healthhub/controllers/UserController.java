@@ -25,7 +25,7 @@ public class UserController {
 
     // Aggregate root
     @GetMapping("/users")
-    CollectionModel<EntityModel<User>> all() {
+    public CollectionModel<EntityModel<User>> all() {
         List<EntityModel<User>> users = repository.findAll().stream()
                 .map(user -> EntityModel.of(user,
                         linkTo(methodOn(UserController.class).one(user.getId())).withSelfRel(),
@@ -37,12 +37,12 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    User newUser(@RequestBody User newUser) {
+    public User newUser(@RequestBody User newUser) {
         return repository.save(newUser);
     }
 
     @GetMapping("/users/{id}")
-    EntityModel<User> one(@PathVariable Long id) {
+    public EntityModel<User> one(@PathVariable Long id) {
        User user = repository.findById(id)
                .orElseThrow(() -> new UserNotFoundException(id));
 
@@ -52,7 +52,7 @@ public class UserController {
     }
 
     @PutMapping("/users/{id}")
-    User replaceUser(@RequestBody User newUser, @PathVariable Long id) {
+    public User replaceUser(@RequestBody User newUser, @PathVariable Long id) {
         return repository.findById(id)
                 .map(user -> {
                     user.setFirstname(newUser.getFirstname());
@@ -72,7 +72,7 @@ public class UserController {
     }
 
     @DeleteMapping("/users/{id}")
-    void deleteUser(@PathVariable Long id) {
+    public void deleteUser(@PathVariable Long id) {
         repository.deleteById(id);
     }
 }
