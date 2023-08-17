@@ -4,9 +4,16 @@ package com.artjomkuznetsov.healthhub.controllers;
 import com.artjomkuznetsov.healthhub.exceptions.UserNotFoundException;
 import com.artjomkuznetsov.healthhub.models.User;
 import com.artjomkuznetsov.healthhub.repositories.UserRepository;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.parser.Entity;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 public class UserController {
@@ -18,8 +25,15 @@ public class UserController {
 
     // Aggregate root
     @GetMapping("/users")
-    List<User> all() {
-        return repository.findAll();
+    CollectionModel<EntityModel<User>> all() {
+        List<EntityModel<User>> users = repository.findAll().stream()
+                .map(user -> EntityModel.of(user,
+                        linkTo(methodOn(UserController.class).one(user.getId())).withSelfRel(),
+                        linkTo(methodOn(UserController.class).all()).withRel("users")))
+                .collect(Collectors.toList());
+
+        return CollectionModel.of(users,
+                linkTo(methodOn(UserController.class).all()).withSelfRel());
     }
 
     @PostMapping("/users")
@@ -28,9 +42,13 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    User one(@PathVariable Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException(id));
+    EntityModel<User> one(@PathVariable Long id) {
+       User user = repository.findById(id)
+               .orElseThrow(() -> new UserNotFoundException(id));
+
+       return EntityModel.of(user,
+               linkTo(methodOn(UserController.class).one(id)).withSelfRel(),
+               linkTo(methodOn(UserController.class).all()).withRel("users"));
     }
 
     @PutMapping("/users/{id}")
