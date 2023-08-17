@@ -15,10 +15,11 @@ public class User {
     private String address;
     private String email;
     private String phone;
+    private String password;
 
     public User() {}
 
-    public User(String firstname, String lastname, String dateOfBirth, String gender, String address, String email, String phone) {
+    public User(String firstname, String lastname, String dateOfBirth, String gender, String address, String email, String phone, String password) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.dateOfBirth = dateOfBirth;
@@ -26,6 +27,7 @@ public class User {
         this.address = address;
         this.email = email;
         this.phone = phone;
+        this.password = password;
     }
 
     public void setId(Long id) {
@@ -92,17 +94,25 @@ public class User {
         this.phone = phone;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(firstname, user.firstname) && Objects.equals(lastname, user.lastname) && Objects.equals(dateOfBirth, user.dateOfBirth) && Objects.equals(gender, user.gender) && Objects.equals(address, user.address) && Objects.equals(email, user.email) && Objects.equals(phone, user.phone);
+        return Objects.equals(id, user.id) && Objects.equals(firstname, user.firstname) && Objects.equals(lastname, user.lastname) && Objects.equals(dateOfBirth, user.dateOfBirth) && Objects.equals(gender, user.gender) && Objects.equals(address, user.address) && Objects.equals(email, user.email) && Objects.equals(phone, user.phone) && Objects.equals(password, user.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstname, lastname, dateOfBirth, gender, address, email, phone);
+        return Objects.hash(id, firstname, lastname, dateOfBirth, gender, address, email, phone, password);
     }
 
     @Override
@@ -115,7 +125,8 @@ public class User {
                 ", gender='" + gender + '\'' +
                 ", address='" + address + '\'' +
                 ", email='" + email + '\'' +
-                ", phone='" + phone + 
+                ", phone='" + phone + '\'' +
+                ", password='" + password +
                 '}';
     }
 }

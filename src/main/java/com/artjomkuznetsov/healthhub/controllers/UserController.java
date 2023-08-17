@@ -44,6 +44,7 @@ public class UserController {
                     user.setAddress(newUser.getAddress());
                     user.setEmail(newUser.getEmail());
                     user.setPhone(newUser.getPhone());
+                    user.setPassword(newUser.getPassword());
                     return repository.save(user);
                 })
                 .orElseGet(() -> {
