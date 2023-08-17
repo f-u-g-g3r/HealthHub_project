@@ -1,11 +1,14 @@
 package com.artjomkuznetsov.healthhub.controllers;
 
 
+import com.artjomkuznetsov.healthhub.assemblers.UserModelAssembler;
 import com.artjomkuznetsov.healthhub.exceptions.UserNotFoundException;
 import com.artjomkuznetsov.healthhub.models.User;
 import com.artjomkuznetsov.healthhub.repositories.UserRepository;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.swing.text.html.parser.Entity;
@@ -19,17 +22,18 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class UserController {
     private final UserRepository repository;
 
-    public UserController(UserRepository repository) {
+    private final UserModelAssembler assembler;
+
+    public UserController(UserRepository repository, UserModelAssembler assembler) {
         this.repository = repository;
+        this.assembler = assembler;
     }
 
     // Aggregate root
     @GetMapping("/users")
     public CollectionModel<EntityModel<User>> all() {
         List<EntityModel<User>> users = repository.findAll().stream()
-                .map(user -> EntityModel.of(user,
-                        linkTo(methodOn(UserController.class).one(user.getId())).withSelfRel(),
-                        linkTo(methodOn(UserController.class).all()).withRel("users")))
+                .map(assembler::toModel)
                 .collect(Collectors.toList());
 
         return CollectionModel.of(users,
@@ -46,14 +50,12 @@ public class UserController {
        User user = repository.findById(id)
                .orElseThrow(() -> new UserNotFoundException(id));
 
-       return EntityModel.of(user,
-               linkTo(methodOn(UserController.class).one(id)).withSelfRel(),
-               linkTo(methodOn(UserController.class).all()).withRel("users"));
+       return assembler.toModel(user);
     }
 
     @PutMapping("/users/{id}")
-    public User replaceUser(@RequestBody User newUser, @PathVariable Long id) {
-        return repository.findById(id)
+    public ResponseEntity<?> replaceUser(@RequestBody User newUser, @PathVariable Long id) {
+        User updatedUser = repository.findById(id)
                 .map(user -> {
                     user.setFirstname(newUser.getFirstname());
                     user.setLastname(newUser.getLastname());
@@ -69,10 +71,19 @@ public class UserController {
                     newUser.setId(id);
                     return repository.save(newUser);
                 });
+
+        EntityModel<User> entityModel = assembler.toModel(updatedUser);
+
+        return ResponseEntity
+                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(entityModel);
+
+
     }
 
     @DeleteMapping("/users/{id}")
-    public void deleteUser(@PathVariable Long id) {
+    public ResponseEntity<?> deleteUser(@PathVariable Long id) {
         repository.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }
