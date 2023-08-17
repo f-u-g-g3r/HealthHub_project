@@ -40,7 +40,7 @@ public class UserController {
                     user.setFirstname(newUser.getFirstname());
                     user.setLastname(newUser.getLastname());
                     user.setDateOfBirth(newUser.getDateOfBirth());
-                    user.setSex(newUser.getSex());
+                    user.setGender(newUser.getGender());
                     user.setAddress(newUser.getAddress());
                     user.setEmail(newUser.getEmail());
                     user.setPhone(newUser.getPhone());
