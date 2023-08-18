@@ -1,6 +1,7 @@
 package com.artjomkuznetsov.healthhub.controllers;
 
 import com.artjomkuznetsov.healthhub.assemblers.MedCardModelAssembler;
+import com.artjomkuznetsov.healthhub.exceptions.MedCardNotFoundException;
 import com.artjomkuznetsov.healthhub.models.MedCard;
 import com.artjomkuznetsov.healthhub.repositories.MedCardRepository;
 import org.springframework.hateoas.CollectionModel;
