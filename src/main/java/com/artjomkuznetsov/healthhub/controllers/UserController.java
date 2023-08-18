@@ -45,6 +45,8 @@ public class UserController {
         EntityModel<User> entityModel = assembler.toModel(repository.save(newUser));
 
         return ResponseEntity
+                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(entityModel);
     }
 
     @GetMapping("/users/{id}")
