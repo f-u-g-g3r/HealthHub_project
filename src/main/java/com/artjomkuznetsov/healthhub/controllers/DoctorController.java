@@ -3,6 +3,7 @@ package com.artjomkuznetsov.healthhub.controllers;
 import com.artjomkuznetsov.healthhub.assemblers.DoctorModelAssembler;
 import com.artjomkuznetsov.healthhub.models.Doctor;
 import com.artjomkuznetsov.healthhub.repositories.DoctorRepository;
+import com.artjomkuznetsov.healthhub.exceptions.DoctorNotFoundException;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
@@ -46,14 +47,40 @@ public class DoctorController {
     @GetMapping("/doctors/{id}")
     public EntityModel<Doctor> one(@PathVariable Long id) {
         Doctor doctor = repository.findById(id)
-                .orElseThrow(DoctorNotFoundException);
+                .orElseThrow(() -> new DoctorNotFoundException(id));
 
         return assembler.toModel(doctor);
     }
 
     @PutMapping("/doctors/{id}")
     public ResponseEntity<?> replaceDoctor(@RequestBody Doctor newDoctor, @PathVariable Long id) {
+        Doctor updatedDoctor = repository.findById(id)
+                .map(doctor -> {
+                    doctor.setFirstname(newDoctor.getFirstname());
+                    doctor.setLastname(newDoctor.getLastname());
+                    doctor.setDateOfBirth(newDoctor.getDateOfBirth());
+                    doctor.setGender(newDoctor.getGender());
+                    doctor.setAddress(newDoctor.getAddress());
+                    doctor.setEmail(newDoctor.getEmail());
+                    doctor.setPhone(newDoctor.getPhone());
+                    doctor.setPassword(newDoctor.getPassword());
+                    doctor.setMedCardID(newDoctor.getMedCardID());
+                    doctor.setSpecialization(newDoctor.getSpecialization());
+                    doctor.setPlaceOfWork(newDoctor.getPlaceOfWork());
+                    doctor.setLicenseNumber(newDoctor.getLicenseNumber());
+                    doctor.setLicenseIssuingDate(newDoctor.getLicenseIssuingDate());
+                    doctor.setLicenseIssuingAuthority(newDoctor.getLicenseIssuingAuthority());
+                    return repository.save(doctor);
+                })
+                .orElseGet(() -> {
+                    newDoctor.setId(id);
+                    return repository.save(newDoctor);
+                });
+        EntityModel<Doctor> entityModel = assembler.toModel(updatedDoctor);
 
+        return ResponseEntity
+                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(entityModel);
     }
 
     @DeleteMapping("/doctors/{id}")
