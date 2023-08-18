@@ -16,10 +16,11 @@ public class User {
     private String email;
     private String phone;
     private String password;
+    private Long medCardID;
 
     public User() {}
 
-    public User(String firstname, String lastname, String dateOfBirth, String gender, String address, String email, String phone, String password) {
+    public User(String firstname, String lastname, String dateOfBirth, String gender, String address, String email, String phone, String password, Long medCardID) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.dateOfBirth = dateOfBirth;
@@ -28,6 +29,7 @@ public class User {
         this.email = email;
         this.phone = phone;
         this.password = password;
+        this.medCardID = medCardID;
     }
 
     public void setId(Long id) {
@@ -102,17 +104,25 @@ public class User {
         this.password = password;
     }
 
+    public Long getMedCardID() {
+        return medCardID;
+    }
+
+    public void setMedCardID(Long medCardID) {
+        this.medCardID = medCardID;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(firstname, user.firstname) && Objects.equals(lastname, user.lastname) && Objects.equals(dateOfBirth, user.dateOfBirth) && Objects.equals(gender, user.gender) && Objects.equals(address, user.address) && Objects.equals(email, user.email) && Objects.equals(phone, user.phone) && Objects.equals(password, user.password);
+        return Objects.equals(id, user.id) && Objects.equals(firstname, user.firstname) && Objects.equals(lastname, user.lastname) && Objects.equals(dateOfBirth, user.dateOfBirth) && Objects.equals(gender, user.gender) && Objects.equals(address, user.address) && Objects.equals(email, user.email) && Objects.equals(phone, user.phone) && Objects.equals(password, user.password) && Objects.equals(medCardID, user.medCardID);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstname, lastname, dateOfBirth, gender, address, email, phone, password);
+        return Objects.hash(id, firstname, lastname, dateOfBirth, gender, address, email, phone, password, medCardID);
     }
 
     @Override
@@ -126,7 +136,8 @@ public class User {
                 ", address='" + address + '\'' +
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
-                ", password='" + password +
+                ", password='" + password + '\'' +
+                ", medCardID=" + medCardID +
                 '}';
     }
 }
