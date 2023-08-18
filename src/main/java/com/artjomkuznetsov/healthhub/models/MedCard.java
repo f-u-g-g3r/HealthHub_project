@@ -15,10 +15,11 @@ public class MedCard {
     private String allergies;
     private String chronicDiseases;
     private String resultsOfSurveys;
+    private Long familyDoctorID;
 
     public MedCard() {}
 
-    public MedCard(Long ownerID, String medHistory, String bloodType, String rhFactor, String allergies, String chronicDiseases, String resultsOfSurveys) {
+    public MedCard(Long ownerID, String medHistory, String bloodType, String rhFactor, String allergies, String chronicDiseases, String resultsOfSurveys, Long familyDoctorID) {
         this.ownerID = ownerID;
         this.medHistory = medHistory;
         this.bloodType = bloodType;
@@ -26,6 +27,7 @@ public class MedCard {
         this.allergies = allergies;
         this.chronicDiseases = chronicDiseases;
         this.resultsOfSurveys = resultsOfSurveys;
+        this.familyDoctorID = familyDoctorID;
     }
 
 
@@ -93,17 +95,25 @@ public class MedCard {
         this.resultsOfSurveys = resultsOfSurveys;
     }
 
+    public Long getFamilyDoctorID() {
+        return familyDoctorID;
+    }
+
+    public void setFamilyDoctorID(Long familyDoctorID) {
+        this.familyDoctorID = familyDoctorID;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MedCard medCard = (MedCard) o;
-        return Objects.equals(id, medCard.id) && Objects.equals(ownerID, medCard.ownerID) && Objects.equals(medHistory, medCard.medHistory) && Objects.equals(bloodType, medCard.bloodType) && Objects.equals(rhFactor, medCard.rhFactor) && Objects.equals(allergies, medCard.allergies) && Objects.equals(chronicDiseases, medCard.chronicDiseases) && Objects.equals(resultsOfSurveys, medCard.resultsOfSurveys);
+        return Objects.equals(id, medCard.id) && Objects.equals(ownerID, medCard.ownerID) && Objects.equals(medHistory, medCard.medHistory) && Objects.equals(bloodType, medCard.bloodType) && Objects.equals(rhFactor, medCard.rhFactor) && Objects.equals(allergies, medCard.allergies) && Objects.equals(chronicDiseases, medCard.chronicDiseases) && Objects.equals(resultsOfSurveys, medCard.resultsOfSurveys) && Objects.equals(familyDoctorID, medCard.familyDoctorID);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, ownerID, medHistory, bloodType, rhFactor, allergies, chronicDiseases, resultsOfSurveys);
+        return Objects.hash(id, ownerID, medHistory, bloodType, rhFactor, allergies, chronicDiseases, resultsOfSurveys, familyDoctorID);
     }
 
     @Override
@@ -117,6 +127,7 @@ public class MedCard {
                 ", allergies='" + allergies + '\'' +
                 ", chronicDiseases='" + chronicDiseases + '\'' +
                 ", resultsOfSurveys='" + resultsOfSurveys + '\'' +
+                ", familyDoctorID=" + familyDoctorID +
                 '}';
     }
 }

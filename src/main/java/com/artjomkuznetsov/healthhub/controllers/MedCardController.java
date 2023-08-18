@@ -66,6 +66,7 @@ public class MedCardController {
                     medCard.setChronicDiseases(newMedCard.getChronicDiseases());
                     medCard.setResultsOfSurveys(newMedCard.getResultsOfSurveys());
                     medCard.setOwnerID(newMedCard.getOwnerID());
+                    medCard.setFamilyDoctorID(newMedCard.getFamilyDoctorID());
                     return repository.save(medCard);
                 })
                 .orElseGet(() -> {
