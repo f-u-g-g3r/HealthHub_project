@@ -67,6 +67,7 @@ public class UserController {
                     user.setEmail(newUser.getEmail());
                     user.setPhone(newUser.getPhone());
                     user.setPassword(newUser.getPassword());
+                    user.setMedCardID(newUser.getMedCardID());
                     return repository.save(user);
                 })
                 .orElseGet(() -> {
