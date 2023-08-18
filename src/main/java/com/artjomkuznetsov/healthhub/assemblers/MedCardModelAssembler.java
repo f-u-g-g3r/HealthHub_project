@@ -1,6 +1,7 @@
 package com.artjomkuznetsov.healthhub.assemblers;
 
 
+import com.artjomkuznetsov.healthhub.controllers.MedCardController;
 import com.artjomkuznetsov.healthhub.models.MedCard;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
