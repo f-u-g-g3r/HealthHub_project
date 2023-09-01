@@ -5,6 +5,7 @@ import com.artjomkuznetsov.healthhub.assemblers.UserModelAssembler;
 import com.artjomkuznetsov.healthhub.exceptions.UserNotFoundException;
 import com.artjomkuznetsov.healthhub.models.User;
 import com.artjomkuznetsov.healthhub.repositories.UserRepository;
+import com.artjomkuznetsov.healthhub.security.config.JwtService;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
@@ -21,10 +22,12 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class UserController {
     private final UserRepository repository;
     private final UserModelAssembler assembler;
+    private final JwtService jwtService;
 
-    public UserController(UserRepository repository, UserModelAssembler assembler) {
+    public UserController(UserRepository repository, UserModelAssembler assembler, JwtService jwtService) {
         this.repository = repository;
         this.assembler = assembler;
+        this.jwtService = jwtService;
     }
 
     // Aggregate root
@@ -41,10 +44,11 @@ public class UserController {
     @PostMapping("/users")
     public ResponseEntity<?> newUser(@RequestBody User newUser) {
         EntityModel<User> entityModel = assembler.toModel(repository.save(newUser));
-
+        String jwtToken = jwtService.generateToken(newUser);
         return ResponseEntity
                 .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
-                .body(entityModel);
+                .body(entityModel)
+                .ok(jwtToken);
     }
 
     @GetMapping("/users/{id}")
