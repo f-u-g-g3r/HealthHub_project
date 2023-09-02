@@ -11,7 +11,7 @@ export class UserService {
   private serverUrl = environment.serverUrl;
   constructor(private http: HttpClient) { }
 
-  public all():  Observable<User[]> {
+  public all(): Observable<User[]> {
     return this.http.get<User[]>(`${this.serverUrl}/users`);
   }
 }

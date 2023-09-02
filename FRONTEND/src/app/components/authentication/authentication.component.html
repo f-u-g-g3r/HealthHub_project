@@ -1,15 +1,26 @@
 <div class="container">
-    <form #loginForm="ngForm" (ngSubmit)="validateUser(loginForm)">
-        <div class="col-4">
-            <label for="username" class="form-label">Username</label>
-            <input type="text" class="form-control" id="username" name="username" #username="ngModel" />
-        </div>
+    <div class="col-4 mt-5">
+        <h3 class="mx-auto">Login</h3>
+        <form #loginForm="ngForm" (ngSubmit)="validateUser(loginForm)">
+            <div class=" row">
+                <label for="email" class="form-label col-3">Username</label>
+                <div class="col-8">
+                    <input type="text" class="form-control" id="email" name="email" ngModel #email="ngModel" />
+                </div>
+                
+            </div>
 
-        <div class="col-4">
-            <label for="password" class="form-label">Password</label>
-            <input type="text" class="form-control" id="password" name="password" #password="ngModel" />
-        </div>
+            <div class=" row mt-4">
+                <label for="password" class="form-label col-3">Password</label>
+                <div class="col-8">
+                    <input type="password" class="form-control" id="password" name="password" ngModel #password="ngModel" />
+                </div>
+            </div>
 
-        <button type="submit" class="btn btn-dark mt-3 col-1">Login</button>
-    </form>
+            <button type="submit" class="btn btn-dark mt-3">Login</button>
+        </form>
+    </div>
+
+   
+
 </div>
