@@ -1,6 +1,7 @@
 package com.artjomkuznetsov.healthhub.models;
 
 import jakarta.persistence.*;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,9 +27,11 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public User() {}
+    public User() {
+        this.role = Role.USER;
+    }
 
-    public User(String firstname, String lastname, String dateOfBirth, String gender, String address, String email, String phone, String password, Long medCardID, Role role) {
+    public User(String firstname, String lastname, String dateOfBirth, String gender, String address, String email, String phone, String password, Long medCardID) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.dateOfBirth = dateOfBirth;
@@ -38,7 +41,7 @@ public class User implements UserDetails {
         this.phone = phone;
         this.password = password;
         this.medCardID = medCardID;
-        this.role = role;
+        this.role = Role.USER;
     }
 
     public void setId(Long id) {

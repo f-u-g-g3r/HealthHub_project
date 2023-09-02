@@ -15,6 +15,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
+    @CrossOrigin(origins="*", maxAge=3600)
     public ResponseEntity<?> register(@RequestBody User newUser) {
         return ResponseEntity.ok(authenticationService.register(newUser));
     }

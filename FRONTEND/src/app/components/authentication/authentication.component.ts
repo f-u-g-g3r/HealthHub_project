@@ -25,6 +25,14 @@ export class AuthenticationComponent implements OnInit{
       error: console.error
     });
   }
+
+  public registerUser(registerForm: NgForm) {
+    const formFields = registerForm.value;
+    this.authenticationService.register(formFields).subscribe({
+      next: (response: AuthenticationResponse) => console.log(response),
+      error: console.error
+    });
+  }
   
 
 

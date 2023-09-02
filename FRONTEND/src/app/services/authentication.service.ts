@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { AuthenticationRequest } from '../interfaces/authenticationRequest';
 import { Observable } from 'rxjs';
 import { AuthenticationResponse } from '../interfaces/authenticationResponse';
+import { RegistrationRequest } from '../interfaces/registrationRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +14,11 @@ export class AuthenticationService {
   constructor(private http: HttpClient) { }
 
   public authenticate(request: AuthenticationRequest): Observable<AuthenticationResponse> {
-    console.log(request);
     return this.http.post<AuthenticationResponse>(`${this.serverUrl}/auth/authenticate`, request);
+  }
+
+  public register(request: RegistrationRequest): Observable<AuthenticationResponse> {
+    return this.http.post<AuthenticationResponse>(`${this.serverUrl}/auth/register`, request);
   }
 
 }
