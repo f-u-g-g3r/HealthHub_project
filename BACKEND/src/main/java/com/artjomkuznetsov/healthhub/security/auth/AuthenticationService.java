@@ -35,7 +35,7 @@ public class AuthenticationService {
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         repository.save(newUser);
         String jwtToken =jwtService.generateToken(newUser);
-        return new AuthenticationResponse(jwtToken);
+        return new AuthenticationResponse(jwtToken, newUser.getId());
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
@@ -45,7 +45,7 @@ public class AuthenticationService {
         User user = repository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
         String jwtToken = jwtService.generateToken(user);
-        return new AuthenticationResponse(jwtToken);
+        return new AuthenticationResponse(jwtToken, user.getId());
     }
 
     private boolean isUsernameEmpty(String username) {

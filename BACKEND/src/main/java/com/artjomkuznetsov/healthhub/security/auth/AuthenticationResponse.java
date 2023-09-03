@@ -5,14 +5,16 @@ import java.util.Objects;
 public class AuthenticationResponse {
     private String token;
     private Boolean isEmailTaken;
+    private Long uid;
 
     public AuthenticationResponse(String token) {
-        if (token.equals("Email is taken")) {
-            this.isEmailTaken = true;
-        } else {
-            this.token = token;
-            this.isEmailTaken = false;
-        }
+        this.isEmailTaken = true;
+    }
+
+    public AuthenticationResponse(String token, Long uid) {
+        this.token = token;
+        this.uid = uid;
+        this.isEmailTaken = false;
     }
 
     public String getToken() {
@@ -31,17 +33,25 @@ public class AuthenticationResponse {
         isEmailTaken = emailTaken;
     }
 
+    public Long getUid() {
+        return uid;
+    }
+
+    public void setUid(Long uid) {
+        this.uid = uid;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AuthenticationResponse that = (AuthenticationResponse) o;
-        return Objects.equals(token, that.token) && Objects.equals(isEmailTaken, that.isEmailTaken);
+        return Objects.equals(token, that.token) && Objects.equals(isEmailTaken, that.isEmailTaken) && Objects.equals(uid, that.uid);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(token, isEmailTaken);
+        return Objects.hash(token, isEmailTaken, uid);
     }
 
     @Override
@@ -49,6 +59,7 @@ public class AuthenticationResponse {
         return "AuthenticationResponse{" +
                 "token='" + token + '\'' +
                 ", isEmailTaken=" + isEmailTaken +
+                ", uid=" + uid +
                 '}';
     }
 }

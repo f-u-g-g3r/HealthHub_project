@@ -7,5 +7,4 @@ export interface RegistrationRequest {
     email: String;
     phone: String;
     password: String;
-    
 }
