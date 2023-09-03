@@ -3,18 +3,18 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  selector: 'app-profile',
+  templateUrl: './profile.component.html',
+  styleUrls: ['./profile.component.css']
 })
-export class HomeComponent implements OnInit {
+export class ProfileComponent implements OnInit {
 
   constructor(private router: Router, public service: AuthenticationService) {}
 
   ngOnInit(): void {
-      if (!sessionStorage.getItem("token")) {
-        this.router.navigate(["/login"])
-      }
+    if (!sessionStorage.getItem("token")) {
+      this.router.navigate(["/login"])
+    }
   }
 
 
