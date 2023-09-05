@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { User } from 'src/app/interfaces/user';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-profile',
@@ -8,13 +10,18 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-
-  constructor(private router: Router, public service: AuthenticationService) {}
+  constructor(private router: Router, public authService: AuthenticationService, private userService: UserService) {
+    
+  }
 
   ngOnInit(): void {
     if (!sessionStorage.getItem("token")) {
       this.router.navigate(["/login"])
     }
+    this.userService.getOneUser(sessionStorage.getItem('uid')).subscribe({
+      next: (response: User) => console.log(response),
+      error: console.error
+    });
   }
 
 
