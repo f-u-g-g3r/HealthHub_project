@@ -52,8 +52,7 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    @CrossOrigin(origins="*", maxAge=3600,
-            allowedHeaders={"x-auth-token", "x-requested-with", "x-xsrf-token"})
+    @CrossOrigin(origins="*", maxAge=3600) //allowedHeaders={"x-auth-token", "x-requested-with", "x-xsrf-token"}
     public EntityModel<User> one(@PathVariable Long id) {
        User user = repository.findById(id)
                .orElseThrow(() -> new UserNotFoundException(id));
@@ -94,5 +93,10 @@ public class UserController {
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
         repository.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @RequestMapping(value = "/users/{id}", method = RequestMethod.OPTIONS)
+    public ResponseEntity<?> options() {
+        return ResponseEntity.ok().build();
     }
 }

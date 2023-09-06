@@ -28,16 +28,16 @@
             <h3 class="mx-auto">Registration</h3>
             <form #registerForm="ngForm" (ngSubmit)="registerUser(registerForm)">
                 <div class="row">
-                    <label for="firstName" class="form-label col-3">First name</label>
+                    <label for="firstname" class="form-label col-3">First name</label>
                     <div class="col-8">
-                        <input type="text" class="form-control" id="firstName" name="firstName" ngModel #firstName="ngModel" />
+                        <input type="text" class="form-control" id="firstName" name="firstname" ngModel #firstname="ngModel" />
                     </div>
                 </div>
 
                 <div class="row mt-4">
-                    <label for="lastName" class="form-label col-3">Last name</label>
+                    <label for="lastname" class="form-label col-3">Last name</label>
                     <div class="col-8">
-                        <input type="text" class="form-control" id="lastName" name="lastName" ngModel #lastName="ngModel" />
+                        <input type="text" class="form-control" id="lastname" name="lastname" ngModel #lastname="ngModel" />
                     </div>
                 </div>
 

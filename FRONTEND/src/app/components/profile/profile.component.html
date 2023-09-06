@@ -1,6 +1,5 @@
 <div class="container">
-    Profile
-    <div class="dropdown col-2 ms-auto">
+    <div class="dropdown col-2 my-4 ms-auto">
         <button class="btn btn-primary dropdown-toggle col-12" type="button" data-bs-toggle="dropdown" aria-expanded="false">
           Menu
         </button>
@@ -11,4 +10,56 @@
           <li><a class="dropdown-item" href="#" (click)="authService.logOut()">Log out</a></li>
         </ul>
       </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <div class="card">
+            <div class="card-header">
+                User Profile
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    <li class="list-group-item"> <div class="row gx-0"> 
+                      <span class="float-right col-10">First Name: {{ this.userData.firstname }}</span>
+                        <div class="col-1 ms-auto">
+                          <button class="btn btn-outline-dark"><i class="bi bi-pencil"></i></button>
+                        </div>
+                    </div></li>
+
+                    <li class="list-group-item"> <div class="row gx-0"> 
+                      <span class="float-right col-10">Last Name: {{ this.userData.lastname }}</span>
+                        <div class="col-1 ms-auto">
+                          <button class="btn btn-outline-dark"><i class="bi bi-pencil"></i></button>
+                        </div>
+                    </div></li>
+
+                    <li class="list-group-item">Date of Birth: <span class="float-right">{{ this.userData.dateOfBirth }}</span></li>
+                    <li class="list-group-item">Gender: <span class="float-right">{{ this.userData.gender }}</span></li>
+
+                    <li class="list-group-item"> <div class="row gx-0"> 
+                      <span class="float-right col-10">Address: {{ this.userData.address }}</span>
+                        <div class="col-1 ms-auto">
+                          <button class="btn btn-outline-dark"><i class="bi bi-pencil"></i></button>
+                        </div>
+                    </div></li>
+
+                    <li class="list-group-item"> <div class="row gx-0"> 
+                      <span class="float-right col-10">Email: {{ this.userData.email }}</span>
+                        <div class="col-1 ms-auto">
+                          <button class="btn btn-outline-dark"><i class="bi bi-pencil"></i></button>
+                        </div>
+                    </div></li>
+
+                    <li class="list-group-item"> <div class="row gx-0"> 
+                      <span class="float-right col-10">Phone: {{ this.userData.phone }}</span>
+                        <div class="col-1 ms-auto">
+                          <button class="btn btn-outline-dark"><i class="bi bi-pencil"></i></button>
+                        </div>
+                    </div></li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>

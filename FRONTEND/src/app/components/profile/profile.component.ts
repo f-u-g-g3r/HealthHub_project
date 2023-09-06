@@ -10,18 +10,25 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
+
+  public userData!: User;
   constructor(private router: Router, public authService: AuthenticationService, private userService: UserService) {
     
   }
 
   ngOnInit(): void {
     if (!sessionStorage.getItem("token")) {
+      console.log(sessionStorage.getItem("token"))
       this.router.navigate(["/login"])
     }
+    
     this.userService.getOneUser(sessionStorage.getItem('uid')).subscribe({
-      next: (response: User) => console.log(response),
+      next: (response: User) => {
+        this.userData = response
+      },
       error: console.error
     });
+    
   }
 
 
