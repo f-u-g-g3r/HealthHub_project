@@ -61,18 +61,19 @@ public class UserController {
     }
 
     @PutMapping("/users/{id}")
+    @CrossOrigin(origins="*", maxAge=3600)
     public ResponseEntity<?> replaceUser(@RequestBody User newUser, @PathVariable Long id) {
         User updatedUser = repository.findById(id)
                 .map(user -> {
-                    user.setFirstname(newUser.getFirstname());
-                    user.setLastname(newUser.getLastname());
-                    user.setDateOfBirth(newUser.getDateOfBirth());
-                    user.setGender(newUser.getGender());
-                    user.setAddress(newUser.getAddress());
-                    user.setEmail(newUser.getEmail());
-                    user.setPhone(newUser.getPhone());
-                    user.setPassword(newUser.getPassword());
-                    user.setMedCardID(newUser.getMedCardID());
+                    if (newUser.getFirstname() != null) user.setFirstname(newUser.getFirstname());
+                    if (newUser.getLastname() != null) user.setLastname(newUser.getLastname());
+                    if (newUser.getDateOfBirth() != null) user.setDateOfBirth(newUser.getDateOfBirth());
+                    if (newUser.getGender() != null) user.setGender(newUser.getGender());
+                    if (newUser.getAddress() != null) user.setAddress(newUser.getAddress());
+                    if (newUser.getEmail() != null) user.setEmail(newUser.getEmail());
+                    if (newUser.getPhone() != null) user.setPhone(newUser.getPhone());
+                    if (newUser.getPassword() != null) user.setPassword(newUser.getPassword());
+                    if (newUser.getMedCardID() != null) user.setMedCardID(newUser.getMedCardID());
                     return repository.save(user);
                 })
                 .orElseGet(() -> {

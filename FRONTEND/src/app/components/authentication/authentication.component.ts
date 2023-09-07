@@ -25,6 +25,7 @@ export class AuthenticationComponent implements OnInit{
     const formFields = loginForm.value;
     this.authenticationService.authenticate(formFields).subscribe({
       next: (response: AuthenticationResponse) => {
+        sessionStorage.setItem('password', formFields["password"])
         this.authenticate(response);
       },
       error: console.error
@@ -35,6 +36,7 @@ export class AuthenticationComponent implements OnInit{
     const formFields = registerForm.value;
     this.authenticationService.register(formFields).subscribe({
       next: (response: AuthenticationResponse) => {
+        sessionStorage.setItem('password', formFields["password"])
         this.authenticate(response);
       },
       error: console.error
@@ -42,8 +44,8 @@ export class AuthenticationComponent implements OnInit{
   }
 
   private authenticate(response: AuthenticationResponse) {
-    sessionStorage.setItem("token", response['token'].toString());
-    sessionStorage.setItem("uid", response['uid'].toString());
+    sessionStorage.setItem("token", response.token.toString());
+    sessionStorage.setItem("uid", response.uid.toString());
     this.router.navigate(["/home"]);
   }
   

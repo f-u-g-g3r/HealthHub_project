@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthenticationRequest } from 'src/app/interfaces/authenticationRequest';
+import { AuthenticationResponse } from 'src/app/interfaces/authenticationResponse';
+import { UpdatedUser } from 'src/app/interfaces/updatedUser';
 import { User } from 'src/app/interfaces/user';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { UserService } from 'src/app/services/user.service';
@@ -23,12 +27,29 @@ export class ProfileComponent implements OnInit {
     }
     
     this.userService.getOneUser(sessionStorage.getItem('uid')).subscribe({
+      next: (response: User) => this.userData = response,
+      error: console.error
+    });
+  }
+
+  public onUpdateUser(user: UpdatedUser) {
+    this.userService.updateUser(sessionStorage.getItem('uid'), user).subscribe({
       next: (response: User) => {
-        this.userData = response
+        this.userData = response;
+        const authData: AuthenticationRequest = {
+          "email": this.userData.email,
+          "password": sessionStorage.getItem('password')!.toString()
+        };
+
+        this.authService.authenticate(authData).subscribe({
+          next: (response: AuthenticationResponse) => {
+            sessionStorage.setItem('token', response.token.toString());
+          },
+          error: console.error
+        });
       },
       error: console.error
     });
-    
   }
 
 

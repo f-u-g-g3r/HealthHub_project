@@ -21,45 +21,85 @@
             </div>
             <div class="card-body">
                 <ul class="list-group">
-                    <li class="list-group-item"> <div class="row gx-0"> 
-                      <span class="float-right col-10">First Name: {{ this.userData.firstname }}</span>
-                        <div class="col-1 ms-auto">
-                          <button class="btn btn-outline-dark"><i class="bi bi-pencil"></i></button>
-                        </div>
-                    </div></li>
+                    <li class="list-group-item"><span class="float-right col-10">First Name: {{ this.userData.firstname }}</span></li>
 
-                    <li class="list-group-item"> <div class="row gx-0"> 
-                      <span class="float-right col-10">Last Name: {{ this.userData.lastname }}</span>
-                        <div class="col-1 ms-auto">
-                          <button class="btn btn-outline-dark"><i class="bi bi-pencil"></i></button>
-                        </div>
-                    </div></li>
+                    <li class="list-group-item"><span class="float-right col-10">Last Name: {{ this.userData.lastname }}</span></li>
 
-                    <li class="list-group-item">Date of Birth: <span class="float-right">{{ this.userData.dateOfBirth }}</span></li>
-                    <li class="list-group-item">Gender: <span class="float-right">{{ this.userData.gender }}</span></li>
+                    <li class="list-group-item"><span class="float-right">Date of Birth: {{ this.userData.dateOfBirth }}</span></li>
 
-                    <li class="list-group-item"> <div class="row gx-0"> 
-                      <span class="float-right col-10">Address: {{ this.userData.address }}</span>
-                        <div class="col-1 ms-auto">
-                          <button class="btn btn-outline-dark"><i class="bi bi-pencil"></i></button>
-                        </div>
-                    </div></li>
+                    <li class="list-group-item"><span class="float-right">Gender: {{ this.userData.gender }}</span></li>
 
-                    <li class="list-group-item"> <div class="row gx-0"> 
-                      <span class="float-right col-10">Email: {{ this.userData.email }}</span>
-                        <div class="col-1 ms-auto">
-                          <button class="btn btn-outline-dark"><i class="bi bi-pencil"></i></button>
-                        </div>
-                    </div></li>
+                    <li class="list-group-item"><span class="float-right col-10">Address: {{ this.userData.address }}</span></li>
 
-                    <li class="list-group-item"> <div class="row gx-0"> 
-                      <span class="float-right col-10">Phone: {{ this.userData.phone }}</span>
-                        <div class="col-1 ms-auto">
-                          <button class="btn btn-outline-dark"><i class="bi bi-pencil"></i></button>
-                        </div>
-                    </div></li>
+                    <li class="list-group-item"><span class="float-right col-10">Email: {{ this.userData.email }}</span></li>
+
+                    <li class="list-group-item"><span class="float-right col-10">Phone: {{ this.userData.phone }}</span></li>
+                    <button class="btn btn-outline-dark col-3 ms-auto mt-3" data-bs-toggle="modal" data-bs-target="#updateModal"><i class="bi bi-pencil"></i> Change info</button>
                 </ul>
             </div>
         </div>
     </div>
+</div>
+
+
+<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="updateModalLabel">Edit info</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <form #updateForm="ngForm" (ngSubmit)="onUpdateUser(updateForm.value)">
+
+        <div class="modal-body">
+          <input  ngModel="{{ userData.id }}" type="hidden" name="id" />
+
+          <div class="mb-4 row">
+            <label class="col-sm-6 col-form-label text-end" for="firstname">Firstname</label>
+            <div class="col-sm-6 text-center">
+              <input ngModel="{{ userData.firstname }}" #firstname="ngModel" type="text" name="firstname" class="form-control" placeholder="Firstname"/>
+            </div>
+          </div>
+
+          <div class="mb-4 row">
+            <label class="col-sm-6 col-form-label text-end" for="lastname">Lastname</label>
+            <div class="col-sm-6 text-center">
+              <input ngModel="{{ userData.lastname }}" #lastname="ngModel" type="text" name="lastname" class="form-control" placeholder="Lastname"/>
+            </div>
+          </div>
+
+          <div class="mb-4 row">
+            <label class="col-sm-6 col-form-label text-end" for="address">Address</label>
+            <div class="col-sm-6 text-center">
+              <input ngModel="{{ userData.address }}" #address="ngModel" type="text" name="address" class="form-control" placeholder="Address"/>
+            </div>
+          </div>
+
+          <div class="mb-4 row">
+            <label class="col-sm-6 col-form-label text-end" for="email">Email</label>
+            <div class="col-sm-6 text-center">
+              <input ngModel="{{ userData.email }}" #email="ngModel" type="text" name="email" class="form-control" placeholder="Email"/>
+            </div>
+          </div>
+
+          <div class="mb-4 row">
+            <label class="col-sm-6 col-form-label text-end" for="phone">Phone</label>
+            <div class="col-sm-6 text-center">
+              <input ngModel="{{ userData.phone }}" #phone="ngModel" type="text" name="phone" class="form-control" placeholder="Phone"/>
+            </div>
+          </div>
+
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" data-bs-dismiss="modal" class="btn btn-primary">Save changes</button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
 </div>
