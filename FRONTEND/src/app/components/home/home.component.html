@@ -1,14 +1,78 @@
 <div class="container">
-    Home
-    <div class="dropdown col-2 ms-auto">
-        <button class="btn btn-primary dropdown-toggle col-12" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-          Menu
-        </button>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="home">Home</a></li>
-          <li><a class="dropdown-item" href="home/profile">My profile</a></li>
-          <li><a class="dropdown-item" href="#">Options</a></li>
-          <li><a class="dropdown-item" href="#" (click)="service.logOut()">Log out</a></li>
-        </ul>
+  <div class="dropdown col-2 ms-auto mb-5">
+      <button class="btn btn-primary dropdown-toggle col-12" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Menu
+      </button>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="home">Home</a></li>
+        <li><a class="dropdown-item" href="home/profile">My profile</a></li>
+        <li><a class="dropdown-item" href="#">Options</a></li>
+        <li><a class="dropdown-item" href="#" (click)="service.logOut()">Log out</a></li>
+      </ul>
+  </div>
+
+  <div class="row gx-0">
+
+    <div class="accordion col-5 me-auto" id="medCardAccordion">
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#medCardCollapse" aria-expanded="true" aria-controls="medCardCollapse">
+            Information about your medical card
+          </button>
+        </h2>
+        <div id="medCardCollapse" class="accordion-collapse collapse" data-bs-parent="#medCardAccordion">
+          <div class="accordion-body">
+            <strong>Это тело аккордеона первого элемента.</strong> Оно отображается по умолчанию, пока плагин свертывания не добавит соответствующие классы, которые мы используем для стилизации каждого элемента. Эти классы управляют общим внешним видом, а также отображением и скрытием с помощью переходов CSS. Вы можете изменить все это с помощью собственного CSS или переопределить наши переменные по умолчанию. Также стоит отметить, что практически любой HTML может быть помещен в <code>.accordion-body</code>, хотя переход ограничивает переполнение.
+          </div>
+        </div>
       </div>
+    </div>
+
+    <div class="accordion col-5 ms-auto" id="prescriptionsAccordion">
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#prescriptionsCollapse" aria-expanded="true" aria-controls="prescriptionsCollapse">
+            Electronic appointments and prescriptions
+          </button>
+        </h2>
+        <div id="prescriptionsCollapse" class="accordion-collapse collapse" data-bs-parent="#prescriptionsAccordion">
+          <div class="accordion-body">
+            <strong>Это тело аккордеона первого элемента.</strong> Оно отображается по умолчанию, пока плагин свертывания не добавит соответствующие классы, которые мы используем для стилизации каждого элемента. Эти классы управляют общим внешним видом, а также отображением и скрытием с помощью переходов CSS. Вы можете изменить все это с помощью собственного CSS или переопределить наши переменные по умолчанию. Также стоит отметить, что практически любой HTML может быть помещен в <code>.accordion-body</code>, хотя переход ограничивает переполнение.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion col-5 me-auto mt-5" id="historyAccordion">
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#historyCollapse" aria-expanded="true" aria-controls="historyCollapse">
+            History of visits and appointments
+          </button>
+        </h2>
+        <div id="historyCollapse" class="accordion-collapse collapse" data-bs-parent="#historyAccordion">
+          <div class="accordion-body">
+            <strong>Это тело аккордеона первого элемента.</strong> Оно отображается по умолчанию, пока плагин свертывания не добавит соответствующие классы, которые мы используем для стилизации каждого элемента. Эти классы управляют общим внешним видом, а также отображением и скрытием с помощью переходов CSS. Вы можете изменить все это с помощью собственного CSS или переопределить наши переменные по умолчанию. Также стоит отметить, что практически любой HTML может быть помещен в <code>.accordion-body</code>, хотя переход ограничивает переполнение.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion col-5 ms-auto mt-5" id="analyzesAccordion">
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#analyzesCollapse" aria-expanded="true" aria-controls="analyzesCollapse">
+            Results of examinations and analyzes
+          </button>
+        </h2>
+        <div id="analyzesCollapse" class="accordion-collapse collapse" data-bs-parent="#analyzesAccordion">
+          <div class="accordion-body">
+            <strong>Это тело аккордеона первого элемента.</strong> Оно отображается по умолчанию, пока плагин свертывания не добавит соответствующие классы, которые мы используем для стилизации каждого элемента. Эти классы управляют общим внешним видом, а также отображением и скрытием с помощью переходов CSS. Вы можете изменить все это с помощью собственного CSS или переопределить наши переменные по умолчанию. Также стоит отметить, что практически любой HTML может быть помещен в <code>.accordion-body</code>, хотя переход ограничивает переполнение.
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
 </div>

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthenticationRequest } from 'src/app/interfaces/authenticationRequest';
 import { AuthenticationResponse } from 'src/app/interfaces/authenticationResponse';
