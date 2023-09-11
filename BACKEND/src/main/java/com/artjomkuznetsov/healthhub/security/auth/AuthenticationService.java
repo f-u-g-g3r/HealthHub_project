@@ -76,8 +76,8 @@ public class AuthenticationService {
         user.setMedCardID(medCardId);
         ResponseEntity<?> responseEntity = userController.replaceUser(user, user.getId());
         EntityModel<User> entityModel = (EntityModel<User>) responseEntity.getBody();
-        User user1 = entityModel.getContent();
-        return user1;
+        User resultUser = entityModel.getContent();
+        return resultUser;
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
