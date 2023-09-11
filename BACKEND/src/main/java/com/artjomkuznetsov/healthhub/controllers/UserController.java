@@ -3,6 +3,7 @@ package com.artjomkuznetsov.healthhub.controllers;
 
 import com.artjomkuznetsov.healthhub.assemblers.UserModelAssembler;
 import com.artjomkuznetsov.healthhub.exceptions.UserNotFoundException;
+import com.artjomkuznetsov.healthhub.models.MedCard;
 import com.artjomkuznetsov.healthhub.models.User;
 import com.artjomkuznetsov.healthhub.repositories.UserRepository;
 import com.artjomkuznetsov.healthhub.security.config.JwtService;
@@ -23,11 +24,13 @@ public class UserController {
     private final UserRepository repository;
     private final UserModelAssembler assembler;
     private final JwtService jwtService;
+    private final MedCardController medCardController;
 
-    public UserController(UserRepository repository, UserModelAssembler assembler, JwtService jwtService) {
+    public UserController(UserRepository repository, UserModelAssembler assembler, JwtService jwtService, MedCardController medCardController) {
         this.repository = repository;
         this.assembler = assembler;
         this.jwtService = jwtService;
+        this.medCardController = medCardController;
     }
 
     // Aggregate root

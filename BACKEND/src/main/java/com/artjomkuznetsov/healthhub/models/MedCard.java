@@ -30,6 +30,9 @@ public class MedCard {
         this.familyDoctorID = familyDoctorID;
     }
 
+    public MedCard(Long ownerID) {
+        this.ownerID = ownerID;
+    }
 
     public Long getId() {
         return id;
