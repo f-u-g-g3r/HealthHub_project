@@ -1,0 +1,12 @@
+.accordion-button {
+    background: white;
+    box-shadow: none;
+    border-bottom: 1px solid black;
+}
+
+.accordion-item {
+    box-shadow: none;
+    border-color: black;
+    border-width: 1px;
+}
+
