@@ -3,7 +3,6 @@ package com.artjomkuznetsov.healthhub.controllers;
 
 import com.artjomkuznetsov.healthhub.assemblers.UserModelAssembler;
 import com.artjomkuznetsov.healthhub.exceptions.UserNotFoundException;
-import com.artjomkuznetsov.healthhub.models.MedCard;
 import com.artjomkuznetsov.healthhub.models.User;
 import com.artjomkuznetsov.healthhub.repositories.UserRepository;
 import com.artjomkuznetsov.healthhub.security.config.JwtService;
@@ -11,6 +10,10 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -55,12 +58,26 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    @CrossOrigin(origins="*", maxAge=3600) //allowedHeaders={"x-auth-token", "x-requested-with", "x-xsrf-token"}
-    public EntityModel<User> one(@PathVariable Long id) {
-       User user = repository.findById(id)
-               .orElseThrow(() -> new UserNotFoundException(id));
+    @CrossOrigin(origins="*", maxAge=3600)
+    public EntityModel<User> one(@PathVariable("id") Long id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated() && authentication.getPrincipal() instanceof UserDetails) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            String jwtToken = userDetails.
+            System.out.println("Token: "+jwtToken);
+            Long userIdFromToken = jwtService.extractId(jwtToken);
 
-       return assembler.toModel(user);
+            if (id.equals(userIdFromToken)) {
+                User user = repository.findById(id)
+                        .orElseThrow(() -> new UserNotFoundException(id));
+                return EntityModel.of(user);
+            } else {
+                throw new AccessDeniedException("Access to this user is not allowed");
+            }
+        }
+        else {
+            throw new AccessDeniedException("Access to this user is not allowed");
+        }
     }
 
     @PutMapping("/users/{id}")

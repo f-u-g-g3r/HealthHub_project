@@ -22,6 +22,14 @@ public class JwtService {
         return extractClaim(token, Claims::getSubject);
     }
 
+    public Long extractId(String jwt) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(SECRET_KEY)
+                .parseClaimsJws(jwt)
+                .getBody();
+        return claims.get("id", Long.class);
+    }
+
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);

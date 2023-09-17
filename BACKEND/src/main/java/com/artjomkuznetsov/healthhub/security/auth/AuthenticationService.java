@@ -7,6 +7,9 @@ import com.artjomkuznetsov.healthhub.models.User;
 import com.artjomkuznetsov.healthhub.repositories.UserRepository;
 import com.artjomkuznetsov.healthhub.security.auth.exceptions.UsernameAlreadyTakenException;
 import com.artjomkuznetsov.healthhub.security.config.JwtService;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,6 +30,9 @@ public class AuthenticationService {
     private final MedCardController medCardController;
     private final UserController userController;
 
+    private static final String SECRET_KEY = "3741333938333135414431394531453735324246463937343737384146";
+
+
     public AuthenticationService(UserRepository repository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager, MedCardController medCardController, UserController userController) {
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
@@ -44,11 +50,21 @@ public class AuthenticationService {
         }
 
 
+
+
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         repository.save(newUser);
         setUidToNewMedCard(newUser);
 
-        String jwtToken =jwtService.generateToken(newUser);
+        Long userId = newUser.getId();
+        Claims claims = Jwts.claims().setSubject(newUser.getEmail());
+        claims.put("userId", userId);
+
+        String jwtToken = Jwts.builder()
+                .setClaims(claims)
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .compact();
+
         return new AuthenticationResponse(jwtToken, newUser.getId());
     }
 
