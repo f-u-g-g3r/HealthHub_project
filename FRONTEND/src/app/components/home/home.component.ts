@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { MedCard } from 'src/app/interfaces/medCard';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import { MedicalService } from 'src/app/services/medical.service';
 
 @Component({
   selector: 'app-home',
@@ -9,13 +11,20 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private router: Router, public service: AuthenticationService) {}
+  constructor(private router: Router, public service: AuthenticationService, public medService: MedicalService) {}
 
   ngOnInit(): void {
       if (!sessionStorage.getItem("token")) {
         this.router.navigate(["/login"])
       }
+      this.getMedInfo();
   }
 
+  private getMedInfo() {
+    this.medService.one().subscribe({
+      next: (response: MedCard) => console.log(response),
+      error: console.error 
+    });
+  }
 
 }

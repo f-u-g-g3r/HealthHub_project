@@ -6,14 +6,16 @@ public class AuthenticationResponse {
     private String token;
     private Boolean isEmailTaken;
     private Long uid;
+    private Long medCardId;
 
     public AuthenticationResponse(String token) {
         this.isEmailTaken = true;
     }
 
-    public AuthenticationResponse(String token, Long uid) {
+    public AuthenticationResponse(String token, Long uid, Long medCardId) {
         this.token = token;
         this.uid = uid;
+        this.medCardId = medCardId;
         this.isEmailTaken = false;
     }
 
@@ -41,17 +43,25 @@ public class AuthenticationResponse {
         this.uid = uid;
     }
 
+    public Long getMedCardId() {
+        return medCardId;
+    }
+
+    public void setMedCardId(Long medCardId) {
+        this.medCardId = medCardId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AuthenticationResponse that = (AuthenticationResponse) o;
-        return Objects.equals(token, that.token) && Objects.equals(isEmailTaken, that.isEmailTaken) && Objects.equals(uid, that.uid);
+        return Objects.equals(token, that.token) && Objects.equals(isEmailTaken, that.isEmailTaken) && Objects.equals(uid, that.uid) && Objects.equals(medCardId, that.medCardId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(token, isEmailTaken, uid);
+        return Objects.hash(token, isEmailTaken, uid, medCardId);
     }
 
     @Override
@@ -60,6 +70,7 @@ public class AuthenticationResponse {
                 "token='" + token + '\'' +
                 ", isEmailTaken=" + isEmailTaken +
                 ", uid=" + uid +
+                ", medCardId=" + medCardId +
                 '}';
     }
 }

@@ -60,24 +60,9 @@ public class UserController {
     @GetMapping("/users/{id}")
     @CrossOrigin(origins="*", maxAge=3600)
     public EntityModel<User> one(@PathVariable("id") Long id) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated() && authentication.getPrincipal() instanceof UserDetails) {
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            String jwtToken = userDetails.
-            System.out.println("Token: "+jwtToken);
-            Long userIdFromToken = jwtService.extractId(jwtToken);
-
-            if (id.equals(userIdFromToken)) {
-                User user = repository.findById(id)
-                        .orElseThrow(() -> new UserNotFoundException(id));
-                return EntityModel.of(user);
-            } else {
-                throw new AccessDeniedException("Access to this user is not allowed");
-            }
-        }
-        else {
-            throw new AccessDeniedException("Access to this user is not allowed");
-        }
+        User user = repository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id));
+        return assembler.toModel(user);
     }
 
     @PutMapping("/users/{id}")

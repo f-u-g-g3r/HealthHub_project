@@ -7,9 +7,7 @@ import com.artjomkuznetsov.healthhub.models.User;
 import com.artjomkuznetsov.healthhub.repositories.UserRepository;
 import com.artjomkuznetsov.healthhub.security.auth.exceptions.UsernameAlreadyTakenException;
 import com.artjomkuznetsov.healthhub.security.config.JwtService;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,8 +16,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
-import java.util.Optional;
+
 
 @Service
 public class AuthenticationService {
@@ -30,7 +27,6 @@ public class AuthenticationService {
     private final MedCardController medCardController;
     private final UserController userController;
 
-    private static final String SECRET_KEY = "3741333938333135414431394531453735324246463937343737384146";
 
 
     public AuthenticationService(UserRepository repository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager, MedCardController medCardController, UserController userController) {
@@ -56,16 +52,9 @@ public class AuthenticationService {
         repository.save(newUser);
         setUidToNewMedCard(newUser);
 
-        Long userId = newUser.getId();
-        Claims claims = Jwts.claims().setSubject(newUser.getEmail());
-        claims.put("userId", userId);
+        String jwtToken =jwtService.generateToken(newUser);
 
-        String jwtToken = Jwts.builder()
-                .setClaims(claims)
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
-                .compact();
-
-        return new AuthenticationResponse(jwtToken, newUser.getId());
+        return new AuthenticationResponse(jwtToken, newUser.getId(), newUser.getMedCardID());
     }
 
 
@@ -103,7 +92,7 @@ public class AuthenticationService {
         User user = repository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
         String jwtToken = jwtService.generateToken(user);
-        return new AuthenticationResponse(jwtToken, user.getId());
+        return new AuthenticationResponse(jwtToken, user.getId(), user.getMedCardID());
     }
 
     private boolean isUsernameEmpty(String username) {
