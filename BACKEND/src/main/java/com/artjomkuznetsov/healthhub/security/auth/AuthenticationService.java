@@ -54,7 +54,7 @@ public class AuthenticationService {
 
         String jwtToken =jwtService.generateToken(newUser);
 
-        return new AuthenticationResponse(jwtToken, newUser.getId(), newUser.getMedCardID());
+        return new AuthenticationResponse(jwtToken, newUser.getId(), newUser.getMedCardID(), newUser.getRole());
     }
 
 
@@ -92,7 +92,7 @@ public class AuthenticationService {
         User user = repository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
         String jwtToken = jwtService.generateToken(user);
-        return new AuthenticationResponse(jwtToken, user.getId(), user.getMedCardID());
+        return new AuthenticationResponse(jwtToken, user.getId(), user.getMedCardID(), user.getRole());
     }
 
     private boolean isUsernameEmpty(String username) {

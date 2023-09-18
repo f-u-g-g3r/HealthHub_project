@@ -24,6 +24,7 @@ public class User implements UserDetails {
     private String password;
     private Long medCardID;
     private String token;
+    private Long familyDoctorId;
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -32,7 +33,7 @@ public class User implements UserDetails {
         this.role = Role.USER;
     }
 
-    public User(String firstname, String lastname, String dateOfBirth, String gender, String address, String email, String phone, String password, Long medCardID, String token) {
+    public User(String firstname, String lastname, String dateOfBirth, String gender, String address, String email, String phone, String password, Long medCardID, String token, Long familyDoctorId) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.dateOfBirth = dateOfBirth;
@@ -44,6 +45,7 @@ public class User implements UserDetails {
         this.medCardID = medCardID;
         this.role = Role.USER;
         this.token = token;
+        this.familyDoctorId = familyDoctorId;
     }
 
     public void setId(Long id) {
@@ -138,17 +140,25 @@ public class User implements UserDetails {
         this.token = token;
     }
 
+    public Long getFamilyDoctorId() {
+        return familyDoctorId;
+    }
+
+    public void setFamilyDoctorId(Long familyDoctorId) {
+        this.familyDoctorId = familyDoctorId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(firstname, user.firstname) && Objects.equals(lastname, user.lastname) && Objects.equals(dateOfBirth, user.dateOfBirth) && Objects.equals(gender, user.gender) && Objects.equals(address, user.address) && Objects.equals(email, user.email) && Objects.equals(phone, user.phone) && Objects.equals(password, user.password) && Objects.equals(medCardID, user.medCardID) && Objects.equals(token, user.token) && role == user.role;
+        return Objects.equals(id, user.id) && Objects.equals(firstname, user.firstname) && Objects.equals(lastname, user.lastname) && Objects.equals(dateOfBirth, user.dateOfBirth) && Objects.equals(gender, user.gender) && Objects.equals(address, user.address) && Objects.equals(email, user.email) && Objects.equals(phone, user.phone) && Objects.equals(password, user.password) && Objects.equals(medCardID, user.medCardID) && Objects.equals(familyDoctorId, user.familyDoctorId) && role == user.role;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstname, lastname, dateOfBirth, gender, address, email, phone, password, medCardID, token, role);
+        return Objects.hash(id, firstname, lastname, dateOfBirth, gender, address, email, phone, password, medCardID, familyDoctorId, role);
     }
 
     @Override
@@ -164,7 +174,7 @@ public class User implements UserDetails {
                 ", phone='" + phone + '\'' +
                 ", password='" + password + '\'' +
                 ", medCardID=" + medCardID +
-                ", token='" + token + '\'' +
+                ", familyDoctorId=" + familyDoctorId +
                 ", role=" + role +
                 '}';
     }

@@ -5,6 +5,7 @@
       </button>
       <ul class="dropdown-menu">
         <li><a class="dropdown-item" href="home">Home</a></li>
+        <li *ngIf="role == 'DOCTOR'"><a class="dropdown-item" href="doctors-workplace">Switch to workplace</a></li>
         <li><a class="dropdown-item" href="home/profile">My profile</a></li>
         <li><a class="dropdown-item" href="#">Options</a></li>
         <li><a class="dropdown-item" href="#" (click)="service.logOut()">Log out</a></li>

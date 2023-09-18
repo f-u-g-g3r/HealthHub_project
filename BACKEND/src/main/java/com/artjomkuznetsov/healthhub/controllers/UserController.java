@@ -47,6 +47,14 @@ public class UserController {
                 linkTo(methodOn(UserController.class).all()).withSelfRel());
     }
 
+    @GetMapping("/users-by-doctor/{doctorId}")
+    @CrossOrigin(origins="*")
+    public List<User> getUsersByDoctorId(@PathVariable Long doctorId) {
+        List<User> users = repository.findByFamilyDoctorId(doctorId);
+
+        return users;
+    }
+
     @PostMapping("/users")
     public ResponseEntity<?> newUser(@RequestBody User newUser) {
         EntityModel<User> entityModel = assembler.toModel(repository.save(newUser));
@@ -78,6 +86,7 @@ public class UserController {
                     if (newUser.getEmail() != null) user.setEmail(newUser.getEmail());
                     if (newUser.getPhone() != null) user.setPhone(newUser.getPhone());
                     if (newUser.getRole() != null) user.setRole(newUser.getRole());
+                    if (newUser.getFamilyDoctorId() != null) user.setFamilyDoctorId(newUser.getFamilyDoctorId());
                     if (newUser.getPassword() != null) user.setPassword(newUser.getPassword());
                     if (newUser.getMedCardID() != null) user.setMedCardID(newUser.getMedCardID());
                     return repository.save(user);
@@ -106,4 +115,7 @@ public class UserController {
     public ResponseEntity<?> options() {
         return ResponseEntity.ok().build();
     }
+
+
+
 }

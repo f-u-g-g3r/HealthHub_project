@@ -44,9 +44,11 @@ export class AuthenticationComponent implements OnInit{
   }
 
   private authenticate(response: AuthenticationResponse) {
+    console.log(response);
     sessionStorage.setItem("token", response.token.toString());
     sessionStorage.setItem("uid", response.uid.toString());
     sessionStorage.setItem("medCardId", response.medCardId.toString());
+    sessionStorage.setItem("role", response.role);
     this.router.navigate(["/home"]);
   }
   

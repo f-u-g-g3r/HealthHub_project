@@ -11,6 +11,9 @@ import { MedicalService } from 'src/app/services/medical.service';
 })
 export class HomeComponent implements OnInit {
   public medCard!: MedCard;
+  public role: string = sessionStorage.getItem("role") + "";
+  
+
   constructor(private router: Router, public service: AuthenticationService, public medService: MedicalService) {}
 
   ngOnInit(): void {
@@ -18,6 +21,7 @@ export class HomeComponent implements OnInit {
         this.router.navigate(["/login"])
       }
       this.getMedInfo();
+      console.log(this.role);
   }
 
   private getMedInfo() {

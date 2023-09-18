@@ -35,4 +35,14 @@ export class UserService {
 
     return this.http.put<User>(`${this.serverUrl}/users/` + uid, user, httpOptions);
   }
+
+  public getUsersByDoctorId(doctorId: string): Observable<User[]> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+      })
+    };
+
+    return this.http.get<User[]>(`${this.serverUrl}/users-by-doctor/` + doctorId, httpOptions);
+  }
 }
