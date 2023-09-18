@@ -10,7 +10,7 @@ import { MedicalService } from 'src/app/services/medical.service';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-
+  public medCard!: MedCard;
   constructor(private router: Router, public service: AuthenticationService, public medService: MedicalService) {}
 
   ngOnInit(): void {
@@ -22,7 +22,7 @@ export class HomeComponent implements OnInit {
 
   private getMedInfo() {
     this.medService.one().subscribe({
-      next: (response: MedCard) => console.log(response),
+      next: (response: MedCard) => this.medCard = response,
       error: console.error 
     });
   }

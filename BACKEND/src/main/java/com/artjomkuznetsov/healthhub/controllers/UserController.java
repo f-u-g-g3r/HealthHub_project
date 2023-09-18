@@ -77,6 +77,7 @@ public class UserController {
                     if (newUser.getAddress() != null) user.setAddress(newUser.getAddress());
                     if (newUser.getEmail() != null) user.setEmail(newUser.getEmail());
                     if (newUser.getPhone() != null) user.setPhone(newUser.getPhone());
+                    if (newUser.getRole() != null) user.setRole(newUser.getRole());
                     if (newUser.getPassword() != null) user.setPassword(newUser.getPassword());
                     if (newUser.getMedCardID() != null) user.setMedCardID(newUser.getMedCardID());
                     return repository.save(user);

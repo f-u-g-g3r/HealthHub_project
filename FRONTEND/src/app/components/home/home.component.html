@@ -27,8 +27,11 @@
             </a>
 
             <div class="collapse" id="medHistory">
-              <div class="ps-5">
-                Empty.
+              <div class="ps-5" *ngIf="medCard.medHistory === null">
+                Empty
+              </div>
+              <div class="ps-5" *ngIf="medCard.medHistory !== null">
+                {{ medCard.medHistory }}
               </div>
             </div>
 
@@ -39,8 +42,12 @@
             </a>
 
             <div class="collapse" id="bloodType">
-              <div class="ps-5">
-                Empty.
+              <div class="ps-5" *ngIf="medCard.bloodType === null || medCard.rhFactor === null">
+                Empty
+              </div>
+              <div class="ps-5" *ngIf="medCard.bloodType !== null && medCard.rhFactor !== null">
+                Blood type: {{ medCard.bloodType }} <br />
+                Rh factor: {{ medCard.rhFactor }}
               </div>
             </div>
 
@@ -51,8 +58,11 @@
             </a>
 
             <div class="collapse" id="allergies">
-              <div class="ps-5">
-                Empty.
+              <div class="ps-5" *ngIf="medCard.allergies === null">
+                Empty
+              </div>
+              <div class="ps-5" *ngIf="medCard.allergies !== null">
+                {{ medCard.allergies }}
               </div>
             </div>
 
@@ -63,8 +73,11 @@
             </a>
 
             <div class="collapse" id="chronicDiseases">
-              <div class="ps-5">
-                Empty.
+              <div class="ps-5" *ngIf="medCard.chronicDiseases === null">
+                Empty
+              </div>
+              <div class="ps-5" *ngIf="medCard.chronicDiseases !== null">
+                {{ medCard.chronicDiseases }}
               </div>
             </div>
 
@@ -164,8 +177,11 @@
             </a>
 
             <div class="collapse" id="resultsOfExaminations">
-              <div class="ps-5">
-                Empty.
+              <div class="ps-5" *ngIf="medCard.resultsOfSurveys === null">
+                Empty
+              </div>
+              <div class="ps-5" *ngIf="medCard.resultsOfSurveys !== null">
+                {{ medCard.resultsOfSurveys }}
               </div>
             </div>
 
