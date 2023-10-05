@@ -29,7 +29,7 @@ export class DoctorsworkplaceComponent implements OnInit {
   }
 
   public viewPatientDetails(patientId: number) {
-
+    this.router.navigate(["/doctors-workplace2"]);
   }
 
 }
