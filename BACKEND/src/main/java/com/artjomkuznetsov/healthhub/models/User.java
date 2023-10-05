@@ -1,5 +1,6 @@
 package com.artjomkuznetsov.healthhub.models;
 
+import com.artjomkuznetsov.healthhub.repositories.UserRepository;
 import jakarta.persistence.*;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.security.core.GrantedAuthority;
@@ -9,11 +10,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 @Entity
 @Table(name = "users")
 public class User implements UserDetails {
     private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;
+    private String uuid;
     private String firstname;
     private String lastname;
     private String dateOfBirth;
@@ -33,7 +36,7 @@ public class User implements UserDetails {
         this.role = Role.USER;
     }
 
-    public User(String firstname, String lastname, String dateOfBirth, String gender, String address, String email, String phone, String password, Long medCardID, String token, Long familyDoctorId) {
+    public User(String firstname, String lastname, String dateOfBirth, String gender, String address, String email, String phone, String password, Long medCardID, String token, Long familyDoctorId, String uuid) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.dateOfBirth = dateOfBirth;
@@ -46,6 +49,7 @@ public class User implements UserDetails {
         this.role = Role.USER;
         this.token = token;
         this.familyDoctorId = familyDoctorId;
+        this.uuid = uuid;
     }
 
     public void setId(Long id) {
@@ -148,23 +152,32 @@ public class User implements UserDetails {
         this.familyDoctorId = familyDoctorId;
     }
 
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(firstname, user.firstname) && Objects.equals(lastname, user.lastname) && Objects.equals(dateOfBirth, user.dateOfBirth) && Objects.equals(gender, user.gender) && Objects.equals(address, user.address) && Objects.equals(email, user.email) && Objects.equals(phone, user.phone) && Objects.equals(password, user.password) && Objects.equals(medCardID, user.medCardID) && Objects.equals(familyDoctorId, user.familyDoctorId) && role == user.role;
+        return Objects.equals(id, user.id) && Objects.equals(uuid, user.uuid) && Objects.equals(firstname, user.firstname) && Objects.equals(lastname, user.lastname) && Objects.equals(dateOfBirth, user.dateOfBirth) && Objects.equals(gender, user.gender) && Objects.equals(address, user.address) && Objects.equals(email, user.email) && Objects.equals(phone, user.phone) && Objects.equals(password, user.password) && Objects.equals(medCardID, user.medCardID) && Objects.equals(token, user.token) && Objects.equals(familyDoctorId, user.familyDoctorId) && role == user.role;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstname, lastname, dateOfBirth, gender, address, email, phone, password, medCardID, familyDoctorId, role);
+        return Objects.hash(id, uuid, firstname, lastname, dateOfBirth, gender, address, email, phone, password, medCardID, token, familyDoctorId, role);
     }
 
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
+                ", uuid='" + uuid + '\'' +
                 ", firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +
                 ", dateOfBirth='" + dateOfBirth + '\'' +
@@ -174,6 +187,7 @@ public class User implements UserDetails {
                 ", phone='" + phone + '\'' +
                 ", password='" + password + '\'' +
                 ", medCardID=" + medCardID +
+                ", token='" + token + '\'' +
                 ", familyDoctorId=" + familyDoctorId +
                 ", role=" + role +
                 '}';
@@ -212,4 +226,6 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+
 }

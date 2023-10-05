@@ -16,6 +16,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+import java.util.Random;
 
 
 @Service
@@ -45,9 +47,7 @@ public class AuthenticationService {
             return new AuthenticationResponse("Email is taken");
         }
 
-
-
-
+        newUser.setUuid(generateUUID());
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         repository.save(newUser);
         setUidToNewMedCard(newUser);
@@ -100,6 +100,21 @@ public class AuthenticationService {
             return true;
         } else {
             throw new UsernameAlreadyTakenException(username);
+        }
+    }
+
+    public String generateUUID() {
+        String[] numbers = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0"};
+        StringBuilder uuid = new StringBuilder("");
+        Random rand = new Random();
+        for (int i = 0; i<10; i++) {
+            int randNum = rand.nextInt(0, 10);
+            uuid.append(numbers[randNum]);
+        }
+        if (repository.findByUuid(uuid.toString()).equals(Optional.empty())) {
+            return uuid.toString();
+        } else {
+            return generateUUID();
         }
     }
 
