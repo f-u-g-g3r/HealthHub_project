@@ -12,8 +12,8 @@
     </div>
 
     <h1>Patient List</h1>
-    <input type="text" placeholder="Search by name">
-    <table class="table table-bordered">
+    <input type="text" placeholder="Search">
+    <table class="table table-bordered table-hover">
       <thead>
         <tr>
           <th>Name</th>
@@ -23,7 +23,7 @@
       <tbody>
         <tr *ngFor="let patient of patients" (click)="viewPatientDetails(patient.id)">
           <td>{{ patient.firstname + " " + patient.lastname }}</td>
-          <td>{{ patient.id }}</td>
+          <td>{{ patient.uuid }}</td>
         </tr>
       </tbody>
     </table>
