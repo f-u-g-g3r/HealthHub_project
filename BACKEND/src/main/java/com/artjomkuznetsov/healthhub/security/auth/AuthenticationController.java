@@ -15,13 +15,13 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    @CrossOrigin(origins="*", maxAge=3600)
+    @CrossOrigin(origins="*")
     public ResponseEntity<?> register(@RequestBody User newUser) {
         return ResponseEntity.ok(authenticationService.register(newUser));
     }
 
     @PostMapping("/authenticate")
-    @CrossOrigin(origins="*", maxAge=3600)
+    @CrossOrigin(origins="*")
     public ResponseEntity<?> authenticate(@RequestBody AuthenticationRequest request) {
         return ResponseEntity.ok(authenticationService.authenticate(request));
     }

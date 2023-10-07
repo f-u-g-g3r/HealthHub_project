@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { User } from 'src/app/interfaces/user';
 import { HttpHeaders } from '@angular/common/http';
 import { UpdatedUser } from '../interfaces/updatedUser';
+import { MedCard } from '../interfaces/medCard';
 
 @Injectable({
   providedIn: 'root'
@@ -44,5 +45,14 @@ export class UserService {
     };
 
     return this.http.get<User[]>(`${this.serverUrl}/users-by-doctor/` + doctorId, httpOptions);
+  }
+
+  public getOneMedcard(ownerId: any): Observable<MedCard> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+      })
+    };
+    return this.http.get<MedCard>(`${this.serverUrl}/med-cards/` + ownerId, httpOptions);
   }
 }

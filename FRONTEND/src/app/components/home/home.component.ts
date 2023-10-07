@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MedCard } from 'src/app/interfaces/medCard';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { MedicalService } from 'src/app/services/medical.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-home',
@@ -14,7 +14,7 @@ export class HomeComponent implements OnInit {
   public role: string = sessionStorage.getItem("role") + "";
   
 
-  constructor(private router: Router, public service: AuthenticationService, public medService: MedicalService) {}
+  constructor(private router: Router, public service: AuthenticationService, public userService: UserService) {}
 
   ngOnInit(): void {
       if (!sessionStorage.getItem("token")) {
@@ -25,7 +25,7 @@ export class HomeComponent implements OnInit {
   }
 
   private getMedInfo() {
-    this.medService.one().subscribe({
+    this.userService.getOneMedcard(sessionStorage.getItem('uid')).subscribe({
       next: (response: MedCard) => this.medCard = response,
       error: console.error 
     });

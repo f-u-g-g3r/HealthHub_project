@@ -11,6 +11,7 @@ import { UserService } from './services/user.service';
 import { HomeComponent } from './components/home/home.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { DoctorsworkplaceComponent } from './components/doctorsworkplace/doctorsworkplace.component';
+import { PatientProfileComponent } from './components/patient-profile/patient-profile.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { DoctorsworkplaceComponent } from './components/doctorsworkplace/doctors
     AuthenticationComponent,
     HomeComponent,
     ProfileComponent,
-    DoctorsworkplaceComponent
+    DoctorsworkplaceComponent,
+    PatientProfileComponent
   ],
   imports: [
     BrowserModule,

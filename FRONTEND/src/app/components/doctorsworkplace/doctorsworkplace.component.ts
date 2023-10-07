@@ -21,15 +21,14 @@ export class DoctorsworkplaceComponent implements OnInit {
 
     this.userService.getUsersByDoctorId(sessionStorage.getItem("uid")!.toString()).subscribe({
       next: (response: User[]) => {
-        this.patients = response
-        console.log(response)
+        this.patients = response;
       },
       error: console.error
     });
   }
 
   public viewPatientDetails(patientId: number) {
-    this.router.navigate(["/doctors-workplace2"]);
+    this.router.navigate(["/doctors-workplace/patient/", patientId]);
   }
 
 }
