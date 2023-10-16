@@ -1,6 +1,7 @@
 package com.artjomkuznetsov.healthhub.controllers;
 
 import com.artjomkuznetsov.healthhub.assemblers.MedCardModelAssembler;
+import com.artjomkuznetsov.healthhub.exceptions.DiseaseNotFoundException;
 import com.artjomkuznetsov.healthhub.exceptions.MedCardNotFoundException;
 import com.artjomkuznetsov.healthhub.models.MedCard;
 import com.artjomkuznetsov.healthhub.models.medcard.MedHistory;
@@ -63,6 +64,38 @@ public class MedCardController {
                 .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
                 .body(entityModel);
 
+    }
+
+    @PutMapping("/med-cards/{medId}/med-history/{diseaseId}")
+    public ResponseEntity<?> updateDisease(
+            @RequestBody MedHistory updatedDisease,
+            @PathVariable Long medId,
+            @PathVariable Long diseaseId
+    ) {
+        MedCard medCard = repository.findById(medId)
+                .orElseThrow(() -> new MedCardNotFoundException(medId));
+
+        List<MedHistory> newHistory = updateDiseaseInMedCard(medCard, diseaseId, updatedDisease);
+        medCard.setMedHistory(newHistory);
+
+        EntityModel<MedCard> entityModel = assembler.toModel(repository.save(medCard));
+
+        return ResponseEntity
+                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(entityModel);
+    }
+
+    private List<MedHistory> updateDiseaseInMedCard(MedCard medCard, Long id, MedHistory updatedDisease) {
+        List<MedHistory> history = medCard.getMedHistory();
+        for (MedHistory disease : history) {
+            if (disease.getId() == id) {
+                disease.setDisease(updatedDisease.getDisease());
+                disease.setDescription(updatedDisease.getDescription());
+                disease.setDateOfIllness(updatedDisease.getDateOfIllness());
+                return history;
+            }
+        }
+        throw new DiseaseNotFoundException(id, medCard.getId());
     }
 
     @GetMapping("/med-cards/{id}")
