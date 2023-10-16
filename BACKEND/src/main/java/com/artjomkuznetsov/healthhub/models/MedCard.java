@@ -1,7 +1,9 @@
 package com.artjomkuznetsov.healthhub.models;
 
+import com.artjomkuznetsov.healthhub.models.medcard.MedHistory;
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -9,7 +11,11 @@ import java.util.Objects;
 public class MedCard {
     private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;
     private Long ownerID;
-    private String medHistory;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "medcard_id")
+    private List<MedHistory> medHistory;
+
     private String bloodType;
     private String rhFactor;
     private String allergies;
@@ -19,7 +25,7 @@ public class MedCard {
 
     public MedCard() {}
 
-    public MedCard(Long ownerID, String medHistory, String bloodType, String rhFactor, String allergies, String chronicDiseases, String resultsOfSurveys, Long familyDoctorID) {
+    public MedCard(Long ownerID, List<MedHistory> medHistory, String bloodType, String rhFactor, String allergies, String chronicDiseases, String resultsOfSurveys, Long familyDoctorID) {
         this.ownerID = ownerID;
         this.medHistory = medHistory;
         this.bloodType = bloodType;
@@ -50,11 +56,11 @@ public class MedCard {
         this.ownerID = ownerID;
     }
 
-    public String getMedHistory() {
+    public List<MedHistory> getMedHistory() {
         return medHistory;
     }
 
-    public void setMedHistory(String medHistory) {
+    public void setMedHistory(List<MedHistory> medHistory) {
         this.medHistory = medHistory;
     }
 
