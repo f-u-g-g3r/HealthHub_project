@@ -75,7 +75,7 @@ public class MedCardController {
         MedCard medCard = repository.findById(medId)
                 .orElseThrow(() -> new MedCardNotFoundException(medId));
 
-        List<MedHistory> newHistory = updateDiseaseInMedCard(medCard, diseaseId, updatedDisease);
+        List<MedHistory> newHistory = updateDiseaseInMedHistory(medCard, diseaseId, updatedDisease);
         medCard.setMedHistory(newHistory);
 
         EntityModel<MedCard> entityModel = assembler.toModel(repository.save(medCard));
@@ -85,13 +85,39 @@ public class MedCardController {
                 .body(entityModel);
     }
 
-    private List<MedHistory> updateDiseaseInMedCard(MedCard medCard, Long id, MedHistory updatedDisease) {
+    private List<MedHistory> updateDiseaseInMedHistory(MedCard medCard, Long id, MedHistory updatedDisease) {
         List<MedHistory> history = medCard.getMedHistory();
         for (MedHistory disease : history) {
             if (disease.getId() == id) {
                 disease.setDisease(updatedDisease.getDisease());
                 disease.setDescription(updatedDisease.getDescription());
                 disease.setDateOfIllness(updatedDisease.getDateOfIllness());
+                return history;
+            }
+        }
+        throw new DiseaseNotFoundException(id, medCard.getId());
+    }
+
+    @DeleteMapping("/med-cards/{medId}/med-history/{diseaseId}")
+    public ResponseEntity<?> deleteDisease(@PathVariable Long medId, @PathVariable Long diseaseId) {
+        MedCard medCard = repository.findById(medId)
+                .orElseThrow(() -> new MedCardNotFoundException(medId));
+
+        List<MedHistory> newMedHistory = deleteDiseaseFromMedHistory(medCard, diseaseId);
+        medCard.setMedHistory(newMedHistory);
+
+        EntityModel<MedCard> entityModel = assembler.toModel(repository.save(medCard));
+        return ResponseEntity
+                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(entityModel);
+    }
+
+    private List<MedHistory> deleteDiseaseFromMedHistory(MedCard medCard, Long id) {
+        List<MedHistory> history = medCard.getMedHistory();
+
+        for (MedHistory disease : history) {
+            if (disease.getId() == id) {
+                history.remove(disease);
                 return history;
             }
         }
