@@ -48,10 +48,14 @@
                 <h4>Medical information</h4>
                 <div>
                     <div><b>Med History: </b>
-                        <table class="table table-dark">
+                        <span *ngIf="this.medCard.medHistory === null">Empty</span>
+                        <span><a class="bi bi-pencil ps-1" (click)="onOpenModal('medHistory')"></a></span>
+
+                        <table class="table table-dark" *ngIf="this.medCard.medHistory !== null">
                             <thead>
                                 <tr>
                                     <th>Disease</th>
+                                    <th>Description</th>
                                     <th>Date of illness</th>
                                 </tr>
                             </thead>
@@ -59,12 +63,10 @@
                                 <tr>
                                     <td></td>
                                     <td></td>
+                                    <td></td>
                                 </tr>
                             </tbody>
                         </table>
-                        <!--<span *ngIf="this.medCard.medHistory === null">Empty</span>
-                        <span *ngIf="this.medCard.medHistory !== null">{{ this.medCard.medHistory }}</span>
-                        <span><a class="bi bi-pencil ps-1"></a></span>-->
                     </div>
                 </div>
                 <div>
@@ -113,6 +115,49 @@
 </div>
 
 
+
+<div class="modal fade" id="medHistoryModal" tabindex="-1" aria-labelledby="medHistoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="medHistoryModalLabel">Add disease</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row my-2">
+                    <div class="col-auto ms-auto">
+                        <label class="col-form-label" for="disease">Disease: </label>
+                    </div>
+                    <div class="col-auto">
+                        <input type="text" id="disease" name="disease" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="row my-2">
+                    <div class="col-auto ms-auto">
+                        <label class="col-form-label" for="diseaseDesc">Description: </label>
+                    </div>
+                    <div class="col-auto">
+                        <textarea id="diseaseDesc" name="diseaseDesc" class="form-control"></textarea>
+                    </div>
+                </div>
+
+                <div class="row my-2">
+                    <div class="col-auto ms-auto">
+                        <label class="col-form-label" for="diseaseDate">Date of illness: </label>
+                    </div>
+                    <div class="col-auto">
+                        <input type="date" id="diseaseDate" name="diseaseDate" class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save and add</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="modal fade" id="bloodTypeModal" tabindex="-1" aria-labelledby="bloodTypeModalLabel" aria-hidden="true">
     <div class="modal-dialog">

@@ -53,7 +53,10 @@ export class PatientProfileComponent implements OnInit{
     btn.style.display = "none";
     document.body.appendChild(btn);
 
-    if (action === "bloodType") {
+    if (action === "medHistory") {
+      btn.setAttribute('data-bs-target', '#medHistoryModal');
+      btn.click();
+    } else if (action === "bloodType") {
       btn.setAttribute('data-bs-target', '#bloodTypeModal');
       btn.click();
     } else if (action === "rhFactor") {
