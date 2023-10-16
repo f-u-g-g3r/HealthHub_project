@@ -2,6 +2,7 @@ package com.artjomkuznetsov.healthhub.models.medcard;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity

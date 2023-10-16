@@ -3,6 +3,7 @@ package com.artjomkuznetsov.healthhub.controllers;
 import com.artjomkuznetsov.healthhub.assemblers.MedCardModelAssembler;
 import com.artjomkuznetsov.healthhub.exceptions.MedCardNotFoundException;
 import com.artjomkuznetsov.healthhub.models.MedCard;
+import com.artjomkuznetsov.healthhub.models.medcard.MedHistory;
 import com.artjomkuznetsov.healthhub.repositories.MedCardRepository;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -43,6 +44,25 @@ public class MedCardController {
         return ResponseEntity
                 .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
                 .body(entityModel);
+    }
+
+    @PostMapping("/med-cards/{id}/med-history")
+    public ResponseEntity<?> newDisease(@RequestBody List<MedHistory> diseases, @PathVariable Long id) {
+        MedCard medCard = repository.findById(id)
+                .orElseThrow(() -> new MedCardNotFoundException(id));
+
+        List<MedHistory> history = medCard.getMedHistory();
+        for (MedHistory disease : diseases) {
+            history.add(disease);
+        }
+        medCard.setMedHistory(history);
+
+        EntityModel<MedCard> entityModel = assembler.toModel(repository.save(medCard));
+
+        return ResponseEntity
+                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(entityModel);
+
     }
 
     @GetMapping("/med-cards/{id}")
@@ -86,5 +106,7 @@ public class MedCardController {
         repository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
+
 
 }
