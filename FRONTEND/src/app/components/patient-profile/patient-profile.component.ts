@@ -15,6 +15,8 @@ export class PatientProfileComponent implements OnInit{
   patientId!: string;
   user!: User;
   medCard!: MedCard;
+  
+
   constructor (private router: Router, private actRoute: ActivatedRoute, private userService: UserService, public service: AuthenticationService) {}
 
   ngOnInit() {
@@ -44,4 +46,32 @@ export class PatientProfileComponent implements OnInit{
   private getMedCard(): Observable<MedCard> {
     return this.userService.getOneMedcard(this.patientId)
   }
+
+  public onOpenModal(action: string): void {
+    const btn: HTMLElement = document.createElement('button');
+    btn.setAttribute('data-bs-toggle', 'modal');
+    btn.style.display = "none";
+    document.body.appendChild(btn);
+
+    if (action === "bloodType") {
+      btn.setAttribute('data-bs-target', '#bloodTypeModal');
+      btn.click();
+    } else if (action === "rhFactor") {
+      btn.setAttribute('data-bs-target', '#rhFactorModal');
+      btn.click();
+    } else if (action === "allergies") {
+      btn.setAttribute('data-bs-target', '#allergiesModal');
+      btn.click();
+    } else if (action === "chronicDiseases") {
+      btn.setAttribute('data-bs-target', '#chronicDiseasesModal');
+      btn.click();
+    } else if (action === "resultsOfSurveys") {
+      btn.setAttribute('data-bs-target', '#resultsOfSurveysModal');
+      btn.click();
+    }
+  }
+
+ 
+
+
 }

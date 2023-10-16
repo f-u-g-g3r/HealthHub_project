@@ -71,7 +71,7 @@
                     <p><b>Blood type: </b>
                         <span *ngIf="this.medCard.bloodType === null">Empty</span>
                         <span *ngIf="this.medCard.bloodType !== null">{{ this.medCard.bloodType }}</span>
-                        <span><a class="bi bi-pencil ps-1"></a></span>
+                        <span><a class="bi bi-pencil ps-1" (click)="onOpenModal('bloodType')"></a></span>
                     </p>
                 </div>
 
@@ -79,7 +79,7 @@
                     <p><b>Rh factor: </b>
                         <span *ngIf="this.medCard.rhFactor === null">Empty</span>
                         <span *ngIf="this.medCard.rhFactor !== null">{{ this.medCard.rhFactor }}</span>
-                        <span><a class="bi bi-pencil ps-1"></a></span>
+                        <span><a class="bi bi-pencil ps-1" (click)="onOpenModal('rhFactor')"></a></span>
                     </p>
                 </div>
 
@@ -87,7 +87,7 @@
                     <p><b>Allergies: </b>
                         <span *ngIf="this.medCard.allergies === null">Empty</span>
                         <span *ngIf="this.medCard.allergies !== null">{{ this.medCard.allergies }}</span>
-                        <span><a class="bi bi-pencil ps-1"></a></span>
+                        <span><a class="bi bi-pencil ps-1" (click)="onOpenModal('allergies')"></a></span>
                     </p>
                 </div>
 
@@ -95,7 +95,7 @@
                     <p><b>Chronic diseases: </b>
                         <span *ngIf="this.medCard.chronicDiseases === null">Empty</span>
                         <span *ngIf="this.medCard.chronicDiseases !== null">{{ this.medCard.chronicDiseases }}</span>
-                        <span><a class="bi bi-pencil ps-1"></a></span>
+                        <span><a class="bi bi-pencil ps-1" (click)="onOpenModal('chronicDiseases')"></a></span>
                     </p>
                 </div>
 
@@ -103,13 +103,185 @@
                     <p><b>Results of surveys: </b>
                         <span *ngIf="this.medCard.resultsOfSurveys === null">Empty</span>
                         <span *ngIf="this.medCard.resultsOfSurveys !== null">{{ this.medCard.resultsOfSurveys }}</span>
-                        <span><a class="bi bi-pencil ps-1"></a></span>
+                        <span><a class="bi bi-pencil ps-1" (click)="onOpenModal('resultsOfSurveys')"></a></span>
                     </p>
                 </div>
 
             </div>
         </div>
     </div>
+</div>
 
-   
+
+
+<div class="modal fade" id="bloodTypeModal" tabindex="-1" aria-labelledby="bloodTypeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="bloodTypeModalLabel">Change blood type</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-auto ms-auto">
+                        <label class="col-form-label" for="bloodType">Blood type: </label>
+                    </div>
+                    <div class="col-auto">
+                        <input type="text" id="bloodType" name="bloodType" class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="rhFactorModal" tabindex="-1" aria-labelledby="rhFactorModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="rhFactorModalLabel">Change rh factor</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-auto ms-auto">
+                        <label class="col-form-label" for="rhFactor">Rh factor: </label>
+                    </div>
+                    <div class="col-auto">
+                        <input type="text" id="rhFactor" name="rhFactor" class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="allergiesModal" tabindex="-1" aria-labelledby="allergiesModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="allergiesModalLabel">Add allergy</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row my-2">
+                    <div class="col-auto ms-auto">
+                        <label class="col-form-label" for="allergy">Allergy: </label>
+                    </div>
+                    <div class="col-auto">
+                        <input type="text" id="allergy" name="allergy" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="row my-2">
+                    <div class="col-auto ms-auto">
+                        <label class="col-form-label" for="allergyDesc">Description: </label>
+                    </div>
+                    <div class="col-auto">
+                        <input type="text" id="allergyDesc" name="allergyDesc" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="row my-2">
+                    <div class="col-auto ms-auto">
+                        <label class="col-form-label" for="allergyDate">Date: </label>
+                    </div>
+                    <div class="col-auto">
+                        <input type="date" id="allergyDate" name="allergyDate" class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save and add</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="chronicDiseasesModal" tabindex="-1" aria-labelledby="chronicDiseasesModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="chronicDiseasesModalLabel">Add chronic disease</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row my-2">
+                    <div class="col-auto ms-auto">
+                        <label class="col-form-label" for="disease">Disease: </label>
+                    </div>
+                    <div class="col-auto">
+                        <input type="text" id="disease" name="disease" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="row my-2">
+                    <div class="col-auto ms-auto">
+                        <label class="col-form-label" for="diseaseDate">Date: </label>
+                    </div>
+                    <div class="col-auto">
+                        <input type="date" id="diseaseDate" name="diseaseDate" class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save and add</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="resultsOfSurveysModal" tabindex="-1" aria-labelledby="resultsOfSurveysModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="resultsOfSurveysModalLabel">Add result</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row my-2">
+                    <div class="col-auto ms-auto">
+                        <label class="col-form-label" for="title">Title: </label>
+                    </div>
+                    <div class="col-auto">
+                        <input type="text" id="title" name="title" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="row my-2">
+                    <div class="col-auto ms-auto">
+                        <label class="col-form-label" for="resultDesc">Description: </label>
+                    </div>
+                    <div class="col-auto">
+                        <textarea id="resultDesc" name="resultDesc" class="form-control"></textarea>
+                    </div>
+                </div>
+
+                <div class="row my-2">
+                    <div class="col-auto ms-auto">
+                        <label class="col-form-label" for="resultDate">Survey's date: </label>
+                    </div>
+                    <div class="col-auto">
+                        <input type="date" id="resultDate" name="resultDate" class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save and add</button>
+            </div>
+        </div>
+    </div>
 </div>
