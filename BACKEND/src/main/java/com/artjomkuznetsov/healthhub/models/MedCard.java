@@ -1,6 +1,9 @@
 package com.artjomkuznetsov.healthhub.models;
 
+import com.artjomkuznetsov.healthhub.models.medcard.Allergy;
+import com.artjomkuznetsov.healthhub.models.medcard.ChronicDisease;
 import com.artjomkuznetsov.healthhub.models.medcard.MedHistory;
+import com.artjomkuznetsov.healthhub.models.medcard.ResultOfSurvey;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -16,11 +19,20 @@ public class MedCard {
     @JoinColumn(name = "medcard_id")
     private List<MedHistory> medHistory;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "medcard_id")
+    private List<Allergy> allergies;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "medcard_id")
+    private List<ChronicDisease> chronicDiseases;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "medcard_id")
+    private List<ResultOfSurvey> resultsOfSurveys;
+
     private String bloodType;
     private String rhFactor;
-    private String allergies;
-    private String chronicDiseases;
-    private String resultsOfSurveys;
     private Long familyDoctorID;
 
     public MedCard() {}
