@@ -13,15 +13,15 @@ public class Allergy {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String Allergy;
-    private String Description;
+    private String allergy;
+    private String description;
 
     public Allergy() {}
 
     public Allergy(Long id, String allergy, String description) {
         this.id = id;
-        Allergy = allergy;
-        Description = description;
+        this.allergy = allergy;
+        this.description = description;
     }
 
     public Long getId() {
@@ -33,40 +33,40 @@ public class Allergy {
     }
 
     public String getAllergy() {
-        return Allergy;
+        return allergy;
     }
 
     public void setAllergy(String allergy) {
-        Allergy = allergy;
+        this.allergy = allergy;
     }
 
     public String getDescription() {
-        return Description;
+        return description;
     }
 
     public void setDescription(String description) {
-        Description = description;
+        this.description = description;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Allergy allergy = (Allergy) o;
-        return Objects.equals(id, allergy.id) && Objects.equals(Allergy, allergy.Allergy) && Objects.equals(Description, allergy.Description);
+        Allergy allergy1 = (Allergy) o;
+        return Objects.equals(id, allergy1.id) && Objects.equals(allergy, allergy1.allergy) && Objects.equals(description, allergy1.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, Allergy, Description);
+        return Objects.hash(id, allergy, description);
     }
 
     @Override
     public String toString() {
         return "Allergy{" +
                 "id=" + id +
-                ", Allergy='" + Allergy + '\'' +
-                ", Description='" + Description + '\'' +
+                ", allergy='" + allergy + '\'' +
+                ", description='" + description + '\'' +
                 '}';
     }
 }
