@@ -1,11 +1,9 @@
 package com.artjomkuznetsov.healthhub.controllers.medCard;
 
 import com.artjomkuznetsov.healthhub.assemblers.MedCardModelAssembler;
-import com.artjomkuznetsov.healthhub.exceptions.AllergyNotFoundException;
 import com.artjomkuznetsov.healthhub.exceptions.ChronicDiseaseNotFoundException;
 import com.artjomkuznetsov.healthhub.exceptions.MedCardNotFoundException;
 import com.artjomkuznetsov.healthhub.models.MedCard;
-import com.artjomkuznetsov.healthhub.models.medcard.Allergy;
 import com.artjomkuznetsov.healthhub.models.medcard.ChronicDisease;
 import com.artjomkuznetsov.healthhub.repositories.MedCardRepository;
 import org.springframework.hateoas.EntityModel;
