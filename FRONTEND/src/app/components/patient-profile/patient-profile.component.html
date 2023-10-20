@@ -46,69 +46,105 @@
         <div class="row mt-5">
             <div>
                 <h4>Medical information</h4>
-                <div>
-                    <div><b>Med History: </b>
-                        <span *ngIf="this.medCard.medHistory === null">Empty</span>
-                        <span><a class="bi bi-pencil ps-1" (click)="onOpenModal('medHistory')"></a></span>
-
-                        <table class="table table-dark" *ngIf="this.medCard.medHistory !== null">
-                            <thead>
-                                <tr>
-                                    <th>Disease</th>
-                                    <th>Description</th>
-                                    <th>Date of illness</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div>
-                    <p><b>Blood type: </b>
-                        <span *ngIf="this.medCard.bloodType === null">Empty</span>
-                        <span *ngIf="this.medCard.bloodType !== null">{{ this.medCard.bloodType }}</span>
-                        <span><a class="bi bi-pencil ps-1" (click)="onOpenModal('bloodType')"></a></span>
-                    </p>
+                <div class="my-2">
+                    <b>Med History: </b>
+                    <span *ngIf="this.medCard.medHistory.length === 0">Empty</span>
+                    <span><a class="bi bi-pencil ps-1" (click)="onOpenModal('medHistory')"></a></span>
+                    <table class="table table-light table-striped" *ngIf="this.medCard.medHistory.length !== 0">
+                        <thead>
+                            <tr>
+                                <th>Disease</th>
+                                <th>Description</th>
+                                <th>Date of illness</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let medHistory of this.medCard.medHistory">
+                                <td>{{ medHistory.disease }}</td>
+                                <td>{{ medHistory.description }}</td>
+                                <td>{{ medHistory.dateOfIllness }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
 
-                <div>
-                    <p><b>Rh factor: </b>
-                        <span *ngIf="this.medCard.rhFactor === null">Empty</span>
-                        <span *ngIf="this.medCard.rhFactor !== null">{{ this.medCard.rhFactor }}</span>
-                        <span><a class="bi bi-pencil ps-1" (click)="onOpenModal('rhFactor')"></a></span>
-                    </p>
+                <div class="my-2">
+                    <b>Blood type: </b>
+                    <span *ngIf="this.medCard.bloodType === null">Empty</span>
+                    <span *ngIf="this.medCard.bloodType !== null">{{ this.medCard.bloodType }}</span>
+                    <span><a class="bi bi-pencil ps-1" (click)="onOpenModal('bloodType')"></a></span>
                 </div>
 
-                <div>
-                    <p><b>Allergies: </b>
-                        <span *ngIf="this.medCard.allergies === null">Empty</span>
-                        <span *ngIf="this.medCard.allergies !== null">{{ this.medCard.allergies }}</span>
-                        <span><a class="bi bi-pencil ps-1" (click)="onOpenModal('allergies')"></a></span>
-                    </p>
+                <div class="my-2">
+                    <b>Rh factor: </b>
+                    <span *ngIf="this.medCard.rhFactor === null">Empty</span>
+                    <span *ngIf="this.medCard.rhFactor !== null">{{ this.medCard.rhFactor }}</span>
+                    <span><a class="bi bi-pencil ps-1" (click)="onOpenModal('rhFactor')"></a></span>
                 </div>
 
-                <div>
-                    <p><b>Chronic diseases: </b>
-                        <span *ngIf="this.medCard.chronicDiseases === null">Empty</span>
-                        <span *ngIf="this.medCard.chronicDiseases !== null">{{ this.medCard.chronicDiseases }}</span>
-                        <span><a class="bi bi-pencil ps-1" (click)="onOpenModal('chronicDiseases')"></a></span>
-                    </p>
+                <div class="my-2">
+                    <b>Allergies: </b>
+                    <span *ngIf="this.medCard.allergies.length === 0">Empty</span>
+                    <span><a class="bi bi-pencil ps-1" (click)="onOpenModal('allergies')"></a></span>
+                    <table class="table table-light table-striped" *ngIf="this.medCard.allergies.length !== 0">
+                        <thead>
+                            <tr>
+                                <th>Allergy</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let allergy of this.medCard.allergies">
+                                <td>{{ allergy.allergy }}</td>
+                                <td>{{ allergy.description }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
 
-                <div>
-                    <p><b>Results of surveys: </b>
-                        <span *ngIf="this.medCard.resultsOfSurveys === null">Empty</span>
-                        <span *ngIf="this.medCard.resultsOfSurveys !== null">{{ this.medCard.resultsOfSurveys }}</span>
-                        <span><a class="bi bi-pencil ps-1" (click)="onOpenModal('resultsOfSurveys')"></a></span>
-                    </p>
+                <div class="my-2">
+                    <b>Chronic diseases: </b>
+                    <span *ngIf="this.medCard.chronicDiseases.length === 0">Empty</span>
+                    <span><a class="bi bi-pencil ps-1" (click)="onOpenModal('chronicDiseases')"></a></span>
+                    <table class="table table-light table-striped" *ngIf="this.medCard.chronicDiseases.length !== 0">
+                        <thead>
+                            <tr>
+                                <th>Disease</th>
+                                <th>Description</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let chronicDisease of this.medCard.chronicDiseases">
+                                <td>{{ chronicDisease.disease }}</td>
+                                <td>{{ chronicDisease.description }}</td>
+                                <td>{{ chronicDisease.date }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
 
+                <div class="my-2">
+                    <b>Results of surveys: </b>
+                    <span *ngIf="this.medCard.resultsOfSurveys.length === 0">Empty</span>
+                    <span><a class="bi bi-pencil ps-1" (click)="onOpenModal('resultsOfSurveys')"></a></span>
+                    <table class="table table-light table-striped" *ngIf="this.medCard.resultsOfSurveys.length !== 0">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Description</th>
+                                <th>Survey's date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let resultOfSurvey of this.medCard.resultsOfSurveys">
+                                <td>{{ resultOfSurvey.title }}</td>
+                                <td>{{ resultOfSurvey.description }}</td>
+                                <td>{{ resultOfSurvey.surveysDate }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

@@ -1,11 +1,16 @@
+import { Allergy } from "./medCard/Allergy";
+import { MedHistory } from "./medCard/MedHistory";
+import { ChronicDisease } from "./medCard/chronicDisease";
+import { ResultOfSurvey } from "./medCard/resultOfSurvey";
+
 export interface MedCard {
     id: number;
     ownerID: number;
-    medHistory: string;
+    medHistory: MedHistory[];
     bloodType: string;
     rhFactor: string;
-    allergies: string;
-    chronicDiseases: string;
-    resultsOfSurveys: string;
+    allergies: Allergy[];
+    chronicDiseases: ChronicDisease[];
+    resultsOfSurveys: ResultOfSurvey[];
     familyDoctorID: number;
 }
