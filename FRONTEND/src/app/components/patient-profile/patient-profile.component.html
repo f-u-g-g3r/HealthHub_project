@@ -159,38 +159,41 @@
                 <h1 class="modal-title fs-5" id="medHistoryModalLabel">Add disease</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            <form #medHistory="ngForm" (ngSubmit)="addMedHistory(medHistory)">
             <div class="modal-body">
-                <div class="row my-2">
-                    <div class="col-auto ms-auto">
-                        <label class="col-form-label" for="disease">Disease: </label>
+                    <div class="row my-2">
+                        <div class="col-auto ms-auto">
+                            <label class="col-form-label" for="disease">Disease: </label>
+                        </div>
+                        <div class="col-auto">
+                            <input type="text" id="disease" name="disease" class="form-control" ngModel #disease="ngModel" />
+                        </div>
                     </div>
-                    <div class="col-auto">
-                        <input type="text" id="disease" name="disease" class="form-control" />
-                    </div>
-                </div>
 
-                <div class="row my-2">
-                    <div class="col-auto ms-auto">
-                        <label class="col-form-label" for="diseaseDesc">Description: </label>
+                    <div class="row my-2">
+                        <div class="col-auto ms-auto">
+                            <label class="col-form-label" for="description">Description: </label>
+                        </div>
+                        <div class="col-auto">
+                            <textarea id="description" name="description" class="form-control" ngModel #description="ngModel"></textarea>
+                        </div>
                     </div>
-                    <div class="col-auto">
-                        <textarea id="diseaseDesc" name="diseaseDesc" class="form-control"></textarea>
-                    </div>
-                </div>
 
-                <div class="row my-2">
-                    <div class="col-auto ms-auto">
-                        <label class="col-form-label" for="diseaseDate">Date of illness: </label>
+                    <div class="row my-2">
+                        <div class="col-auto ms-auto">
+                            <label class="col-form-label" for="dateOfIllness">Date of illness: </label>
+                        </div>
+                        <div class="col-auto">
+                            <input type="date" id="dateOfIllness" name="dateOfIllness" class="form-control" ngModel #dateOfIllness="ngModel" />
+                        </div>
                     </div>
-                    <div class="col-auto">
-                        <input type="date" id="diseaseDate" name="diseaseDate" class="form-control" />
-                    </div>
-                </div>
+                
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save and add</button>
+                <button type="submit" class="btn btn-primary">Save and add</button>
             </div>
+            </form>
         </div>
     </div>
 </div>
@@ -202,20 +205,22 @@
                 <h1 class="modal-title fs-5" id="bloodTypeModalLabel">Change blood type</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-auto ms-auto">
-                        <label class="col-form-label" for="bloodType">Blood type: </label>
-                    </div>
-                    <div class="col-auto">
-                        <input type="text" id="bloodType" name="bloodType" class="form-control" />
+            <form #bloodTypeForm="ngForm" (ngSubmit)="changeBloodType(bloodTypeForm)">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-auto ms-auto">
+                            <label class="col-form-label" for="bloodType">Blood type: </label>
+                        </div>
+                        <div class="col-auto">
+                            <input type="text" id="bloodType" name="bloodType" class="form-control" ngModel #bloodType="ngModel"/>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -227,20 +232,22 @@
                 <h1 class="modal-title fs-5" id="rhFactorModalLabel">Change rh factor</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-auto ms-auto">
-                        <label class="col-form-label" for="rhFactor">Rh factor: </label>
-                    </div>
-                    <div class="col-auto">
-                        <input type="text" id="rhFactor" name="rhFactor" class="form-control" />
+            <form #rhFactorForm="ngForm" (ngSubmit)="changeRhFactor(rhFactorForm)">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-auto ms-auto">
+                            <label class="col-form-label" for="rhFactor">Rh factor: </label>
+                        </div>
+                        <div class="col-auto">
+                            <input type="text" id="rhFactor" name="rhFactor" class="form-control" ngModel #rhFactor="ngModel"/>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -252,38 +259,31 @@
                 <h1 class="modal-title fs-5" id="allergiesModalLabel">Add allergy</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <div class="row my-2">
-                    <div class="col-auto ms-auto">
-                        <label class="col-form-label" for="allergy">Allergy: </label>
+            <form #allergyForm="ngForm" (ngSubmit)="addAllergy(allergyForm)">
+                <div class="modal-body">
+                    <div class="row my-2">
+                        <div class="col-auto ms-auto">
+                            <label class="col-form-label" for="allergy">Allergy: </label>
+                        </div>
+                        <div class="col-auto">
+                            <input type="text" id="allergy" name="allergy" class="form-control" ngModel #allergy="ngModel"/>
+                        </div>
                     </div>
-                    <div class="col-auto">
-                        <input type="text" id="allergy" name="allergy" class="form-control" />
-                    </div>
-                </div>
 
-                <div class="row my-2">
-                    <div class="col-auto ms-auto">
-                        <label class="col-form-label" for="allergyDesc">Description: </label>
-                    </div>
-                    <div class="col-auto">
-                        <input type="text" id="allergyDesc" name="allergyDesc" class="form-control" />
-                    </div>
-                </div>
-
-                <div class="row my-2">
-                    <div class="col-auto ms-auto">
-                        <label class="col-form-label" for="allergyDate">Date: </label>
-                    </div>
-                    <div class="col-auto">
-                        <input type="date" id="allergyDate" name="allergyDate" class="form-control" />
+                    <div class="row my-2">
+                        <div class="col-auto ms-auto">
+                            <label class="col-form-label" for="allergyDesc">Description: </label>
+                        </div>
+                        <div class="col-auto">
+                            <input type="text" id="allergyDesc" name="description" class="form-control" ngModel #description="ngModel"/>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save and add</button>
-            </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save and add</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -295,29 +295,31 @@
                 <h1 class="modal-title fs-5" id="chronicDiseasesModalLabel">Add chronic disease</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <div class="row my-2">
-                    <div class="col-auto ms-auto">
-                        <label class="col-form-label" for="disease">Disease: </label>
+            <form #chronicDiseaseForm="ngForm" (ngSubmit)="addChronicDisease(chronicDiseaseForm)">
+                <div class="modal-body">
+                    <div class="row my-2">
+                        <div class="col-auto ms-auto">
+                            <label class="col-form-label" for="disease">Disease: </label>
+                        </div>
+                        <div class="col-auto">
+                            <input type="text" id="disease" name="disease" class="form-control" ngModel #disease="ngModel"/>
+                        </div>
                     </div>
-                    <div class="col-auto">
-                        <input type="text" id="disease" name="disease" class="form-control" />
-                    </div>
-                </div>
 
-                <div class="row my-2">
-                    <div class="col-auto ms-auto">
-                        <label class="col-form-label" for="diseaseDate">Date: </label>
-                    </div>
-                    <div class="col-auto">
-                        <input type="date" id="diseaseDate" name="diseaseDate" class="form-control" />
+                    <div class="row my-2">
+                        <div class="col-auto ms-auto">
+                            <label class="col-form-label" for="diseaseDate">Date: </label>
+                        </div>
+                        <div class="col-auto">
+                            <input type="date" id="diseaseDate" name="date" class="form-control" ngModel #date="ngModel"/>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save and add</button>
-            </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save and add</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -331,38 +333,40 @@
                 <h1 class="modal-title fs-5" id="resultsOfSurveysModalLabel">Add result</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <div class="row my-2">
-                    <div class="col-auto ms-auto">
-                        <label class="col-form-label" for="title">Title: </label>
+            <form #resultOfSurveyForm="ngForm" (ngSubmit)="addResultOfSurvey(resultOfSurveyForm)">
+                <div class="modal-body">
+                    <div class="row my-2">
+                        <div class="col-auto ms-auto">
+                            <label class="col-form-label" for="title">Title: </label>
+                        </div>
+                        <div class="col-auto">
+                            <input type="text" id="title" name="title" class="form-control" ngModel #title="ngModel"/>
+                        </div>
                     </div>
-                    <div class="col-auto">
-                        <input type="text" id="title" name="title" class="form-control" />
-                    </div>
-                </div>
 
-                <div class="row my-2">
-                    <div class="col-auto ms-auto">
-                        <label class="col-form-label" for="resultDesc">Description: </label>
+                    <div class="row my-2">
+                        <div class="col-auto ms-auto">
+                            <label class="col-form-label" for="resultDesc">Description: </label>
+                        </div>
+                        <div class="col-auto">
+                            <textarea id="resultDesc" name="description" class="form-control" ngModel #description="ngModel"></textarea>
+                        </div>
                     </div>
-                    <div class="col-auto">
-                        <textarea id="resultDesc" name="resultDesc" class="form-control"></textarea>
-                    </div>
-                </div>
 
-                <div class="row my-2">
-                    <div class="col-auto ms-auto">
-                        <label class="col-form-label" for="resultDate">Survey's date: </label>
-                    </div>
-                    <div class="col-auto">
-                        <input type="date" id="resultDate" name="resultDate" class="form-control" />
+                    <div class="row my-2">
+                        <div class="col-auto ms-auto">
+                            <label class="col-form-label" for="surveysDate">Survey's date: </label>
+                        </div>
+                        <div class="col-auto">
+                            <input type="date" id="surveysDate" name="surveysDate" class="form-control" ngModel #surveysDate="ngModel"/>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save and add</button>
-            </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save and add</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

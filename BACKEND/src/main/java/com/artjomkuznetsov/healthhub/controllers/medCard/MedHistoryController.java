@@ -24,14 +24,13 @@ public class MedHistoryController {
     }
 
     @PostMapping("/med-cards/{id}/med-history")
-    public ResponseEntity<?> newDisease(@RequestBody List<MedHistory> diseases, @PathVariable Long id) {
+    @CrossOrigin(origins="*", maxAge=3600)
+    public ResponseEntity<?> newDisease(@RequestBody MedHistory disease, @PathVariable Long id) {
         MedCard medCard = repository.findById(id)
                 .orElseThrow(() -> new MedCardNotFoundException(id));
 
         List<MedHistory> history = medCard.getMedHistory();
-        for (MedHistory disease : diseases) {
-            history.add(disease);
-        }
+        history.add(disease);
         medCard.setMedHistory(history);
 
         EntityModel<MedCard> entityModel = assembler.toModel(repository.save(medCard));
@@ -43,6 +42,7 @@ public class MedHistoryController {
     }
 
     @PutMapping("/med-cards/{medId}/med-history/{diseaseId}")
+    @CrossOrigin(origins="*", maxAge=3600)
     public ResponseEntity<?> updateDisease(
             @RequestBody MedHistory updatedDisease,
             @PathVariable Long medId,
@@ -75,6 +75,7 @@ public class MedHistoryController {
     }
 
     @DeleteMapping("/med-cards/{medId}/med-history/{diseaseId}")
+    @CrossOrigin(origins="*", maxAge=3600)
     public ResponseEntity<?> deleteDisease(@PathVariable Long medId, @PathVariable Long diseaseId) {
         MedCard medCard = repository.findById(medId)
                 .orElseThrow(() -> new MedCardNotFoundException(medId));

@@ -24,6 +24,7 @@ public class ChronicDiseaseController {
     }
 
     @PostMapping("/med-cards/{id}/chronic-diseases")
+    @CrossOrigin(origins="*", maxAge=3600)
     public ResponseEntity<?> newChronicDisease(@RequestBody List<ChronicDisease> newChronicDiseases, @PathVariable Long id) {
         MedCard medCard = repository.findById(id)
                 .orElseThrow(() -> new MedCardNotFoundException(id));
@@ -43,6 +44,7 @@ public class ChronicDiseaseController {
     }
 
     @PutMapping("/med-cards/{medId}/chronic-diseases/{chronicDiseaseId}")
+    @CrossOrigin(origins="*", maxAge=3600)
     public ResponseEntity<?> updateChronicDisease(
             @RequestBody ChronicDisease updatedChronicDisease,
             @PathVariable Long medId,
@@ -74,6 +76,7 @@ public class ChronicDiseaseController {
     }
 
     @DeleteMapping("/med-cards/{medId}/chronic-diseases/{chronicDiseaseId}")
+    @CrossOrigin(origins="*", maxAge=3600)
     public ResponseEntity<?> deleteChronicDisease(@PathVariable Long medId, @PathVariable Long chronicDiseaseId) {
         MedCard medCard = repository.findById(medId)
                 .orElseThrow(() -> new MedCardNotFoundException(medId));

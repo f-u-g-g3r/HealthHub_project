@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { MedCard } from 'src/app/interfaces/medCard';
+import { MedHistory } from 'src/app/interfaces/medCard/MedHistory';
 import { User } from 'src/app/interfaces/user';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { UserService } from 'src/app/services/user.service';
@@ -72,6 +74,36 @@ export class PatientProfileComponent implements OnInit{
       btn.setAttribute('data-bs-target', '#resultsOfSurveysModal');
       btn.click();
     }
+  }
+
+  public addMedHistory(form: NgForm) {
+    const formFields = form.value;
+    console.log(formFields['disease']);
+
+    this.userService.addMedHistory(this.patientId, formFields).subscribe({
+      next: (response) => console.log(response),
+      error: console.error
+    });
+  }
+
+  public changeBloodType(form: NgForm) {
+
+  }
+
+  public changeRhFactor(form: NgForm) {
+    
+  }
+
+  public addAllergy(form: NgForm) {
+    
+  }
+
+  public addChronicDisease(form: NgForm) {
+    
+  }
+
+  public addResultOfSurvey(form: NgForm) {
+    
   }
 
  

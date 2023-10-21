@@ -24,6 +24,7 @@ public class AllergyController {
     }
 
     @PostMapping("/med-cards/{id}/allergies")
+    @CrossOrigin(origins="*", maxAge=3600)
     public ResponseEntity<?> newAllergy(@RequestBody List<Allergy> newAllergies, @PathVariable Long id) {
         MedCard medCard = repository.findById(id)
                 .orElseThrow(() -> new MedCardNotFoundException(id));
@@ -43,6 +44,7 @@ public class AllergyController {
     }
 
     @PutMapping("/med-cards/{medId}/allergies/{allergyId}")
+    @CrossOrigin(origins="*", maxAge=3600)
     public ResponseEntity<?> updateAllergy(
             @RequestBody Allergy updatedAllergy,
             @PathVariable Long medId,
@@ -74,6 +76,7 @@ public class AllergyController {
     }
 
     @DeleteMapping("/med-cards/{medId}/allergies/{allergyId}")
+    @CrossOrigin(origins="*", maxAge=3600)
     public ResponseEntity<?> deleteAllergy(@PathVariable Long medId, @PathVariable Long allergyId) {
         MedCard medCard = repository.findById(medId)
                 .orElseThrow(() -> new MedCardNotFoundException(medId));

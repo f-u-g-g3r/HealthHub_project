@@ -26,6 +26,7 @@ public class ResultOfSurveyController {
     }
 
     @PostMapping("/med-cards/{id}/results-of-survey")
+    @CrossOrigin(origins="*", maxAge=3600)
     public ResponseEntity<?> newResult(@RequestBody List<ResultOfSurvey> newResultOfSurvey, @PathVariable Long id) {
         MedCard medCard = repository.findById(id)
                 .orElseThrow(() -> new MedCardNotFoundException(id));
@@ -43,6 +44,7 @@ public class ResultOfSurveyController {
     }
 
     @PutMapping("/med-cards/{medId}/results-of-survey/{resultOfSurveyId}")
+    @CrossOrigin(origins="*", maxAge=3600)
     public ResponseEntity<?> updateResultOfSurvey(
             @RequestBody ResultOfSurvey updatedResultOfSurvey,
             @PathVariable Long medId,
@@ -75,6 +77,7 @@ public class ResultOfSurveyController {
     }
 
     @DeleteMapping("/med-cards/{medId}/results-of-surveys/{resultOfSurveyId}")
+    @CrossOrigin(origins="*", maxAge=3600)
     public ResponseEntity<?> deleteResultOfSurvey(@PathVariable Long medId, @PathVariable Long resultOfSurveyId) {
         MedCard medCard = repository.findById(medId)
                 .orElseThrow(() -> new MedCardNotFoundException(medId));
