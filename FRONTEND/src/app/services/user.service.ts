@@ -41,11 +41,11 @@ export class UserService {
     return this.http.get<MedCard>(`${this.serverUrl}/med-cards/` + ownerId, this.httpOptions);
   }
 
-  public addMedHistory(medCardId: string, data: MedHistory): Observable<MedHistory> {
+  public addMedHistory(medCardId: number, data: MedHistory): Observable<MedHistory> {
     return this.http.post<MedHistory>(`${this.serverUrl}/med-cards/${medCardId}/med-history`, data, this.httpOptions);
   }
 
-  public addBloodType(medCardId: string, bloodType: string): Observable<MedCard> {
+  public addBloodType(medCardId: number, bloodType: string): Observable<MedCard> {
     return this.http.post<MedCard>(`${this.serverUrl}/med-cards/${medCardId}`, bloodType, this.httpOptions);
   }
 

@@ -79,7 +79,7 @@ export class PatientProfileComponent implements OnInit{
   public addMedHistory(form: NgForm) {
     const formFields = form.value;
 
-    this.userService.addMedHistory(this.patientId, formFields).subscribe({
+    this.userService.addMedHistory(this.medCard.id, formFields).subscribe({
       next: () => location.reload(),
       error: console.error
     });
@@ -88,7 +88,10 @@ export class PatientProfileComponent implements OnInit{
   public changeBloodType(form: NgForm) {
     const formFields = form.value;
 
-    this.userService.addBloodType(this.patientId, )
+    this.userService.addBloodType(this.medCard.id, formFields).subscribe({
+      next: () => location.reload(),
+      error: console.error
+    })
   }
 
   public changeRhFactor(form: NgForm) {
