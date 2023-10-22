@@ -45,5 +45,9 @@ export class UserService {
     return this.http.post<MedHistory>(`${this.serverUrl}/med-cards/${medCardId}/med-history`, data, this.httpOptions);
   }
 
+  public addBloodType(medCardId: string, bloodType: string): Observable<MedCard> {
+    return this.http.post<MedCard>(`${this.serverUrl}/med-cards/${medCardId}`, bloodType, this.httpOptions);
+  }
+
   
 }

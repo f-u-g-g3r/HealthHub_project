@@ -78,16 +78,17 @@ export class PatientProfileComponent implements OnInit{
 
   public addMedHistory(form: NgForm) {
     const formFields = form.value;
-    console.log(formFields['disease']);
 
     this.userService.addMedHistory(this.patientId, formFields).subscribe({
-      next: (response) => console.log(response),
+      next: () => location.reload(),
       error: console.error
     });
   }
 
   public changeBloodType(form: NgForm) {
+    const formFields = form.value;
 
+    this.userService.addBloodType(this.patientId, )
   }
 
   public changeRhFactor(form: NgForm) {
