@@ -27,12 +27,12 @@ public class ResultOfSurveyController {
 
     @PostMapping("/med-cards/{id}/results-of-survey")
     @CrossOrigin(origins="*", maxAge=3600)
-    public ResponseEntity<?> newResult(@RequestBody List<ResultOfSurvey> newResultOfSurvey, @PathVariable Long id) {
+    public ResponseEntity<?> newResult(@RequestBody ResultOfSurvey newResultOfSurvey, @PathVariable Long id) {
         MedCard medCard = repository.findById(id)
                 .orElseThrow(() -> new MedCardNotFoundException(id));
 
         List<ResultOfSurvey> resultsOfSurveys = medCard.getResultsOfSurveys();
-        resultsOfSurveys.addAll(newResultOfSurvey);
+        resultsOfSurveys.add(newResultOfSurvey);
         medCard.setResultsOfSurveys(resultsOfSurveys);
 
         EntityModel<MedCard> entityModel = assembler.toModel(repository.save(medCard));

@@ -25,14 +25,12 @@ public class ChronicDiseaseController {
 
     @PostMapping("/med-cards/{id}/chronic-diseases")
     @CrossOrigin(origins="*", maxAge=3600)
-    public ResponseEntity<?> newChronicDisease(@RequestBody List<ChronicDisease> newChronicDiseases, @PathVariable Long id) {
+    public ResponseEntity<?> newChronicDisease(@RequestBody ChronicDisease newChronicDisease, @PathVariable Long id) {
         MedCard medCard = repository.findById(id)
                 .orElseThrow(() -> new MedCardNotFoundException(id));
 
         List<ChronicDisease> chronicDiseases = medCard.getChronicDiseases();
-        for (ChronicDisease chronicDisease : newChronicDiseases) {
-            chronicDiseases.add(chronicDisease);
-        }
+        chronicDiseases.add(newChronicDisease);
         medCard.setChronicDiseases(chronicDiseases);
 
         EntityModel<MedCard> entityModel = assembler.toModel(repository.save(medCard));

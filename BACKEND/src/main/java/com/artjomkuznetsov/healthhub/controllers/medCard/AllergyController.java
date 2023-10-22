@@ -25,14 +25,13 @@ public class AllergyController {
 
     @PostMapping("/med-cards/{id}/allergies")
     @CrossOrigin(origins="*", maxAge=3600)
-    public ResponseEntity<?> newAllergy(@RequestBody List<Allergy> newAllergies, @PathVariable Long id) {
+    public ResponseEntity<?> newAllergy(@RequestBody Allergy newAllergy, @PathVariable Long id) {
         MedCard medCard = repository.findById(id)
                 .orElseThrow(() -> new MedCardNotFoundException(id));
 
         List<Allergy> allergies = medCard.getAllergies();
-        for (Allergy allergy : newAllergies) {
-            allergies.add(allergy);
-        }
+        allergies.add(newAllergy);
+
         medCard.setAllergies(allergies);
 
         EntityModel<MedCard> entityModel = assembler.toModel(repository.save(medCard));
