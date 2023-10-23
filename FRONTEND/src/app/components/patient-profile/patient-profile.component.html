@@ -46,6 +46,21 @@
         <div class="row mt-5">
             <div>
                 <h4>Medical information</h4>
+
+                <div class="my-2">
+                    <b>Blood type: </b>
+                    <span *ngIf="this.medCard.bloodType === null">Empty</span>
+                    <span *ngIf="this.medCard.bloodType !== null">{{ this.medCard.bloodType }}</span>
+                    <span><a class="bi bi-pencil ps-1" (click)="onOpenModal('bloodType')"></a></span>
+                </div>
+
+                <div class="my-2">
+                    <b>Rh factor: </b>
+                    <span *ngIf="this.medCard.rhFactor === null">Empty</span>
+                    <span *ngIf="this.medCard.rhFactor !== null">{{ this.medCard.rhFactor }}</span>
+                    <span><a class="bi bi-pencil ps-1" (click)="onOpenModal('rhFactor')"></a></span>
+                </div>
+
                 <div class="my-2">
                     <b>Med History: </b>
                     <span *ngIf="this.medCard.medHistory.length === 0">Empty</span>
@@ -66,20 +81,6 @@
                             </tr>
                         </tbody>
                     </table>
-                </div>
-
-                <div class="my-2">
-                    <b>Blood type: </b>
-                    <span *ngIf="this.medCard.bloodType === null">Empty</span>
-                    <span *ngIf="this.medCard.bloodType !== null">{{ this.medCard.bloodType }}</span>
-                    <span><a class="bi bi-pencil ps-1" (click)="onOpenModal('bloodType')"></a></span>
-                </div>
-
-                <div class="my-2">
-                    <b>Rh factor: </b>
-                    <span *ngIf="this.medCard.rhFactor === null">Empty</span>
-                    <span *ngIf="this.medCard.rhFactor !== null">{{ this.medCard.rhFactor }}</span>
-                    <span><a class="bi bi-pencil ps-1" (click)="onOpenModal('rhFactor')"></a></span>
                 </div>
 
                 <div class="my-2">
@@ -303,6 +304,15 @@
                         </div>
                         <div class="col-auto">
                             <input type="text" id="disease" name="disease" class="form-control" ngModel #disease="ngModel"/>
+                        </div>
+                    </div>
+
+                    <div class="row my-2">
+                        <div class="col-auto ms-auto">
+                            <label class="col-form-label" for="chronicDesc">Description: </label>
+                        </div>
+                        <div class="col-auto">
+                            <textarea id="chronicDesc" name="description" class="form-control" ngModel #description="ngModel"></textarea>
                         </div>
                     </div>
 

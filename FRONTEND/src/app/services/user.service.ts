@@ -7,6 +7,9 @@ import { HttpHeaders } from '@angular/common/http';
 import { UpdatedUser } from '../interfaces/updatedUser';
 import { MedCard } from '../interfaces/medCard';
 import { MedHistory } from '../interfaces/medCard/MedHistory';
+import { Allergy } from '../interfaces/medCard/Allergy';
+import { ChronicDisease } from '../interfaces/medCard/chronicDisease';
+import { ResultOfSurvey } from '../interfaces/medCard/resultOfSurvey';
 
 @Injectable({
   providedIn: 'root'
@@ -45,9 +48,29 @@ export class UserService {
     return this.http.post<MedHistory>(`${this.serverUrl}/med-cards/${medCardId}/med-history`, data, this.httpOptions);
   }
 
-  public addBloodType(medCardId: number, bloodType: string): Observable<MedCard> {
-    return this.http.post<MedCard>(`${this.serverUrl}/med-cards/${medCardId}`, bloodType, this.httpOptions);
+  public addAllergy(medCardId: number, data: Allergy): Observable<Allergy> {
+    return this.http.post<Allergy>(`${this.serverUrl}/med-cards/${medCardId}/allergies`, data, this.httpOptions);
   }
+
+  public addChronicDisease(medCardId: number, data: ChronicDisease): Observable<ChronicDisease> {
+    return this.http.post<ChronicDisease>(`${this.serverUrl}/med-cards/${medCardId}/chronic-diseases`, data, this.httpOptions);
+  }
+
+  public addResultOfSurvey(medCardId: number, data: ResultOfSurvey): Observable<ResultOfSurvey> {
+    return this.http.post<ResultOfSurvey>(`${this.serverUrl}/med-cards/${medCardId}/results-of-survey`, data, this.httpOptions);
+  }
+
+
+
+  public addBloodType(medCardId: number, bloodType: string): Observable<MedCard> {
+    return this.http.put<MedCard>(`${this.serverUrl}/med-cards/${medCardId}`, bloodType, this.httpOptions);
+  }
+
+  public addRhFactor(medCardId: number, rhFactor: string): Observable<MedCard> {
+    return this.http.put<MedCard>(`${this.serverUrl}/med-cards/${medCardId}`, rhFactor, this.httpOptions);
+  }
+
+
 
   
 }

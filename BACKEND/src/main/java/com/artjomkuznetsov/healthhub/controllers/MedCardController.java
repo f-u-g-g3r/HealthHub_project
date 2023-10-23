@@ -39,6 +39,7 @@ public class MedCardController {
     }
 
     @PostMapping("/med-cards")
+    @CrossOrigin(origins="*")
     public ResponseEntity<?> newMedCard(@RequestBody MedCard newMedCard) {
         EntityModel<MedCard> entityModel = assembler.toModel(repository.save(newMedCard));
 
@@ -57,17 +58,18 @@ public class MedCardController {
     }
 
     @PutMapping("/med-cards/{id}")
+    @CrossOrigin(origins="*")
     public ResponseEntity<?> replaceMedCard(@RequestBody MedCard newMedCard, @PathVariable Long id) {
         MedCard updatedMedCard = repository.findById(id)
                 .map(medCard -> {
-                    medCard.setMedHistory(newMedCard.getMedHistory());
-                    medCard.setBloodType(newMedCard.getBloodType());
-                    medCard.setRhFactor(newMedCard.getRhFactor());
-                    medCard.setAllergies(newMedCard.getAllergies());
-                    medCard.setChronicDiseases(newMedCard.getChronicDiseases());
-                    medCard.setResultsOfSurveys(newMedCard.getResultsOfSurveys());
-                    medCard.setOwnerID(newMedCard.getOwnerID());
-                    medCard.setFamilyDoctorID(newMedCard.getFamilyDoctorID());
+                    if (newMedCard.getMedHistory() != null) medCard.setMedHistory(newMedCard.getMedHistory());
+                    if (newMedCard.getBloodType() != null) medCard.setBloodType(newMedCard.getBloodType());
+                    if (newMedCard.getRhFactor() != null) medCard.setRhFactor(newMedCard.getRhFactor());
+                    if (newMedCard.getAllergies() != null) medCard.setAllergies(newMedCard.getAllergies());
+                    if (newMedCard.getChronicDiseases() != null) medCard.setChronicDiseases(newMedCard.getChronicDiseases());
+                    if (newMedCard.getResultsOfSurveys() != null) medCard.setResultsOfSurveys(newMedCard.getResultsOfSurveys());
+                    if (newMedCard.getOwnerID() != null) medCard.setOwnerID(newMedCard.getOwnerID());
+                    if (newMedCard.getFamilyDoctorID() != null) medCard.setFamilyDoctorID(newMedCard.getFamilyDoctorID());
                     return repository.save(medCard);
                 })
                 .orElseGet(() -> {

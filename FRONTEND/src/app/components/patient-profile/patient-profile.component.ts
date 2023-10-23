@@ -95,19 +95,39 @@ export class PatientProfileComponent implements OnInit{
   }
 
   public changeRhFactor(form: NgForm) {
-    
+    const formFields = form.value;
+
+    this.userService.addRhFactor(this.medCard.id, formFields).subscribe({
+      next: () => location.reload(),
+      error: console.error
+    })
   }
 
   public addAllergy(form: NgForm) {
-    
+    const formFields = form.value;
+
+    this.userService.addAllergy(this.medCard.id, formFields).subscribe({
+      next: () => location.reload(),
+      error: console.error
+    });
   }
 
   public addChronicDisease(form: NgForm) {
-    
+    const formFields = form.value;
+
+    this.userService.addChronicDisease(this.medCard.id, formFields).subscribe({
+      next: () => location.reload(),
+      error: console.error
+    });
   }
 
   public addResultOfSurvey(form: NgForm) {
-    
+    const formFields = form.value;
+
+    this.userService.addResultOfSurvey(this.medCard.id, formFields).subscribe({
+      next: () => location.reload(),
+      error: console.error
+    });
   }
 
  
