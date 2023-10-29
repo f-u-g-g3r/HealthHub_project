@@ -16,6 +16,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 
@@ -52,7 +54,10 @@ public class AuthenticationService {
         repository.save(newUser);
         setUidToNewMedCard(newUser);
 
-        String jwtToken =jwtService.generateToken(newUser);
+        Map<String, Long> idClaim = new HashMap<>();
+        idClaim.put("id", newUser.getId());
+
+        String jwtToken =jwtService.generateToken(idClaim, newUser);
 
         return new AuthenticationResponse(jwtToken, newUser.getId(), newUser.getMedCardID(), newUser.getRole());
     }
@@ -91,7 +96,12 @@ public class AuthenticationService {
         );
         User user = repository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
-        String jwtToken = jwtService.generateToken(user);
+
+        Map<String, Long> idClaim = new HashMap<>();
+        idClaim.put("id", user.getId());
+
+        String jwtToken = jwtService.generateToken(idClaim, user);
+
         return new AuthenticationResponse(jwtToken, user.getId(), user.getMedCardID(), user.getRole());
     }
 
