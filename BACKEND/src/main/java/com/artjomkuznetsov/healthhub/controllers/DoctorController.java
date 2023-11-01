@@ -2,6 +2,7 @@ package com.artjomkuznetsov.healthhub.controllers;
 
 import com.artjomkuznetsov.healthhub.assemblers.DoctorModelAssembler;
 import com.artjomkuznetsov.healthhub.models.Doctor;
+import com.artjomkuznetsov.healthhub.models.DoctorMinimal;
 import com.artjomkuznetsov.healthhub.repositories.DoctorRepository;
 import com.artjomkuznetsov.healthhub.exceptions.DoctorNotFoundException;
 import org.springframework.hateoas.CollectionModel;
@@ -33,6 +34,16 @@ public class DoctorController {
                 .collect(Collectors.toList());
         return CollectionModel.of(doctors,
                 linkTo(methodOn(DoctorController.class).all()).withSelfRel());
+    }
+
+
+    @GetMapping("/doctors-name/{id}")
+    @CrossOrigin(origins="*")
+    public DoctorMinimal doctorName(@PathVariable Long id) {
+        Doctor doctor = repository.findById(id)
+                .orElseThrow(() -> new DoctorNotFoundException(id));
+
+        return new DoctorMinimal(doctor.getFirstname(), doctor.getLastname(), doctor.getPhone());
     }
 
     @PostMapping("/doctors")

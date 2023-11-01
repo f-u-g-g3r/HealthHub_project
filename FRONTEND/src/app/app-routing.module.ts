@@ -5,9 +5,11 @@ import { HomeComponent } from './components/home/home.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { DoctorsworkplaceComponent } from './components/doctorsworkplace/doctorsworkplace.component';
 import { PatientProfileComponent } from './components/patient-profile/patient-profile.component';
+import { AuthenticationDoctorComponent } from './components/authenticationDoctors/authenticationDoctor.component';
 
 const routes: Routes = [
   { path: 'login', component: AuthenticationComponent },
+  { path: 'login/doctor', component: AuthenticationDoctorComponent },
   { path: 'home', component: HomeComponent },
   { path: 'home/profile', component: ProfileComponent },
   { path: 'doctors-workplace', component: DoctorsworkplaceComponent },

@@ -1,0 +1,124 @@
+<div class="container">
+    <a class="btn btn-primary" href="login">Back</a>
+    <div class="row">
+        <div class="col-6 mt-5">
+            <div class="col-10">
+            <h3 class="mx-auto">Registration</h3>
+            <form #registerForm="ngForm" (ngSubmit)="registerDoctor(registerForm)">
+                <div class="row">
+                    <label for="firstname" class="form-label col-3">First name</label>
+                    <div class="col-8">
+                        <input type="text" class="form-control" id="firstName" name="firstname" ngModel #firstname="ngModel" />
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <label for="lastname" class="form-label col-3">Last name</label>
+                    <div class="col-8">
+                        <input type="text" class="form-control" id="lastname" name="lastname" ngModel #lastname="ngModel" />
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <label for="dateOfBirth" class="form-label col-3">Date of birth</label>
+                    <div class="col-8">
+                        <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth" ngModel #dateOfBirth="ngModel" />
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <label for="gender" class="form-label col-3">Gender</label>
+                    <div class="col-8">
+                        <select class="form-select" name="gender" ngModel #gender="ngModel">
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <label for="address" class="form-label col-3">Address</label>
+                    <div class="col-8">
+                        <input type="text" class="form-control" id="address" name="address" ngModel #address="ngModel" />
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <label for="email" class="form-label col-3">Email</label>
+                    <div class="col-8">
+                        <input type="text" class="form-control" id="email" name="email" ngModel #email="ngModel" />
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <label for="phone" class="form-label col-3">Phone number</label>
+                    <div class="col-8">
+                        <input type="text" class="form-control" id="phone" name="phone" ngModel #phone="ngModel" />
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <label for="specialization" class="form-label col-3">Specialization</label>
+                    <div class="col-8">
+                        <input type="text" class="form-control" id="specialization" name="specialization" ngModel #specialization="ngModel" />
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <label for="placeOfWork" class="form-label col-3">Place of work</label>
+                    <div class="col-8">
+                        <input type="text" class="form-control" id="placeOfWork" name="placeOfWork" ngModel #placeOfWork="ngModel" />
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <label for="licenseNumber" class="form-label col-3">License number</label>
+                    <div class="col-8">
+                        <input type="text" class="form-control" id="licenseNumber" name="licenseNumber" ngModel #licenseNumber="ngModel" />
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <label for="licenseIssuingDate" class="form-label col-3">License issuing date</label>
+                    <div class="col-8">
+                        <input type="date" class="form-control" id="licenseIssuingDate" name="licenseIssuingDate" ngModel #licenseIssuingDate="ngModel" />
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <label for="licenseIssuingAuthority" class="form-label col-3">License issuing authority</label>
+                    <div class="col-8">
+                        <input type="text" class="form-control" id="licenseIssuingAuthority" name="licenseIssuingAuthority" ngModel #licenseIssuingAuthority="ngModel" />
+                    </div>
+                </div>
+                
+
+                <div class="row mt-4">
+                    <label for="password" class="form-label col-3">Password</label>
+                    <div class="col-8">
+                        <input type="password" class="form-control" id="password" name="password" ngModel #password="ngModel" />
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-dark mt-3">Send a request</button>
+            </form>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+</div>

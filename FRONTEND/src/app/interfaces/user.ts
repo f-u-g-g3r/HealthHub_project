@@ -10,4 +10,5 @@ export interface User {
     phone: string;
     password: string;
     medCardID: number;
+    familyDoctorId: number;
 }

@@ -23,6 +23,7 @@ public class Doctor {
     private String licenseNumber;
     private String licenseIssuingDate;
     private String licenseIssuingAuthority;
+    private Status status;
 
     public Doctor() {}
 

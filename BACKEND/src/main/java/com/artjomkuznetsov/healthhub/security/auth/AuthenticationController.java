@@ -1,6 +1,7 @@
 package com.artjomkuznetsov.healthhub.security.auth;
 
 
+import com.artjomkuznetsov.healthhub.models.Doctor;
 import com.artjomkuznetsov.healthhub.models.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,11 @@ public class AuthenticationController {
     @CrossOrigin(origins="*")
     public ResponseEntity<?> authenticate(@RequestBody AuthenticationRequest request) {
         return ResponseEntity.ok(authenticationService.authenticate(request));
+    }
+
+    @PostMapping("/doctors/register")
+    public ResponseEntity<?> registerDoctor(@RequestBody Doctor newDoctor) {
+        return ResponseEntity.ok(authenticationService.registerDoctor(newDoctor));
     }
 
 }

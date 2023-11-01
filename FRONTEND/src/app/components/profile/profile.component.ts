@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthenticationRequest } from 'src/app/interfaces/authenticationRequest';
-import { AuthenticationResponse } from 'src/app/interfaces/authenticationResponse';
+import { AuthenticationRequest } from 'src/app/interfaces/requests&responses/authenticationRequest';
+import { AuthenticationResponse } from 'src/app/interfaces/requests&responses/authenticationResponse';
 import { UpdatedUser } from 'src/app/interfaces/updatedUser';
 import { User } from 'src/app/interfaces/user';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -29,6 +29,10 @@ export class ProfileComponent implements OnInit {
       next: (response: User) => this.userData = response,
       error: console.error
     });
+
+    if (this.userData.familyDoctorId != null) {
+      this.getFamilyDoctor(this.userData.familyDoctorId);
+    }
   }
 
   public onUpdateUser(user: UpdatedUser) {
@@ -49,6 +53,10 @@ export class ProfileComponent implements OnInit {
       },
       error: console.error
     });
+  }
+
+  private getFamilyDoctor(doctorId: number) {
+    
   }
 
 
