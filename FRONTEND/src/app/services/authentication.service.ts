@@ -24,8 +24,8 @@ export class AuthenticationService {
     return this.http.post<AuthenticationResponse>(`${this.serverUrl}/auth/register`, request);
   }
 
-  public registerDocotr(request: DoctorAuthRequest): Observable<doctorAuthResponse> {
-    return this.http.post<doctorAuthResponse>(`${this.serverUrl}/auth/doctor/register`, request);
+  public registerDoctor(request: DoctorAuthRequest): Observable<doctorAuthResponse> {
+    return this.http.post<doctorAuthResponse>(`${this.serverUrl}/auth/doctors/register`, request);
   }
 
   public logOut() {

@@ -21,7 +21,11 @@ export class AuthenticationDoctorComponent implements OnInit{
   }
 
   public registerDoctor(form: NgForm) {
-
+    const formFields = form.value;
+    this.authenticationService.registerDoctor(formFields).subscribe({
+      next: (response) => console.log(response),
+      error: console.error
+    });
   }
 
 }

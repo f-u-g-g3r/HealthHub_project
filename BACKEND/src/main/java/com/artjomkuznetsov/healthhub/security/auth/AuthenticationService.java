@@ -2,8 +2,10 @@ package com.artjomkuznetsov.healthhub.security.auth;
 
 import com.artjomkuznetsov.healthhub.controllers.MedCardController;
 import com.artjomkuznetsov.healthhub.controllers.UserController;
+import com.artjomkuznetsov.healthhub.models.Doctor;
 import com.artjomkuznetsov.healthhub.models.MedCard;
 import com.artjomkuznetsov.healthhub.models.User;
+import com.artjomkuznetsov.healthhub.repositories.DoctorRepository;
 import com.artjomkuznetsov.healthhub.repositories.UserRepository;
 import com.artjomkuznetsov.healthhub.security.auth.exceptions.UsernameAlreadyTakenException;
 import com.artjomkuznetsov.healthhub.security.config.JwtService;
@@ -24,34 +26,44 @@ import java.util.Random;
 
 @Service
 public class AuthenticationService {
-    private final UserRepository repository;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final MedCardController medCardController;
     private final UserController userController;
+    private final DoctorRepository doctorRepository;
 
 
 
-    public AuthenticationService(UserRepository repository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager, MedCardController medCardController, UserController userController) {
-        this.repository = repository;
+    public AuthenticationService(
+            UserRepository userRepository,
+            PasswordEncoder passwordEncoder,
+            JwtService jwtService,
+            AuthenticationManager authenticationManager,
+            MedCardController medCardController,
+            UserController userController,
+            DoctorRepository doctorRepository
+    ) {
+        this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
         this.medCardController = medCardController;
         this.userController = userController;
+        this.doctorRepository = doctorRepository;
     }
 
     public AuthenticationResponse register(User newUser) {
         try {
-            isUsernameEmpty(newUser.getEmail());
+            isUsernameNotTaken(newUser.getEmail());
         } catch (UsernameAlreadyTakenException e) {
             return new AuthenticationResponse("Email is taken");
         }
 
         newUser.setUuid(generateUUID());
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-        repository.save(newUser);
+        userRepository.save(newUser);
         setUidToNewMedCard(newUser);
 
         Map<String, Long> idClaim = new HashMap<>();
@@ -62,29 +74,29 @@ public class AuthenticationService {
         return new AuthenticationResponse(jwtToken, newUser.getId(), newUser.getMedCardID(), newUser.getRole());
     }
 
+    private void setUidToNewMedCard(User newEntity) {
+        if (newEntity instanceof Doctor) {
+            System.out.println("doc");
+            Doctor entity = doctorRepository.findByEmail(newEntity.getEmail()).get();
+            createMedCard(entity);
+        } else if (newEntity instanceof User) {
+            System.out.println("user");
+            User entity = userRepository.findByEmail(newEntity.getEmail()).get();
+            createMedCard(entity);
+        }
+    }
 
-    /*
-
-        1. get user from repository by email
-        2. get user id
-        3. create medcard and pass the user id
-        4. get new medcard's id
-        5. set to the user his medcardid
-         */
-    private void setUidToNewMedCard(User newUser) {
-        User user = repository.findByEmail(newUser.getEmail()).get();
-        Long uid = user.getId();
+    private void createMedCard(User entity) {
+        Long uid = entity.getId();
         ResponseEntity<?> medCard = medCardController.newMedCard(new MedCard(uid));
         EntityModel<MedCard> entityMedCard = (EntityModel<MedCard>) medCard.getBody();
         Long medCardId = entityMedCard.getContent().getId();
-        setMedCardIdToUser(user, medCardId);
-
-
+        setMedCardIdToUser(entity, medCardId);
     }
 
-    private User setMedCardIdToUser(User user, Long medCardId) {
-        user.setMedCardID(medCardId);
-        ResponseEntity<?> responseEntity = userController.replaceUser(user, user.getId());
+    private User setMedCardIdToUser(User entity, Long medCardId) {
+        entity.setMedCardID(medCardId);
+        ResponseEntity<?> responseEntity = userController.replaceUser(entity, entity.getId());
         EntityModel<User> entityModel = (EntityModel<User>) responseEntity.getBody();
         User resultUser = entityModel.getContent();
         return resultUser;
@@ -94,7 +106,7 @@ public class AuthenticationService {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
-        User user = repository.findByEmail(request.getEmail())
+        User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
 
         Map<String, Long> idClaim = new HashMap<>();
@@ -105,8 +117,11 @@ public class AuthenticationService {
         return new AuthenticationResponse(jwtToken, user.getId(), user.getMedCardID(), user.getRole());
     }
 
-    private boolean isUsernameEmpty(String username) {
-        if (repository.findByEmail(username).isEmpty()) {
+    private boolean isUsernameNotTaken(String username) {
+        System.out.println(username);
+        System.out.println(userRepository.findByEmail(username).isEmpty());
+        if (userRepository.findByEmail(username).isEmpty()) {
+            System.out.println("sc");
             return true;
         } else {
             throw new UsernameAlreadyTakenException(username);
@@ -121,7 +136,7 @@ public class AuthenticationService {
             int randNum = rand.nextInt(0, 10);
             uuid.append(numbers[randNum]);
         }
-        if (repository.findByUuid(uuid.toString()).equals(Optional.empty())) {
+        if (userRepository.findByUuid(uuid.toString()).equals(Optional.empty()) && doctorRepository.findByUuid(uuid.toString()).equals(Optional.empty())) {
             return uuid.toString();
         } else {
             return generateUUID();

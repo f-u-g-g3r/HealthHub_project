@@ -7,7 +7,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "doctors")
-public class Doctor {
+public class Doctor extends User{
     private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;
     private String firstname;
     private String lastname;
@@ -24,10 +24,11 @@ public class Doctor {
     private String licenseIssuingDate;
     private String licenseIssuingAuthority;
     private Status status;
+    private String uuid;
 
     public Doctor() {}
 
-    public Doctor(String firstname, String lastname, String dateOfBirth, String gender, String address, String email, String phone, String password, Long medCardID, String specialization, String placeOfWork, String licenseNumber, String licenseIssuingDate, String licenseIssuingAuthority) {
+    public Doctor(String firstname, String lastname, String dateOfBirth, String gender, String address, String email, String phone, String password, Long medCardID, String specialization, String placeOfWork, String licenseNumber, String licenseIssuingDate, String licenseIssuingAuthority, String uuid) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.dateOfBirth = dateOfBirth;
@@ -42,6 +43,7 @@ public class Doctor {
         this.licenseNumber = licenseNumber;
         this.licenseIssuingDate = licenseIssuingDate;
         this.licenseIssuingAuthority = licenseIssuingAuthority;
+        this.uuid = uuid;
     }
 
     public Long getId() {
@@ -164,17 +166,33 @@ public class Doctor {
         this.licenseIssuingAuthority = licenseIssuingAuthority;
     }
 
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Doctor doctor = (Doctor) o;
-        return Objects.equals(id, doctor.id) && Objects.equals(firstname, doctor.firstname) && Objects.equals(lastname, doctor.lastname) && Objects.equals(dateOfBirth, doctor.dateOfBirth) && Objects.equals(gender, doctor.gender) && Objects.equals(address, doctor.address) && Objects.equals(email, doctor.email) && Objects.equals(phone, doctor.phone) && Objects.equals(password, doctor.password) && Objects.equals(medCardID, doctor.medCardID) && Objects.equals(specialization, doctor.specialization) && Objects.equals(placeOfWork, doctor.placeOfWork) && Objects.equals(licenseNumber, doctor.licenseNumber) && Objects.equals(licenseIssuingDate, doctor.licenseIssuingDate) && Objects.equals(licenseIssuingAuthority, doctor.licenseIssuingAuthority);
+        return Objects.equals(id, doctor.id) && Objects.equals(firstname, doctor.firstname) && Objects.equals(lastname, doctor.lastname) && Objects.equals(dateOfBirth, doctor.dateOfBirth) && Objects.equals(gender, doctor.gender) && Objects.equals(address, doctor.address) && Objects.equals(email, doctor.email) && Objects.equals(phone, doctor.phone) && Objects.equals(password, doctor.password) && Objects.equals(medCardID, doctor.medCardID) && Objects.equals(specialization, doctor.specialization) && Objects.equals(placeOfWork, doctor.placeOfWork) && Objects.equals(licenseNumber, doctor.licenseNumber) && Objects.equals(licenseIssuingDate, doctor.licenseIssuingDate) && Objects.equals(licenseIssuingAuthority, doctor.licenseIssuingAuthority) && status == doctor.status && Objects.equals(uuid, doctor.uuid);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstname, lastname, dateOfBirth, gender, address, email, phone, password, medCardID, specialization, placeOfWork, licenseNumber, licenseIssuingDate, licenseIssuingAuthority);
+        return Objects.hash(id, firstname, lastname, dateOfBirth, gender, address, email, phone, password, medCardID, specialization, placeOfWork, licenseNumber, licenseIssuingDate, licenseIssuingAuthority, status, uuid);
     }
 
     @Override
@@ -195,6 +213,8 @@ public class Doctor {
                 ", licenseNumber='" + licenseNumber + '\'' +
                 ", licenseIssuingDate='" + licenseIssuingDate + '\'' +
                 ", licenseIssuingAuthority='" + licenseIssuingAuthority + '\'' +
+                ", status=" + status +
+                ", uuid='" + uuid + '\'' +
                 '}';
     }
 }
