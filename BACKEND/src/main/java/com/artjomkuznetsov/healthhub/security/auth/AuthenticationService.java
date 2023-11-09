@@ -54,7 +54,7 @@ public class AuthenticationService {
         this.doctorRepository = doctorRepository;
     }
 
-    public AuthenticationResponse register(User newUser) {
+    public AuthenticationResponse registerUser(User newUser) {
         try {
             isUsernameNotTaken(newUser.getEmail());
         } catch (UsernameAlreadyTakenException e) {
@@ -74,24 +74,33 @@ public class AuthenticationService {
         return new AuthenticationResponse(jwtToken, newUser.getId(), newUser.getMedCardID(), newUser.getRole());
     }
 
-    private void setUidToNewMedCard(User newEntity) {
-        if (newEntity instanceof Doctor) {
-            System.out.println("doc");
-            Doctor entity = doctorRepository.findByEmail(newEntity.getEmail()).get();
-            createMedCard(entity);
-        } else if (newEntity instanceof User) {
-            System.out.println("user");
-            User entity = userRepository.findByEmail(newEntity.getEmail()).get();
-            createMedCard(entity);
+    public DoctorAuthenticationResponse registerDoctor(Doctor newDoctor) {
+        try {
+            isUsernameNotTaken(newDoctor.getEmail());
+        } catch (UsernameAlreadyTakenException e) {
+            return new DoctorAuthenticationResponse("Email is taken");
         }
+
+        newDoctor.setUuid(generateUUID());
+        newDoctor.setPassword(passwordEncoder.encode(newDoctor.getPassword()));
+        doctorRepository.save(newDoctor);
+
+        Map<String, Long> idClaim = new HashMap<>();
+        idClaim.put("id", newDoctor.getId());
+
+        String jwtToken =jwtService.generateToken(idClaim, newDoctor);
+
+        return new DoctorAuthenticationResponse(jwtToken, newDoctor.getId(), newDoctor.getRole());
     }
 
-    private void createMedCard(User entity) {
-        Long uid = entity.getId();
+
+
+    private void setUidToNewMedCard(User user) {
+        Long uid = user.getId();
         ResponseEntity<?> medCard = medCardController.newMedCard(new MedCard(uid));
         EntityModel<MedCard> entityMedCard = (EntityModel<MedCard>) medCard.getBody();
         Long medCardId = entityMedCard.getContent().getId();
-        setMedCardIdToUser(entity, medCardId);
+        setMedCardIdToUser(user, medCardId);
     }
 
     private User setMedCardIdToUser(User entity, Long medCardId) {
@@ -119,7 +128,6 @@ public class AuthenticationService {
 
     private boolean isUsernameNotTaken(String username) {
         System.out.println(username);
-        System.out.println(userRepository.findByEmail(username).isEmpty());
         if (userRepository.findByEmail(username).isEmpty()) {
             System.out.println("sc");
             return true;

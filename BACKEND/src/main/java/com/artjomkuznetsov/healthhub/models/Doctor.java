@@ -2,12 +2,17 @@ package com.artjomkuznetsov.healthhub.models;
 
 
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "doctors")
-public class Doctor extends User{
+public class Doctor implements UserDetails {
     private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;
     private String firstname;
     private String lastname;
@@ -17,7 +22,6 @@ public class Doctor extends User{
     private String email;
     private String phone;
     private String password;
-    private Long medCardID;
     private String specialization;
     private String placeOfWork;
     private String licenseNumber;
@@ -26,9 +30,12 @@ public class Doctor extends User{
     private Status status;
     private String uuid;
 
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     public Doctor() {}
 
-    public Doctor(String firstname, String lastname, String dateOfBirth, String gender, String address, String email, String phone, String password, Long medCardID, String specialization, String placeOfWork, String licenseNumber, String licenseIssuingDate, String licenseIssuingAuthority, String uuid) {
+    public Doctor(String firstname, String lastname, String dateOfBirth, String gender, String address, String email, String phone, String password, String specialization, String placeOfWork, String licenseNumber, String licenseIssuingDate, String licenseIssuingAuthority, String uuid, Role role) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.dateOfBirth = dateOfBirth;
@@ -37,13 +44,13 @@ public class Doctor extends User{
         this.email = email;
         this.phone = phone;
         this.password = password;
-        this.medCardID = medCardID;
         this.specialization = specialization;
         this.placeOfWork = placeOfWork;
         this.licenseNumber = licenseNumber;
         this.licenseIssuingDate = licenseIssuingDate;
         this.licenseIssuingAuthority = licenseIssuingAuthority;
         this.uuid = uuid;
+        this.role = role;
     }
 
     public Long getId() {
@@ -118,14 +125,6 @@ public class Doctor extends User{
         this.password = password;
     }
 
-    public Long getMedCardID() {
-        return medCardID;
-    }
-
-    public void setMedCardID(Long medCardID) {
-        this.medCardID = medCardID;
-    }
-
     public String getSpecialization() {
         return specialization;
     }
@@ -182,17 +181,25 @@ public class Doctor extends User{
         this.uuid = uuid;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Doctor doctor = (Doctor) o;
-        return Objects.equals(id, doctor.id) && Objects.equals(firstname, doctor.firstname) && Objects.equals(lastname, doctor.lastname) && Objects.equals(dateOfBirth, doctor.dateOfBirth) && Objects.equals(gender, doctor.gender) && Objects.equals(address, doctor.address) && Objects.equals(email, doctor.email) && Objects.equals(phone, doctor.phone) && Objects.equals(password, doctor.password) && Objects.equals(medCardID, doctor.medCardID) && Objects.equals(specialization, doctor.specialization) && Objects.equals(placeOfWork, doctor.placeOfWork) && Objects.equals(licenseNumber, doctor.licenseNumber) && Objects.equals(licenseIssuingDate, doctor.licenseIssuingDate) && Objects.equals(licenseIssuingAuthority, doctor.licenseIssuingAuthority) && status == doctor.status && Objects.equals(uuid, doctor.uuid);
+        return Objects.equals(id, doctor.id) && Objects.equals(firstname, doctor.firstname) && Objects.equals(lastname, doctor.lastname) && Objects.equals(dateOfBirth, doctor.dateOfBirth) && Objects.equals(gender, doctor.gender) && Objects.equals(address, doctor.address) && Objects.equals(email, doctor.email) && Objects.equals(phone, doctor.phone) && Objects.equals(password, doctor.password) && Objects.equals(specialization, doctor.specialization) && Objects.equals(placeOfWork, doctor.placeOfWork) && Objects.equals(licenseNumber, doctor.licenseNumber) && Objects.equals(licenseIssuingDate, doctor.licenseIssuingDate) && Objects.equals(licenseIssuingAuthority, doctor.licenseIssuingAuthority) && status == doctor.status && Objects.equals(uuid, doctor.uuid) && role == doctor.role;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstname, lastname, dateOfBirth, gender, address, email, phone, password, medCardID, specialization, placeOfWork, licenseNumber, licenseIssuingDate, licenseIssuingAuthority, status, uuid);
+        return Objects.hash(id, firstname, lastname, dateOfBirth, gender, address, email, phone, password, specialization, placeOfWork, licenseNumber, licenseIssuingDate, licenseIssuingAuthority, status, uuid, role);
     }
 
     @Override
@@ -207,7 +214,6 @@ public class Doctor extends User{
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
                 ", password='" + password + '\'' +
-                ", medCardID=" + medCardID +
                 ", specialization='" + specialization + '\'' +
                 ", placeOfWork='" + placeOfWork + '\'' +
                 ", licenseNumber='" + licenseNumber + '\'' +
@@ -215,6 +221,37 @@ public class Doctor extends User{
                 ", licenseIssuingAuthority='" + licenseIssuingAuthority + '\'' +
                 ", status=" + status +
                 ", uuid='" + uuid + '\'' +
+                ", role=" + role +
                 '}';
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

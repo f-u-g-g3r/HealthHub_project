@@ -18,7 +18,7 @@ public class AuthenticationController {
     @PostMapping("/register")
     @CrossOrigin(origins="*")
     public ResponseEntity<?> register(@RequestBody User newUser) {
-        return ResponseEntity.ok(authenticationService.register(newUser));
+        return ResponseEntity.ok(authenticationService.registerUser(newUser));
     }
 
     @PostMapping("/authenticate")
@@ -30,7 +30,7 @@ public class AuthenticationController {
     @PostMapping("/doctors/register")
     @CrossOrigin(origins="*")
     public ResponseEntity<?> registerDoctor(@RequestBody Doctor newDoctor) {
-        return ResponseEntity.ok(authenticationService.register(newDoctor));
+        return ResponseEntity.ok(authenticationService.registerDoctor(newDoctor));
     }
 
 }

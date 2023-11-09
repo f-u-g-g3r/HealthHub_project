@@ -75,7 +75,6 @@ public class DoctorController {
                     doctor.setEmail(newDoctor.getEmail());
                     doctor.setPhone(newDoctor.getPhone());
                     doctor.setPassword(newDoctor.getPassword());
-                    doctor.setMedCardID(newDoctor.getMedCardID());
                     doctor.setSpecialization(newDoctor.getSpecialization());
                     doctor.setPlaceOfWork(newDoctor.getPlaceOfWork());
                     doctor.setLicenseNumber(newDoctor.getLicenseNumber());
