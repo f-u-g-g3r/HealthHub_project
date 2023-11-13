@@ -27,7 +27,7 @@ public class AuthenticationController {
         return ResponseEntity.ok(authenticationService.authenticate(request));
     }
 
-    @PostMapping("/doctors/register")
+    @PostMapping("/register-doctor")
     @CrossOrigin(origins="*")
     public ResponseEntity<?> registerDoctor(@RequestBody Doctor newDoctor) {
         return ResponseEntity.ok(authenticationService.registerDoctor(newDoctor));

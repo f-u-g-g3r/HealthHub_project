@@ -6,8 +6,8 @@ import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  templateUrl: './users-home.component.html',
+  styleUrls: ['./users-home.component.css']
 })
 export class HomeComponent implements OnInit {
   public medCard!: MedCard;
@@ -19,6 +19,8 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
       if (!sessionStorage.getItem("token")) {
         this.router.navigate(["/login"])
+      } else if (sessionStorage.getItem("role") == "DOCTOR") {
+        this.router.navigate(["/doctors-home"]);
       }
       this.getMedInfo();
       console.log(this.role);

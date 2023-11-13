@@ -8,11 +8,12 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthenticationService } from './services/authentication.service';
 import { UserService } from './services/user.service';
-import { HomeComponent } from './components/home/home.component';
+import { HomeComponent } from './components/users-home/users-home.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { DoctorsworkplaceComponent } from './components/doctorsworkplace/doctorsworkplace.component';
 import { PatientProfileComponent } from './components/patient-profile/patient-profile.component';
 import { AuthenticationDoctorComponent } from './components/authenticationDoctors/authenticationDoctor.component';
+import { DoctorsHomeComponent } from './components/doctors-home/doctors-home.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { AuthenticationDoctorComponent } from './components/authenticationDoctor
     ProfileComponent,
     DoctorsworkplaceComponent,
     PatientProfileComponent,
-    AuthenticationDoctorComponent
+    AuthenticationDoctorComponent,
+    DoctorsHomeComponent
   ],
   imports: [
     BrowserModule,

@@ -54,6 +54,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String requestURI = request.getRequestURI();
         String[] uriParts = requestURI.split("/");
 
+        for (String part : uriParts) {
+            System.out.println(part);
+        }
+
         if (uriParts.length > 2) {
             id = Long.parseLong(uriParts[2]);
         } else {

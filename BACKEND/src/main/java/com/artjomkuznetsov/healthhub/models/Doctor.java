@@ -37,9 +37,10 @@ public class Doctor implements UserDetails {
 
     public Doctor() {
         this.status = Status.INACTIVE;
+        this.role = Role.DOCTOR;
     }
 
-    public Doctor(String firstname, String lastname, String dateOfBirth, String gender, String address, String email, String phone, String password, String specialization, String placeOfWork, String licenseNumber, String licenseIssuingDate, String licenseIssuingAuthority, String uuid, Role role) {
+    public Doctor(String firstname, String lastname, String dateOfBirth, String gender, String address, String email, String phone, String password, String specialization, String placeOfWork, String licenseNumber, String licenseIssuingDate, String licenseIssuingAuthority, String uuid) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.dateOfBirth = dateOfBirth;
@@ -54,7 +55,6 @@ public class Doctor implements UserDetails {
         this.licenseIssuingDate = licenseIssuingDate;
         this.licenseIssuingAuthority = licenseIssuingAuthority;
         this.uuid = uuid;
-        this.role = role;
         this.status = Status.INACTIVE;
     }
 

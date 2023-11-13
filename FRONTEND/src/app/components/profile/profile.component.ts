@@ -15,6 +15,7 @@ import { UserService } from 'src/app/services/user.service';
 export class ProfileComponent implements OnInit {
 
   public userData!: User;
+  public isDoctor!: boolean;
   constructor(private router: Router, public authService: AuthenticationService, private userService: UserService) {
     
   }

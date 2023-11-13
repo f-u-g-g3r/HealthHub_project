@@ -33,6 +33,6 @@ export class AuthenticationDoctorComponent implements OnInit{
     sessionStorage.setItem("docId", response.doctorId.toString());
     sessionStorage.setItem("doctorStatus", response.status);
     sessionStorage.setItem("role", response.role);
-    this.router.navigate(["/home"]);
+    this.router.navigate(["/doctors-home"]);
   }
 }
