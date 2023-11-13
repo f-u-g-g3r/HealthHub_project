@@ -27,13 +27,17 @@ public class Doctor implements UserDetails {
     private String licenseNumber;
     private String licenseIssuingDate;
     private String licenseIssuingAuthority;
-    private Status status;
     private String uuid;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public Doctor() {}
+    public Doctor() {
+        this.status = Status.INACTIVE;
+    }
 
     public Doctor(String firstname, String lastname, String dateOfBirth, String gender, String address, String email, String phone, String password, String specialization, String placeOfWork, String licenseNumber, String licenseIssuingDate, String licenseIssuingAuthority, String uuid, Role role) {
         this.firstname = firstname;
@@ -51,6 +55,7 @@ public class Doctor implements UserDetails {
         this.licenseIssuingAuthority = licenseIssuingAuthority;
         this.uuid = uuid;
         this.role = role;
+        this.status = Status.INACTIVE;
     }
 
     public Long getId() {

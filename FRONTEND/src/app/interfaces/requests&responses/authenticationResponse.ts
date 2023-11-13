@@ -1,5 +1,5 @@
 export interface AuthenticationResponse {
-    token: String;
+    token: string;
     emailTaken: boolean;
     role: string;
     uid: number;

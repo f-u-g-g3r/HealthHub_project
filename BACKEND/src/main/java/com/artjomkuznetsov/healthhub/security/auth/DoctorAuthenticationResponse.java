@@ -1,22 +1,25 @@
 package com.artjomkuznetsov.healthhub.security.auth;
 
 import com.artjomkuznetsov.healthhub.models.Role;
+import com.artjomkuznetsov.healthhub.models.Status;
 
 public class DoctorAuthenticationResponse {
     private String token;
     private Boolean isEmailTaken;
     private Role role;
-    private Long uid;
+    private Status status;
+    private Long doctorId;
 
     public DoctorAuthenticationResponse(String token) {
         this.isEmailTaken = true;
     }
 
-    public DoctorAuthenticationResponse(String token, Long uid, Role role) {
+    public DoctorAuthenticationResponse(String token, Long doctorId, Role role) {
         this.token = token;
-        this.uid = uid;
+        this.doctorId = doctorId;
         this.role = role;
         this.isEmailTaken = false;
+        this.status = Status.INACTIVE;
     }
 
     public String getToken() {
@@ -35,12 +38,12 @@ public class DoctorAuthenticationResponse {
         isEmailTaken = emailTaken;
     }
 
-    public Long getUid() {
-        return uid;
+    public Long getDoctorId() {
+        return doctorId;
     }
 
-    public void setUid(Long uid) {
-        this.uid = uid;
+    public void setDoctorId(Long doctorId) {
+        this.doctorId = doctorId;
     }
 
     public Role getRole() {
@@ -51,5 +54,11 @@ public class DoctorAuthenticationResponse {
         this.role = role;
     }
 
+    public Status getStatus() {
+        return status;
+    }
 
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 }

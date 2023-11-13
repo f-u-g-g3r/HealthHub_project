@@ -127,9 +127,7 @@ public class AuthenticationService {
     }
 
     private boolean isUsernameNotTaken(String username) {
-        System.out.println(username);
-        if (userRepository.findByEmail(username).isEmpty()) {
-            System.out.println("sc");
+        if (userRepository.findByEmail(username).isEmpty() && doctorRepository.findByEmail(username).isEmpty()) {
             return true;
         } else {
             throw new UsernameAlreadyTakenException(username);
