@@ -1,4 +1,4 @@
-export interface doctorAuthResponse {
+export interface DoctorAuthResponse {
     token: String;
     emailTaken: boolean;
     role: string;

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthenticationResponse } from 'src/app/interfaces/requests&responses/authenticationResponse';
+import { DoctorAuthResponse } from 'src/app/interfaces/requests&responses/doctorAuthResponse';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
@@ -26,7 +27,11 @@ export class AuthenticationComponent implements OnInit{
     this.authenticationService.authenticate(formFields).subscribe({
       next: (response: AuthenticationResponse) => {
         sessionStorage.setItem('password', formFields["password"])
-        this.authenticate(response);
+        if (response.role == "DOCTOR") {
+          this.authenticateDoctor(response);
+        } else if (response.role == "USER") {
+          this.authenticateUser(response);
+        }
       },
       error: console.error
     });
@@ -37,16 +42,23 @@ export class AuthenticationComponent implements OnInit{
     this.authenticationService.register(formFields).subscribe({
       next: (response: AuthenticationResponse) => {
         sessionStorage.setItem('password', formFields["password"])
-        this.authenticate(response);
+        this.authenticateUser(response);
       },
       error: console.error
     });
   }
 
-  private authenticate(response: AuthenticationResponse) {
+  private authenticateUser(response: AuthenticationResponse) {
     sessionStorage.setItem("token", response.token.toString());
     sessionStorage.setItem("uid", response.uid.toString());
     sessionStorage.setItem("medCardId", response.medCardId.toString());
+    sessionStorage.setItem("role", response.role);
+    this.router.navigate(["/home"]);
+  }
+
+  private authenticateDoctor(response: AuthenticationResponse) {
+    sessionStorage.setItem("token", response.token.toString());
+    sessionStorage.setItem("doctorId", response.uid.toString());
     sessionStorage.setItem("role", response.role);
     this.router.navigate(["/home"]);
   }

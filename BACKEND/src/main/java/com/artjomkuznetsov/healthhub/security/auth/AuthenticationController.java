@@ -3,6 +3,7 @@ package com.artjomkuznetsov.healthhub.security.auth;
 
 import com.artjomkuznetsov.healthhub.models.Doctor;
 import com.artjomkuznetsov.healthhub.models.User;
+import com.artjomkuznetsov.healthhub.repositories.DoctorRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,9 +11,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
+    private final DoctorRepository doctorRepository;
 
-    public AuthenticationController(AuthenticationService authenticationService) {
+    public AuthenticationController(AuthenticationService authenticationService, DoctorRepository doctorRepository) {
         this.authenticationService = authenticationService;
+        this.doctorRepository = doctorRepository;
     }
 
     @PostMapping("/register")
@@ -24,7 +27,13 @@ public class AuthenticationController {
     @PostMapping("/authenticate")
     @CrossOrigin(origins="*")
     public ResponseEntity<?> authenticate(@RequestBody AuthenticationRequest request) {
-        return ResponseEntity.ok(authenticationService.authenticate(request));
+        if (doctorRepository.findByEmail(request.getEmail()).isPresent()) {
+            return ResponseEntity.ok(authenticationService.authenticateDoctor(request));
+        }
+        else {
+            return ResponseEntity.ok(authenticationService.authenticate(request));
+        }
+
     }
 
     @PostMapping("/register-doctor")

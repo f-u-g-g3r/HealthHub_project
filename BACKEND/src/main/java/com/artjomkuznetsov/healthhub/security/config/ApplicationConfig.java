@@ -1,6 +1,7 @@
 package com.artjomkuznetsov.healthhub.security.config;
 
 
+import com.artjomkuznetsov.healthhub.repositories.DoctorRepository;
 import com.artjomkuznetsov.healthhub.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -16,16 +17,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class ApplicationConfig {
-    private final UserRepository repository;
+    private final UserRepository userRepository;
+    private final DoctorRepository doctorRepository;
 
     @Autowired
-    public ApplicationConfig(UserRepository repository) {
-        this.repository = repository;
+    public ApplicationConfig(UserRepository userRepository, DoctorRepository doctorRepository) {
+        this.userRepository = userRepository;
+        this.doctorRepository = doctorRepository;
     }
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> repository.findByEmail(username)
+        return username -> doctorRepository.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 

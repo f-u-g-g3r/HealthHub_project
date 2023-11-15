@@ -2,6 +2,7 @@ package com.artjomkuznetsov.healthhub.security.auth;
 
 import com.artjomkuznetsov.healthhub.controllers.MedCardController;
 import com.artjomkuznetsov.healthhub.controllers.UserController;
+import com.artjomkuznetsov.healthhub.exceptions.DoctorNotFoundException;
 import com.artjomkuznetsov.healthhub.models.Doctor;
 import com.artjomkuznetsov.healthhub.models.MedCard;
 import com.artjomkuznetsov.healthhub.models.User;
@@ -124,6 +125,23 @@ public class AuthenticationService {
         String jwtToken = jwtService.generateToken(idClaim, user);
 
         return new AuthenticationResponse(jwtToken, user.getId(), user.getMedCardID(), user.getRole());
+    }
+
+    public DoctorAuthenticationResponse authenticateDoctor(AuthenticationRequest request) {
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+        );
+        System.out.println("1");
+        Doctor doctor = doctorRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
+        System.out.println("2");
+        Map<String, Long> idClaim = new HashMap<>();
+        idClaim.put("id", doctor.getId());
+        System.out.println("3");
+        String jwtToken = jwtService.generateToken(idClaim, doctor);
+
+
+        return new DoctorAuthenticationResponse(jwtToken, doctor.getId(), doctor.getRole());
     }
 
     private boolean isUsernameNotTaken(String username) {

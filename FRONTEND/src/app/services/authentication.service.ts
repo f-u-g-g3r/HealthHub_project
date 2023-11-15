@@ -7,7 +7,7 @@ import { AuthenticationResponse } from '../interfaces/requests&responses/authent
 import { RegistrationRequest } from '../interfaces/registrationRequest';
 import { Router } from '@angular/router';
 import { DoctorAuthRequest } from '../interfaces/requests&responses/doctorAuthRequest';
-import { doctorAuthResponse } from '../interfaces/requests&responses/doctorAuthResponse';
+import { DoctorAuthResponse } from '../interfaces/requests&responses/doctorAuthResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -24,8 +24,8 @@ export class AuthenticationService {
     return this.http.post<AuthenticationResponse>(`${this.serverUrl}/auth/register`, request);
   }
 
-  public registerDoctor(request: DoctorAuthRequest): Observable<doctorAuthResponse> {
-    return this.http.post<doctorAuthResponse>(`${this.serverUrl}/auth/register-doctor`, request);
+  public registerDoctor(request: DoctorAuthRequest): Observable<DoctorAuthResponse> {
+    return this.http.post<DoctorAuthResponse>(`${this.serverUrl}/auth/register-doctor`, request);
   }
 
   public logOut() {
