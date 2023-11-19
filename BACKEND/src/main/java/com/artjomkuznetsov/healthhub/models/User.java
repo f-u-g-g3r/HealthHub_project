@@ -33,6 +33,12 @@ public class User implements UserDetails {
         this.role = Role.USER;
     }
 
+    public User(String email, String password, Role role) {
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
+
     public User(String firstname, String lastname, String dateOfBirth, String gender, String address, String email, String phone, String password, Long medCardID, String token, Long familyDoctorId, String uuid) {
         this.firstname = firstname;
         this.lastname = lastname;

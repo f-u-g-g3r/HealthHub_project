@@ -1,6 +1,8 @@
 package com.artjomkuznetsov.healthhub.security.config;
 
 
+import com.artjomkuznetsov.healthhub.models.Doctor;
+import com.artjomkuznetsov.healthhub.models.User;
 import com.artjomkuznetsov.healthhub.repositories.DoctorRepository;
 import com.artjomkuznetsov.healthhub.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +30,21 @@ public class ApplicationConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> doctorRepository.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return username -> {
+            User user = userRepository.findByEmail(username)
+                    .orElseGet(() -> {
+                        Doctor doctor = doctorRepository.findByEmail(username)
+                                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                        return new User(doctor.getEmail(), doctor.getPassword(), doctor.getRole());
+
+
+                    });
+
+            return new org.springframework.security.core.userdetails.User(
+                    user.getEmail(),
+                    user.getPassword(),
+                    user.getAuthorities());
+        };
     }
 
     @Bean

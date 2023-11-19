@@ -58,9 +58,9 @@ export class AuthenticationComponent implements OnInit{
 
   private authenticateDoctor(response: AuthenticationResponse) {
     sessionStorage.setItem("token", response.token.toString());
-    sessionStorage.setItem("doctorId", response.uid.toString());
+    sessionStorage.setItem("doctorId", response.doctorId.toString());
     sessionStorage.setItem("role", response.role);
-    this.router.navigate(["/home"]);
+    this.router.navigate(["/doctors-home"]);
   }
   
 
