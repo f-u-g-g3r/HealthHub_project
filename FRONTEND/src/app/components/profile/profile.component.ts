@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Doctor } from 'src/app/interfaces/doctor';
 import { AuthenticationRequest } from 'src/app/interfaces/requests&responses/authenticationRequest';
 import { AuthenticationResponse } from 'src/app/interfaces/requests&responses/authenticationResponse';
 import { UpdatedUser } from 'src/app/interfaces/updatedUser';
@@ -15,24 +16,34 @@ import { UserService } from 'src/app/services/user.service';
 export class ProfileComponent implements OnInit {
 
   public userData!: User;
-  public isDoctor!: boolean;
+  public doctorData!: Doctor;
+  public isDoctor: boolean = false;
   constructor(private router: Router, public authService: AuthenticationService, private userService: UserService) {
     
   }
 
   ngOnInit(): void {
     if (!sessionStorage.getItem("token")) {
-      console.log(sessionStorage.getItem("token"))
       this.router.navigate(["/login"])
     }
-    
-    this.userService.getOneUser(sessionStorage.getItem('uid')).subscribe({
-      next: (response: User) => this.userData = response,
-      error: console.error
-    });
 
-    if (this.userData.familyDoctorId != null) {
-      this.getFamilyDoctor(this.userData.familyDoctorId);
+    if (sessionStorage.getItem('role') == "DOCTOR") {
+      this.isDoctor = true;
+      this.userService.getOneDoctor(sessionStorage.getItem('docId')).subscribe({
+        next: (response: Doctor) => this.doctorData = response,
+        error: console.error
+      });
+    }
+    
+    if (sessionStorage.getItem('role') == "USER") {
+      this.userService.getOneUser(sessionStorage.getItem('uid')).subscribe({
+        next: (response: User) => this.userData = response,
+        error: console.error
+      });
+
+      if (this.userData.familyDoctorId != null) {
+        this.getFamilyDoctor(this.userData.familyDoctorId);
+      }
     }
   }
 

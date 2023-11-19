@@ -21,9 +21,10 @@ export class HomeComponent implements OnInit {
         this.router.navigate(["/login"])
       } else if (sessionStorage.getItem("role") == "DOCTOR") {
         this.router.navigate(["/doctors-home"]);
+      } else {
+        this.getMedInfo();
       }
-      this.getMedInfo();
-      console.log(this.role);
+      console.log(sessionStorage.getItem('role'))
   }
 
   private getMedInfo() {

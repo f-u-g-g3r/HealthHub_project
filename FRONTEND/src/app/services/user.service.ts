@@ -10,6 +10,7 @@ import { MedHistory } from '../interfaces/medCard/MedHistory';
 import { Allergy } from '../interfaces/medCard/Allergy';
 import { ChronicDisease } from '../interfaces/medCard/chronicDisease';
 import { ResultOfSurvey } from '../interfaces/medCard/resultOfSurvey';
+import { Doctor } from '../interfaces/doctor';
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +31,10 @@ export class UserService {
 
   public getOneUser(uid: any): Observable<User> {
     return this.http.get<User>(`${this.serverUrl}/users/` + uid, this.httpOptions);
+  }
+
+  public getOneDoctor(doctorId: any): Observable<Doctor> {
+    return this.http.get<Doctor>(`${this.serverUrl}/doctors/` + doctorId, this.httpOptions);
   }
 
   public updateUser(uid: any, user: UpdatedUser): Observable<User> {

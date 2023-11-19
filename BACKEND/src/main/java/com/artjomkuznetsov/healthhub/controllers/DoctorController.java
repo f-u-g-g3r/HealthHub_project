@@ -56,6 +56,7 @@ public class DoctorController {
     }
 
     @GetMapping("/doctors/{id}")
+    @CrossOrigin(origins="*")
     public EntityModel<Doctor> one(@PathVariable Long id) {
         Doctor doctor = repository.findById(id)
                 .orElseThrow(() -> new DoctorNotFoundException(id));

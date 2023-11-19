@@ -28,6 +28,8 @@ export class AuthenticationService {
     return this.http.post<DoctorAuthResponse>(`${this.serverUrl}/auth/register-doctor`, request);
   }
 
+  
+
   public logOut() {
     sessionStorage.clear();
     this.router.navigate(["/login"]);
