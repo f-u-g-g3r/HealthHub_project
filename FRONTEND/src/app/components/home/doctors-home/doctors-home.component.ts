@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 
@@ -7,14 +7,10 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
   templateUrl: './doctors-home.component.html',
   styleUrls: ['./doctors-home.component.css']
 })
-export class DoctorsHomeComponent {
+export class DoctorsHomeComponent implements OnInit {
   constructor(private router: Router, public service: AuthenticationService) {}
 
   ngOnInit(): void {
-      if (!sessionStorage.getItem("token")) {
-        this.router.navigate(["/login"]);
-      } else if (sessionStorage.getItem("role") != "DOCTOR") {
-        this.router.navigate(["/home"]);
-      }
+      this.service.checkAuthentication('DOCTOR');
   }
 }

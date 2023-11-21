@@ -17,14 +17,10 @@ export class HomeComponent implements OnInit {
   constructor(private router: Router, public service: AuthenticationService, public userService: UserService) {}
 
   ngOnInit(): void {
-      if (!sessionStorage.getItem("token")) {
-        this.router.navigate(["/login"])
-      } else if (sessionStorage.getItem("role") == "DOCTOR") {
-        this.router.navigate(["/doctors-home"]);
-      } else {
-        this.getMedInfo();
-      }
-      console.log(sessionStorage.getItem('role'))
+    this.service.checkAuthentication("USER");
+    console.log(sessionStorage.getItem('role'))
+    this.getMedInfo();
+    console.log(sessionStorage.getItem('role'))
   }
 
   private getMedInfo() {

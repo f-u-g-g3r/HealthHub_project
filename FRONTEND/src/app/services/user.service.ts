@@ -26,6 +26,8 @@ export class UserService {
     })
   };
 
+  // USERS
+
   public all(): Observable<User[]> {
     return this.http.get<User[]>(`${this.serverUrl}/users`);
   }
@@ -34,17 +36,12 @@ export class UserService {
     return this.http.get<User>(`${this.serverUrl}/users/` + uid, this.httpOptions);
   }
 
-  public getOneDoctor(doctorId: any): Observable<Doctor> {
-    return this.http.get<Doctor>(`${this.serverUrl}/doctors/` + doctorId, this.httpOptions);
-  }
+  
 
   public updateUser(uid: any, user: UpdatedUser): Observable<User> {
     return this.http.put<User>(`${this.serverUrl}/users/` + uid, user, this.httpOptions);
   }
 
-  public updateDoctor(docId: any, doctor: UpdatedDoctor): Observable<Doctor> {
-    return this.http.put<Doctor>(`${this.serverUrl}/doctors/` + docId, doctor, this.httpOptions);
-  }
   
   public getUsersByDoctorId(doctorId: string): Observable<User[]> {
     return this.http.get<User[]>(`${this.serverUrl}/users-by-doctor/` + doctorId, this.httpOptions);
@@ -70,8 +67,6 @@ export class UserService {
     return this.http.post<ResultOfSurvey>(`${this.serverUrl}/med-cards/${medCardId}/results-of-survey`, data, this.httpOptions);
   }
 
-
-
   public addBloodType(medCardId: number, bloodType: string): Observable<MedCard> {
     return this.http.put<MedCard>(`${this.serverUrl}/med-cards/${medCardId}`, bloodType, this.httpOptions);
   }
@@ -80,7 +75,22 @@ export class UserService {
     return this.http.put<MedCard>(`${this.serverUrl}/med-cards/${medCardId}`, rhFactor, this.httpOptions);
   }
 
+  // DOCTORS
 
+  public getOneDoctor(doctorId: any): Observable<Doctor> {
+    return this.http.get<Doctor>(`${this.serverUrl}/doctors/` + doctorId, this.httpOptions);
+  }
 
+  public updateDoctor(docId: any, doctor: UpdatedDoctor): Observable<Doctor> {
+    return this.http.put<Doctor>(`${this.serverUrl}/doctors/` + docId, doctor, this.httpOptions);
+  }
+
+  public getInactivatedDoctors(): Observable<Doctor[]> {
+    return this.http.get<Doctor[]>(`${this.serverUrl}/doctors/inactivated`, this.httpOptions);
+  }
+
+  public getActivatedDoctors(): Observable<Doctor[]> {
+    return this.http.get<Doctor[]>(`${this.serverUrl}/doctors/activated`, this.httpOptions);
+  }
   
 }

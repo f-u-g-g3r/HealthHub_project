@@ -28,6 +28,24 @@ export class AuthenticationService {
     return this.http.post<DoctorAuthResponse>(`${this.serverUrl}/auth/register-doctor`, request);
   }
 
+  public checkAuthentication(role: string): void {
+    if (!sessionStorage.getItem("token")) {
+      this.router.navigate(['/login']);
+    }
+
+    if (sessionStorage.getItem('role') !== role) {
+      if (sessionStorage.getItem('role') === "USER") {
+        this.router.navigate(['/home']);
+      } else if (sessionStorage.getItem('role') === "DOCTOR") {
+        this.router.navigate(['/doctors-home']);
+      } else if (sessionStorage.getItem('role') === "ADMIN") {
+        this.router.navigate(['/admins-home']);
+      }
+    }
+  }
+
+  
+
   
 
   public logOut() {

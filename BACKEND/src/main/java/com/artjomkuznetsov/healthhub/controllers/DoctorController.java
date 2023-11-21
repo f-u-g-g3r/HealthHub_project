@@ -3,6 +3,7 @@ package com.artjomkuznetsov.healthhub.controllers;
 import com.artjomkuznetsov.healthhub.assemblers.DoctorModelAssembler;
 import com.artjomkuznetsov.healthhub.models.Doctor;
 import com.artjomkuznetsov.healthhub.models.DoctorMinimal;
+import com.artjomkuznetsov.healthhub.models.Status;
 import com.artjomkuznetsov.healthhub.repositories.DoctorRepository;
 import com.artjomkuznetsov.healthhub.exceptions.DoctorNotFoundException;
 import org.springframework.hateoas.CollectionModel;
@@ -36,7 +37,6 @@ public class DoctorController {
                 linkTo(methodOn(DoctorController.class).all()).withSelfRel());
     }
 
-
     @GetMapping("/doctors-name/{id}")
     @CrossOrigin(origins="*")
     public DoctorMinimal doctorName(@PathVariable Long id) {
@@ -65,22 +65,23 @@ public class DoctorController {
     }
 
     @PutMapping("/doctors/{id}")
+    @CrossOrigin(origins="*")
     public ResponseEntity<?> replaceDoctor(@RequestBody Doctor newDoctor, @PathVariable Long id) {
         Doctor updatedDoctor = repository.findById(id)
                 .map(doctor -> {
-                    doctor.setFirstname(newDoctor.getFirstname());
-                    doctor.setLastname(newDoctor.getLastname());
-                    doctor.setDateOfBirth(newDoctor.getDateOfBirth());
-                    doctor.setGender(newDoctor.getGender());
-                    doctor.setAddress(newDoctor.getAddress());
-                    doctor.setEmail(newDoctor.getEmail());
-                    doctor.setPhone(newDoctor.getPhone());
-                    doctor.setPassword(newDoctor.getPassword());
-                    doctor.setSpecialization(newDoctor.getSpecialization());
-                    doctor.setPlaceOfWork(newDoctor.getPlaceOfWork());
-                    doctor.setLicenseNumber(newDoctor.getLicenseNumber());
-                    doctor.setLicenseIssuingDate(newDoctor.getLicenseIssuingDate());
-                    doctor.setLicenseIssuingAuthority(newDoctor.getLicenseIssuingAuthority());
+                    if (newDoctor.getFirstname() != null) doctor.setFirstname(newDoctor.getFirstname());
+                    if (newDoctor.getLastname() != null) doctor.setLastname(newDoctor.getLastname());
+                    if (newDoctor.getDateOfBirth() != null)  doctor.setDateOfBirth(newDoctor.getDateOfBirth());
+                    if (newDoctor.getGender() != null) doctor.setGender(newDoctor.getGender());
+                    if (newDoctor.getAddress() != null) doctor.setAddress(newDoctor.getAddress());
+                    if (newDoctor.getEmail() != null) doctor.setEmail(newDoctor.getEmail());
+                    if (newDoctor.getPhone() != null) doctor.setPhone(newDoctor.getPhone());
+                    if (newDoctor.getPassword() != null) doctor.setPassword(newDoctor.getPassword());
+                    if (newDoctor.getSpecialization() != null) doctor.setSpecialization(newDoctor.getSpecialization());
+                    if (newDoctor.getPlaceOfWork() != null) doctor.setPlaceOfWork(newDoctor.getPlaceOfWork());
+                    if (newDoctor.getLicenseNumber() != null) doctor.setLicenseNumber(newDoctor.getLicenseNumber());
+                    if (newDoctor.getLicenseIssuingDate() != null) doctor.setLicenseIssuingDate(newDoctor.getLicenseIssuingDate());
+                    if (newDoctor.getLicenseIssuingAuthority() != null) doctor.setLicenseIssuingAuthority(newDoctor.getLicenseIssuingAuthority());
                     return repository.save(doctor);
                 })
                 .orElseGet(() -> {
@@ -99,4 +100,26 @@ public class DoctorController {
         repository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/doctors/inactivated")
+    @CrossOrigin(origins="*")
+    public CollectionModel<EntityModel<Doctor>> inactivated() {
+        List<EntityModel<Doctor>> inactivatedDoctors = repository.findAllByStatus(Status.INACTIVE).stream()
+                .map(assembler::toModel)
+                .collect(Collectors.toList());
+        return CollectionModel.of(inactivatedDoctors,
+                linkTo(methodOn(DoctorController.class).inactivated()).withSelfRel());
+    }
+
+    @GetMapping("/doctors/activated")
+    @CrossOrigin(origins="*")
+    public CollectionModel<EntityModel<Doctor>> activated() {
+        List<EntityModel<Doctor>> activatedDoctors = repository.findAllByStatus(Status.ACTIVE).stream()
+                .map(assembler::toModel)
+                .collect(Collectors.toList());
+        return CollectionModel.of(activatedDoctors,
+                linkTo(methodOn(DoctorController.class).activated()).withSelfRel());
+    }
+
+
 }

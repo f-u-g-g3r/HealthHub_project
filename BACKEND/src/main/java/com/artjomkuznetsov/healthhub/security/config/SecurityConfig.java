@@ -29,7 +29,12 @@ public class SecurityConfig {
                 .csrf((csrf) -> csrf.disable())
                 .authorizeHttpRequests((authorizeHttpRequests) ->
                         authorizeHttpRequests
-                                .requestMatchers("/auth/**", "/doctors-name/**")
+                                .requestMatchers(
+                                        "/auth/**",
+                                        "/doctors-name/**",
+                                        "/doctors/inactivated",
+                                        "/doctors/activated"
+                                )
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated())

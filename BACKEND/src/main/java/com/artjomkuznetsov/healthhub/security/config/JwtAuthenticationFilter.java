@@ -56,6 +56,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         for (String part : uriParts) {
             System.out.println(part);
+            if (part.equals("activated") || part.equals("inactivated")) {
+                filterChain.doFilter(request, response);
+                return;
+            }
         }
 
         if (uriParts.length > 2) {

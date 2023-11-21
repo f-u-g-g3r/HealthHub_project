@@ -1,0 +1,61 @@
+<div class="container">
+    <div class="dropdown col-2 ms-auto mb-5">
+        <button class="btn btn-primary dropdown-toggle col-12" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Menu
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="home">Home</a></li>
+          <li><a class="dropdown-item" href="#">Options</a></li>
+          <li><a class="dropdown-item" href="#" (click)="service.logOut()">Log out</a></li>
+        </ul>
+    </div>
+
+    <div class="row gx-0">
+
+        <div class="col-5 mx-auto">
+            <h5>Inactivated doctors</h5>
+            <table class="table table-dark">
+                <thead>
+                    <tr>
+                        <td>Firstname</td>
+                        <td>Lastname</td>
+                        <td>UUID</td>
+                        <td>Action</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let inactivatedDoctor of inactivatedDoctors">
+                        <td>{{ inactivatedDoctor.firstname }}</td>
+                        <td>{{ inactivatedDoctor.lastname }}</td>
+                        <td>{{ inactivatedDoctor.uuid }}</td>
+                        <td><button class="btn btn-outline-success" (click)="activateDoctor(inactivatedDoctor.id)">Activate</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-5 mx-auto">
+            <h5>Activated doctors</h5>
+            <table class="table table-dark">
+                <thead>
+                    <tr>
+                        <td>Firstname</td>
+                        <td>Lastname</td>
+                        <td>UUID</td>
+                        <td>Action</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let activatedDoctor of activatedDoctors">
+                        <td>{{ activatedDoctor.firstname }}</td>
+                        <td>{{ activatedDoctor.lastname }}</td>
+                        <td>{{ activatedDoctor.uuid }}</td>
+                        <td><button class="btn btn-outline-danger" (click)="inactivateDoctor(activatedDoctor.id)">Deactivate</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>

@@ -27,9 +27,9 @@ export class AuthenticationComponent implements OnInit{
     this.authenticationService.authenticate(formFields).subscribe({
       next: (response: AuthenticationResponse) => {
         sessionStorage.setItem('password', formFields["password"])
-        if (response.role == "DOCTOR") {
+        if (response.role === "DOCTOR") {
           this.authenticateDoctor(response);
-        } else if (response.role == "USER") {
+        } else if (response.role === "USER" || response.role === "ADMIN") {
           this.authenticateUser(response);
         }
       },
