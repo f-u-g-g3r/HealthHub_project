@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthenticationComponent } from './components/authentication/authentication.component';
-import { HomeComponent } from './components/users-home/users-home.component';
+import { AuthenticationComponent } from './components/authenticationc/authenticationUser/authentication.component';
+import { HomeComponent } from './components/home/users-home/users-home.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { DoctorsworkplaceComponent } from './components/doctorsworkplace/doctorsworkplace.component';
 import { PatientProfileComponent } from './components/patient-profile/patient-profile.component';
-import { AuthenticationDoctorComponent } from './components/authenticationDoctors/authenticationDoctor.component';
-import { DoctorsHomeComponent } from './components/doctors-home/doctors-home.component';
+import { AuthenticationDoctorComponent } from './components/authenticationc/authenticationDoctors/authenticationDoctor.component';
+import { DoctorsHomeComponent } from './components/home/doctors-home/doctors-home.component';
 
 const routes: Routes = [
   { path: 'login', component: AuthenticationComponent },

@@ -12,7 +12,7 @@ export interface Doctor {
     specialization: string;
     placeOfWork: string;
     licenseNumber: string;
-    licenceIssuingDate: string;
+    licenseIssuingDate: string;
     licenseIssuingAuthority: string;
     status: string;
 }

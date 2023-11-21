@@ -11,6 +11,7 @@ import { Allergy } from '../interfaces/medCard/Allergy';
 import { ChronicDisease } from '../interfaces/medCard/chronicDisease';
 import { ResultOfSurvey } from '../interfaces/medCard/resultOfSurvey';
 import { Doctor } from '../interfaces/doctor';
+import { UpdatedDoctor } from '../interfaces/updatedDoctor';
 
 @Injectable({
   providedIn: 'root'
@@ -41,6 +42,10 @@ export class UserService {
     return this.http.put<User>(`${this.serverUrl}/users/` + uid, user, this.httpOptions);
   }
 
+  public updateDoctor(docId: any, doctor: UpdatedDoctor): Observable<Doctor> {
+    return this.http.put<Doctor>(`${this.serverUrl}/doctors/` + docId, doctor, this.httpOptions);
+  }
+  
   public getUsersByDoctorId(doctorId: string): Observable<User[]> {
     return this.http.get<User[]>(`${this.serverUrl}/users-by-doctor/` + doctorId, this.httpOptions);
   }
