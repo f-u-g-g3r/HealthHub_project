@@ -37,6 +37,8 @@ public class DoctorController {
                 linkTo(methodOn(DoctorController.class).all()).withSelfRel());
     }
 
+
+
     @GetMapping("/doctors-name/{id}")
     @CrossOrigin(origins="*")
     public DoctorMinimal doctorName(@PathVariable Long id) {
@@ -82,6 +84,7 @@ public class DoctorController {
                     if (newDoctor.getLicenseNumber() != null) doctor.setLicenseNumber(newDoctor.getLicenseNumber());
                     if (newDoctor.getLicenseIssuingDate() != null) doctor.setLicenseIssuingDate(newDoctor.getLicenseIssuingDate());
                     if (newDoctor.getLicenseIssuingAuthority() != null) doctor.setLicenseIssuingAuthority(newDoctor.getLicenseIssuingAuthority());
+                    if (newDoctor.getStatus() != null) doctor.setStatus(newDoctor.getStatus());
                     return repository.save(doctor);
                 })
                 .orElseGet(() -> {
@@ -103,22 +106,14 @@ public class DoctorController {
 
     @GetMapping("/doctors/inactivated")
     @CrossOrigin(origins="*")
-    public CollectionModel<EntityModel<Doctor>> inactivated() {
-        List<EntityModel<Doctor>> inactivatedDoctors = repository.findAllByStatus(Status.INACTIVE).stream()
-                .map(assembler::toModel)
-                .collect(Collectors.toList());
-        return CollectionModel.of(inactivatedDoctors,
-                linkTo(methodOn(DoctorController.class).inactivated()).withSelfRel());
+    public List<Doctor> inactivated() {
+        return repository.findAllByStatus(Status.INACTIVE);
     }
 
     @GetMapping("/doctors/activated")
     @CrossOrigin(origins="*")
-    public CollectionModel<EntityModel<Doctor>> activated() {
-        List<EntityModel<Doctor>> activatedDoctors = repository.findAllByStatus(Status.ACTIVE).stream()
-                .map(assembler::toModel)
-                .collect(Collectors.toList());
-        return CollectionModel.of(activatedDoctors,
-                linkTo(methodOn(DoctorController.class).activated()).withSelfRel());
+    public List<Doctor> activated() {
+        return repository.findAllByStatus(Status.ACTIVE);
     }
 
 

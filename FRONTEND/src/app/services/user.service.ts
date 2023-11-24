@@ -92,5 +92,13 @@ export class UserService {
   public getActivatedDoctors(): Observable<Doctor[]> {
     return this.http.get<Doctor[]>(`${this.serverUrl}/doctors/activated`, this.httpOptions);
   }
+
+  public activateDoctor(docId: any): Observable<Doctor> {
+    return this.http.put<Doctor>(`${this.serverUrl}/doctors/` + docId, {"status": "ACTIVE"}, this.httpOptions);
+  }
+
+  public deactivateDoctor(docId: any): Observable<Doctor> {
+    return this.http.put<Doctor>(`${this.serverUrl}/doctors/` + docId, {"status": "INACTIVE"}, this.httpOptions);
+  }
   
 }

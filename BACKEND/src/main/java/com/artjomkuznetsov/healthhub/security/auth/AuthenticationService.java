@@ -67,10 +67,11 @@ public class AuthenticationService {
         userRepository.save(newUser);
         setUidToNewMedCard(newUser);
 
-        Map<String, Long> idClaim = new HashMap<>();
-        idClaim.put("id", newUser.getId());
+        HashMap extraClaims = new HashMap();
+        extraClaims.put("id", newUser.getId());
+        extraClaims.put("role", newUser.getRole());
 
-        String jwtToken =jwtService.generateToken(idClaim, newUser);
+        String jwtToken =jwtService.generateToken(extraClaims, newUser);
 
         return new AuthenticationResponse(jwtToken, newUser.getId(), newUser.getMedCardID(), newUser.getRole());
     }
@@ -86,10 +87,11 @@ public class AuthenticationService {
         newDoctor.setPassword(passwordEncoder.encode(newDoctor.getPassword()));
         doctorRepository.save(newDoctor);
 
-        Map<String, Long> idClaim = new HashMap<>();
-        idClaim.put("id", newDoctor.getId());
+        HashMap extraClaims = new HashMap();
+        extraClaims.put("id", newDoctor.getId());
+        extraClaims.put("role", newDoctor.getRole());
 
-        String jwtToken =jwtService.generateToken(idClaim, newDoctor);
+        String jwtToken =jwtService.generateToken(extraClaims, newDoctor);
 
         return new DoctorAuthenticationResponse(jwtToken, newDoctor.getId(), newDoctor.getRole());
     }
@@ -119,10 +121,11 @@ public class AuthenticationService {
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
 
-        Map<String, Long> idClaim = new HashMap<>();
-        idClaim.put("id", user.getId());
+        HashMap extraClaims = new HashMap();
+        extraClaims.put("id", user.getId());
+        extraClaims.put("role", user.getRole());
 
-        String jwtToken = jwtService.generateToken(idClaim, user);
+        String jwtToken = jwtService.generateToken(extraClaims, user);
 
         return new AuthenticationResponse(jwtToken, user.getId(), user.getMedCardID(), user.getRole());
     }
@@ -131,14 +134,14 @@ public class AuthenticationService {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
-        System.out.println("1");
         Doctor doctor = doctorRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
-        System.out.println("2");
-        Map<String, Long> idClaim = new HashMap<>();
-        idClaim.put("id", doctor.getId());
-        System.out.println("3");
-        String jwtToken = jwtService.generateToken(idClaim, doctor);
+
+        HashMap extraClaims = new HashMap();
+        extraClaims.put("id", doctor.getId());
+        extraClaims.put("role", doctor.getRole());
+
+        String jwtToken = jwtService.generateToken(extraClaims, doctor);
 
 
         return new DoctorAuthenticationResponse(jwtToken, doctor.getId(), doctor.getRole());

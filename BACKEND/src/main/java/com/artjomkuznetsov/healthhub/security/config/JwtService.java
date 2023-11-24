@@ -30,6 +30,14 @@ public class JwtService {
         return claims.get("id", Long.class);
     }
 
+    public String extractRole(String jwt) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(SECRET_KEY)
+                .parseClaimsJws(jwt)
+                .getBody();
+        return claims.get("role", String.class);
+    }
+
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);

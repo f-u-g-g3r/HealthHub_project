@@ -27,7 +27,7 @@ export class AdminsHomeComponent implements OnInit {
   private getInactivatedDoctors() {
     this.userService.getInactivatedDoctors().subscribe({
       next: (response: Doctor[]) => {
-        this.inactivatedDoctors = response
+        this.inactivatedDoctors = response;
         console.log(this.inactivatedDoctors)
       },
       error: console.error
@@ -42,11 +42,17 @@ export class AdminsHomeComponent implements OnInit {
   }
 
   public activateDoctor(docId: number) {
-
+    this.userService.activateDoctor(docId).subscribe({
+      next: () => window.location.reload(),
+      error: console.error
+    });
   }
 
   public inactivateDoctor(docId: number) {
-
+    this.userService.deactivateDoctor(docId).subscribe({
+      next: () => window.location.reload(),
+      error: console.error
+    });
   }
 
 }
