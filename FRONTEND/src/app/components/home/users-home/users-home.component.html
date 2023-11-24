@@ -1,208 +1,232 @@
-<div class="container">
-  <div class="dropdown col-2 ms-auto mb-5">
-      <button class="btn btn-primary dropdown-toggle col-12" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-        Menu
-      </button>
-      <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="home">Home</a></li>
-        <li *ngIf="role == 'DOCTOR'"><a class="dropdown-item" href="doctors-workplace">Switch to workplace</a></li>
-        <li><a class="dropdown-item" href="home/profile">My profile</a></li>
-        <li><a class="dropdown-item" href="#">Options</a></li>
-        <li><a class="dropdown-item" href="#" (click)="service.logOut()">Log out</a></li>
+<div class="navbar bg-base-100">
+  <div class="navbar-start">
+    <div class="dropdown">
+      <label tabindex="0" class="btn btn-ghost lg:hidden">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16"/>
+        </svg>
+      </label>
+      <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+        <li><a href="home">Home</a></li>
+        <li><a href="home/profile">My profile</a></li>
+        <li>
+          <a>Options</a>
+          <ul class="p-2">
+            <li>
+              Theme
+              <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                <li><a>Dark</a></li>
+                <li><a>White</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
       </ul>
+    </div>
+    <a class="btn btn-ghost text-xl">Health hub</a>
   </div>
+  <div class="navbar-center hidden lg:flex">
+    <ul class="menu menu-horizontal px-1">
+      <li><a href="home">Home</a></li>
+      <li><a href="home/profile">My profile</a></li>
 
-  <div class="row gx-0">
-
-    <div class="accordion col-5 me-auto" id="medCardAccordion">
-      <div class="accordion-item">
-        <h2 class="accordion-header">
-          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#medCardCollapse" aria-expanded="true" aria-controls="medCardCollapse">
-            Information about your medical card
-          </button>
-        </h2>
-        <div id="medCardCollapse" class="accordion-collapse collapse" data-bs-parent="#medCardAccordion">
-          <div class="accordion-body">
-            <a class="btn btn-outline-dark mb-2" data-bs-toggle="collapse" href="#medHistory" role="button" aria-expanded="false" aria-controls="collapseExample">
-              Medical history and anamnesis
-            </a>
-
-            <div class="collapse" id="medHistory">
-              <div class="ps-5" *ngIf="medCard.medHistory === null">
-                Empty
+      <li tabindex="0">
+        <details>
+          <summary>Options</summary>
+          <ul class="p-2">
+            <li>
+              <div class="dropdown dropdown-right">
+                <label tabindex="0">Themes</label>
+                <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                  <li><a data-set-theme="light" data-act-class="ACTIVECLASS">Light</a></li>
+                  <li><a data-set-theme="dark" data-act-class="ACTIVECLASS">Dark</a></li>
+                </ul>
               </div>
-              <div class="ps-5" *ngIf="medCard.medHistory !== null">
-                {{ medCard.medHistory }}
-              </div>
+            </li>
+          </ul>
+        </details>
+      </li>
+
+    </ul>
+  </div>
+  <div class="navbar-end">
+    <a class="btn btn-primary" href="#" (click)="service.logOut()">Log out</a>
+  </div>
+</div>
+
+
+<div class="container mx-auto mt-20">
+
+  <div class="grid grid-cols-2 gap-8">
+
+    <div class="collapse bg-base-200">
+      <input type="radio" name="main-accordion" />
+      <div class="collapse-title text-xl font-medium">
+        Information about your medical card
+      </div>
+      <div class="collapse-content">
+        <div class="collapse">
+          <input type="radio" name="main-accordion-content-1">
+          <a class="collapse-title text-lg btn btn-primary my-3">
+            Medical history and anamnesis
+          </a>
+          <div class="collapse-content">
+            <div class="ps-5" *ngIf="medCard.medHistory.length == 0">
+              Empty
             </div>
-
-            <br />
-
-            <a class="btn btn-outline-dark mb-2" data-bs-toggle="collapse" href="#bloodType" role="button" aria-expanded="false" aria-controls="collapseExample">
-              Blood type and Rh factor
-            </a>
-
-            <div class="collapse" id="bloodType">
-              <div class="ps-5" *ngIf="medCard.bloodType === null || medCard.rhFactor === null">
-                Empty
-              </div>
-              <div class="ps-5" *ngIf="medCard.bloodType !== null && medCard.rhFactor !== null">
-                Blood type: {{ medCard.bloodType }} <br />
-                Rh factor: {{ medCard.rhFactor }}
-              </div>
+            <div class="ps-5" *ngIf="medCard.medHistory.length > 0">
+              {{ medCard.medHistory }}
             </div>
+          </div>
+        </div>
 
-            <br />
-
-            <a class="btn btn-outline-dark mb-2" data-bs-toggle="collapse" href="#allergies" role="button" aria-expanded="false" aria-controls="collapseExample">
-              Allergies and reactions to medications
-            </a>
-
-            <div class="collapse" id="allergies">
-              <div class="ps-5" *ngIf="medCard.allergies === null">
-                Empty
-              </div>
-              <div class="ps-5" *ngIf="medCard.allergies !== null">
-                {{ medCard.allergies }}
-              </div>
+        <div class="collapse">
+          <input type="radio" name="main-accordion-content-1">
+          <a class="collapse-title text-lg btn btn-primary my-3">
+            Blood type and Rh factor
+          </a>
+          <div class="collapse-content">
+            <div class="ps-5" *ngIf="medCard.bloodType === null || medCard.rhFactor === null">
+              Empty
             </div>
-
-            <br />
-
-            <a class="btn btn-outline-dark mb-2" data-bs-toggle="collapse" href="#chronicDiseases" role="button" aria-expanded="false" aria-controls="collapseExample">
-              Chronic diseases
-            </a>
-
-            <div class="collapse" id="chronicDiseases">
-              <div class="ps-5" *ngIf="medCard.chronicDiseases === null">
-                Empty
-              </div>
-              <div class="ps-5" *ngIf="medCard.chronicDiseases !== null">
-                {{ medCard.chronicDiseases }}
-              </div>
+            <div class="ps-5" *ngIf="medCard.bloodType !== null && medCard.rhFactor !== null">
+              Blood type: {{ medCard.bloodType }} <br />
+              Rh factor: {{ medCard.rhFactor }}
             </div>
+          </div>
+        </div>
 
+        <div class="collapse">
+          <input type="radio" name="main-accordion-content-1">
+          <a class="collapse-title text-lg btn btn-primary my-3">
+            Allergies and reactions to medications
+          </a>
+          <div class="collapse-content">
+            <div class="ps-5" *ngIf="medCard.allergies.length == 0">
+              Empty
+            </div>
+            <div class="ps-5" *ngIf="medCard.allergies.length > 0">
+              {{ medCard.allergies }}
+            </div>
+          </div>
+        </div>
 
+        <div class="collapse">
+          <input type="radio" name="main-accordion-content-1">
+          <a class="collapse-title text-lg btn btn-primary my-3">
+            Chronic diseases
+          </a>
+          <div class="collapse-content">
+            <div class="ps-5" *ngIf="medCard.chronicDiseases.length == 0">
+              Empty
+            </div>
+            <div class="ps-5" *ngIf="medCard.chronicDiseases.length > 0">
+              {{ medCard.chronicDiseases }}
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="accordion col-5 ms-auto" id="prescriptionsAccordion">
-      <div class="accordion-item">
-        <h2 class="accordion-header">
-          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#prescriptionsCollapse" aria-expanded="true" aria-controls="prescriptionsCollapse">
-            Electronic appointments and prescriptions
-          </button>
-        </h2>
-        <div id="prescriptionsCollapse" class="accordion-collapse collapse" data-bs-parent="#prescriptionsAccordion">
-          <div class="accordion-body">
-            
-            <a class="btn btn-outline-dark mb-2" data-bs-toggle="collapse" href="#prescriptions" role="button" aria-expanded="false" aria-controls="collapseExample">
-              Doctor's prescriptions and appointments
-            </a>
-
-            <div class="collapse" id="prescriptions">
-              <div class="ps-5">
-                Empty.
-              </div>
+    <div class="collapse bg-base-200">
+      <input type="radio" name="main-accordion" />
+      <div class="collapse-title text-xl font-medium">
+        Electronic appointments and prescriptions
+      </div>
+      <div class="collapse-content">
+        <div class="collapse">
+          <input type="radio" name="main-accordion-content-2">
+          <a class="collapse-title text-lg btn btn-primary my-3">
+            Doctor's prescriptions and appointments
+          </a>
+          <div class="collapse-content">
+            <div class="ps-5">
+              Empty
             </div>
+          </div>
+        </div>
 
-            <br />
-
-            <a class="btn btn-outline-dark mb-2" data-bs-toggle="collapse" href="#instructions" role="button" aria-expanded="false" aria-controls="collapseExample">
-              Dosages, administration instructions and frequency
-            </a>
-
-            <div class="collapse" id="instructions">
-              <div class="ps-5">
-                Empty.
-              </div>
+        <div class="collapse">
+          <input type="radio" name="main-accordion-content-2">
+          <a class="collapse-title text-lg btn btn-primary my-3">
+            Dosages, administration instructions and frequency
+          </a>
+          <div class="collapse-content">
+            <div class="ps-5">
+              Empty
             </div>
-
-
           </div>
         </div>
       </div>
     </div>
 
-    <div class="accordion col-5 me-auto mt-5" id="historyAccordion">
-      <div class="accordion-item">
-        <h2 class="accordion-header">
-          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#historyCollapse" aria-expanded="true" aria-controls="historyCollapse">
-            History of visits
-          </button>
-        </h2>
-        <div id="historyCollapse" class="accordion-collapse collapse" data-bs-parent="#historyAccordion">
-          <div class="accordion-body">
-            
-            <a class="btn btn-outline-dark mb-2" data-bs-toggle="collapse" href="#datesOfPrevVisits" role="button" aria-expanded="false" aria-controls="collapseExample">
-              Dates and descriptions of previous visits to doctors
-            </a>
-
-            <div class="collapse" id="datesOfPrevVisits">
-              <div class="ps-5">
-                Empty.
-              </div>
+    <div class="collapse bg-base-200">
+      <input type="radio" name="main-accordion" />
+      <div class="collapse-title text-xl font-medium">
+        History of visits
+      </div>
+      <div class="collapse-content">
+        <div class="collapse">
+          <input type="radio" name="main-accordion-content-3">
+          <a class="collapse-title text-lg btn btn-primary my-3">
+            Dates and descriptions of previous visits to doctors
+          </a>
+          <div class="collapse-content">
+            <div class="ps-5">
+              Empty
             </div>
-            
-            <a class="btn btn-outline-dark mb-2" data-bs-toggle="collapse" href="#recommendations" role="button" aria-expanded="false" aria-controls="collapseExample">
-              Treatment recommendations
-            </a>
-
-            <div class="collapse" id="recommendations">
-              <div class="ps-5">
-                Empty.
-              </div>
-            </div>
-
-            <br />
-
           </div>
         </div>
+
+        <div class="collapse">
+          <input type="radio" name="main-accordion-content-3">
+          <a class="collapse-title text-lg btn btn-primary my-3">
+            Treatment recommendations
+          </a>
+          <div class="collapse-content">
+            <div class="ps-5">
+              Empty
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
 
-    <div class="accordion col-5 ms-auto mt-5" id="analyzesAccordion">
-      <div class="accordion-item">
-        <h2 class="accordion-header">
-          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#analyzesCollapse" aria-expanded="true" aria-controls="analyzesCollapse">
-            Results of examinations and analyzes
-          </button>
-        </h2>
-        <div id="analyzesCollapse" class="accordion-collapse collapse" data-bs-parent="#analyzesAccordion">
-          <div class="accordion-body">
-
-            <a class="btn btn-outline-dark mb-2" data-bs-toggle="collapse" href="#resultsOfExaminations" role="button" aria-expanded="false" aria-controls="collapseExample">
-              Results of laboratory and instrumental examinations
-            </a>
-
-            <div class="collapse" id="resultsOfExaminations">
-              <div class="ps-5" *ngIf="medCard.resultsOfSurveys === null">
-                Empty
-              </div>
-              <div class="ps-5" *ngIf="medCard.resultsOfSurveys !== null">
-                {{ medCard.resultsOfSurveys }}
-              </div>
+    <div class="collapse bg-base-200">
+      <input type="radio" name="main-accordion" />
+      <div class="collapse-title text-xl font-medium">
+        Results of examinations and analyzes
+      </div>
+      <div class="collapse-content">
+        <div class="collapse">
+          <input type="radio" name="main-accordion-content-4">
+          <a class="collapse-title text-lg btn btn-primary my-3">
+            Results of laboratory and instrumental examinations
+          </a>
+          <div class="collapse-content">
+            <div class="ps-5" *ngIf="medCard.resultsOfSurveys.length == 0">
+              Empty
             </div>
-
-            <br />
-
-            <a class="btn btn-outline-dark mb-2" data-bs-toggle="collapse" href="#interpretationOfResults" role="button" aria-expanded="false" aria-controls="collapseExample">
-              Physician interpretation of results
-            </a>
-
-            <div class="collapse" id="interpretationOfResults">
-              <div class="ps-5">
-                Empty.
-              </div>
+            <div class="ps-5" *ngIf="medCard.resultsOfSurveys.length > 0">
+              {{ medCard.resultsOfSurveys }}
             </div>
+          </div>
+        </div>
 
+        <div class="collapse">
+          <input type="radio" name="main-accordion-content-4">
+          <a class="collapse-title text-lg btn btn-primary my-3">
+            Physician interpretation of results
+          </a>
+          <div class="collapse-content">
+            <div class="ps-5">
+              Empty
+            </div>
           </div>
         </div>
       </div>
     </div>
 
   </div>
-
 </div>

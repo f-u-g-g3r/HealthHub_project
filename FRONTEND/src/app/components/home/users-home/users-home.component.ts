@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { MedCard } from 'src/app/interfaces/medCard';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { UserService } from 'src/app/services/user.service';
+import { themeChange } from 'theme-change';
 
 @Component({
   selector: 'app-home',
@@ -12,7 +13,7 @@ import { UserService } from 'src/app/services/user.service';
 export class HomeComponent implements OnInit {
   public medCard!: MedCard;
   public role: string = sessionStorage.getItem("role") + "";
-  
+
 
   constructor(private router: Router, public service: AuthenticationService, public userService: UserService) {}
 
@@ -26,7 +27,7 @@ export class HomeComponent implements OnInit {
   private getMedInfo() {
     this.userService.getOneMedcard(sessionStorage.getItem('uid')).subscribe({
       next: (response: MedCard) => this.medCard = response,
-      error: console.error 
+      error: console.error
     });
   }
 
