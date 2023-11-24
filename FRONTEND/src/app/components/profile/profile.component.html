@@ -1,235 +1,204 @@
-<div class="container">
-  <div class="dropdown col-2 my-4 ms-auto">
-    <button class="btn btn-primary dropdown-toggle col-12" type="button" data-bs-toggle="dropdown"
-      aria-expanded="false">
-      Menu
-    </button>
-    <ul class="dropdown-menu">
-      <li><a class="dropdown-item" href="home">Home</a></li>
-      <li><a class="dropdown-item" href="home/profile">My profile</a></li>
-      <li><a class="dropdown-item" href="#">Options</a></li>
-      <li><a class="dropdown-item" href="#" (click)="authService.logOut()">Log out</a></li>
+<div class="navbar bg-base-100">
+  <div class="navbar-start">
+    <div class="dropdown">
+      <label tabindex="0" class="btn btn-ghost lg:hidden">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16"/>
+        </svg>
+      </label>
+      <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+        <li><a href="home">Home</a></li>
+        <li *ngIf="isDoctor"><a href="doctors-workplace">Switch to workplace</a></li>
+        <li><a href="home/profile">My profile</a></li>
+        <li><a href="#">Options</a></li>
+      </ul>
+    </div>
+    <a class="btn btn-ghost text-xl">Health hub</a>
+  </div>
+  <div class="navbar-center hidden lg:flex">
+    <ul class="menu menu-horizontal px-1">
+      <li><a href="home">Home</a></li>
+      <li *ngIf="isDoctor"><a href="doctors-workplace">Switch to workplace</a></li>
+      <li><a href="home/profile">My profile</a></li>
+      <li><a href="#">Options</a></li>
     </ul>
   </div>
+  <div class="navbar-end">
+    <a class="btn btn-primary" href="#" (click)="authService.logOut()">Log out</a>
+  </div>
+</div>
 
-  <div class="row">
-    <div class="col-md-6 offset-md-3">
-      
-      <div class="card" *ngIf="!isDoctor">
-        <div class="card-header">
-          User Profile
-        </div>
-        <div class="card-body">
-          <ul class="list-group">
-            <li class="list-group-item"><span class="float-right col-10">First Name: {{ this.userData.firstname
-                }}</span></li>
+<div class="container mx-auto">
 
-            <li class="list-group-item"><span class="float-right col-10">Last Name: {{ this.userData.lastname }}</span>
-            </li>
+  <div class="flex flex-row">
+    <div class="card bg-base-200 shadow-xl mx-auto basis-1/2" *ngIf="!isDoctor">
+      <div class="card-body">
+        <article class="prose ms-5">
+          <h2>Your profile info</h2>
+          <p class="text-lg font-bold">First Name: {{ this.userData.firstname
+            }}</p>
 
-            <li class="list-group-item"><span class="float-right">Date of Birth: {{ this.userData.dateOfBirth }}</span>
-            </li>
+          <p class="text-lg font-bold">Last Name: {{ this.userData.lastname }}</p>
 
-            <li class="list-group-item"><span class="float-right">Gender: {{ this.userData.gender }}</span></li>
+          <p class="text-lg font-bold">Date of Birth: {{ this.userData.dateOfBirth }}</p>
 
-            <li class="list-group-item"><span class="float-right col-10">Address: {{ this.userData.address }}</span>
-            </li>
+          <p class="text-lg font-bold">Gender: {{ this.userData.gender }}</p>
 
-            <li class="list-group-item"><span class="float-right col-10">Email: {{ this.userData.email }}</span></li>
+          <p class="text-lg font-bold">Address: {{ this.userData.address }}</p>
 
-            <li class="list-group-item"><span class="float-right col-10">Phone: {{ this.userData.phone }}</span></li>
-            <button class="btn btn-outline-dark col-3 ms-auto mt-3" data-bs-toggle="modal"
-              data-bs-target="#updateModal"><i class="bi bi-pencil"></i> Change info</button>
-          </ul>
+          <p class="text-lg font-bold">Email: {{ this.userData.email }}</p>
 
-          <div class="card-body">
-            <ul class="list-group">
-              <li class="list-group-item"><span class="float-right col-10">Your family doctor: {{
-                  this.userData.familyDoctorId }}</span></li>
-            </ul>
-          </div>
-        </div>
-      </div>
+          <p class="text-lg font-bold">Phone: {{ this.userData.phone }}</p>
 
-      <div class="card" *ngIf="isDoctor">
-        <div class="card-header">
-          User Profile 
-        </div>
-        <div class="card-body">
-          <ul class="list-group">
-            <li class="list-group-item"><span class="float-right col-10">First Name: {{ doctorData.firstname }}</span></li>
+          <p class="text-lg font-bold">Your family doctor: {{ this.userData.familyDoctorId }}</p>
 
-            <li class="list-group-item"><span class="float-right col-10">Last Name: {{ doctorData.lastname }}</span></li>
-
-            <li class="list-group-item"><span class="float-right">Date of Birth: {{ doctorData.dateOfBirth }}</span></li>
-
-            <li class="list-group-item"><span class="float-right">Gender: {{ doctorData.gender }}</span></li>
-
-            <li class="list-group-item"><span class="float-right col-10">Address: {{ doctorData.address }}</span>
-            </li>
-
-            <li class="list-group-item"><span class="float-right col-10">Email: {{ doctorData.email }}</span></li>
-
-            <li class="list-group-item"><span class="float-right col-10">Phone: {{ doctorData.phone }}</span></li>
-
-            <li class="list-group-item"><span class="float-right col-10">Specialization: {{ doctorData.specialization }}</span></li>
-
-            <li class="list-group-item"><span class="float-right col-10">Place of work: {{ doctorData.placeOfWork }}</span></li>
-
-            <li class="list-group-item"><span class="float-right col-10">License number: {{ doctorData.licenseNumber }}</span></li>
-
-            <li class="list-group-item"><span class="float-right col-10">License issuing date: {{ doctorData.licenseIssuingDate }}</span></li>
-
-            <li class="list-group-item"><span class="float-right col-10">License issuing authority: {{ doctorData.licenseIssuingAuthority }}</span></li>
-            
-            <button class="btn btn-outline-dark col-3 ms-auto mt-3" data-bs-toggle="modal"
-              data-bs-target="#updateModalDoctor"><i class="bi bi-pencil"></i> Change info</button>
-          </ul>
-        </div>
+          <button class="btn btn-secondary mt-3" onclick="updateUserModal.showModal()">Change info</button>
+        </article>
       </div>
     </div>
+
+    <div class="card bg-base-200 shadow-xl mx-auto basis-1/2" *ngIf="isDoctor">
+      <div class="card-body">
+        <article class="prose ms-5">
+          <h2>Your profile info</h2>
+          <p class="text-lg font-bold">First name: {{ doctorData.firstname }}</p>
+
+          <p class="text-lg font-bold">Last name: {{ doctorData.lastname }}</p>
+
+          <p class="text-lg font-bold">Date of birth: {{ doctorData.dateOfBirth }}</p>
+
+          <p class="text-lg font-bold">Gender: {{ doctorData.gender }}</p>
+
+          <p class="text-lg font-bold">Address: {{ doctorData.address }}</p>
+
+          <p class="text-lg font-bold">Email: {{ doctorData.email }}</p>
+
+          <p class="text-lg font-bold">Phone: {{ doctorData.phone }}</p>
+
+          <p class="text-lg font-bold">Specialization: {{ doctorData.specialization }}</p>
+
+          <p class="text-lg font-bold">Place of work: {{ doctorData.placeOfWork }}</p>
+
+          <p class="text-lg font-bold">License number: {{ doctorData.licenseNumber }}</p>
+
+          <p class="text-lg font-bold">License issuing date: {{ doctorData.licenseIssuingDate }}</p>
+
+          <p class="text-lg font-bold">License issuing authority: {{ doctorData.licenseIssuingAuthority }}</p>
+
+          <button class="btn btn-secondary mt-3" onclick="updateDoctorModal.showModal()">Change info</button>
+
+        </article>
+      </div>
+    </div>
+
+
   </div>
 </div>
 
 <!-- UPDATE USER MODAL -->
-<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true" *ngIf="!isDoctor">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="updateModalLabel">Edit info</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+<dialog id="updateUserModal" class="modal" *ngIf="!isDoctor">
+  <div class="modal-box">
+    <form #updateForm="ngForm" (ngSubmit)="onUpdateUser(updateForm.value)">
+      <input ngModel="{{ userData.id }}" type="hidden" name="id"/>
+
+      <div class="mb-4">
+        <label class="label" for="firstname">Firstname</label>
+        <input ngModel="{{ userData.firstname }}" #firstname="ngModel" type="text" name="firstname"
+               class="input input-bordered w-full max-w-xs" id="firstname"/>
       </div>
 
-      <form #updateForm="ngForm" (ngSubmit)="onUpdateUser(updateForm.value)">
+      <div class="mb-4">
+        <label class="label" for="lastname">Lastname</label>
 
-        <div class="modal-body">
-          <input ngModel="{{ userData.id }}" type="hidden" name="id" />
+        <input ngModel="{{ userData.lastname }}" #lastname="ngModel" type="text" name="lastname"
+               class="input input-bordered w-full max-w-xs" id="lastname"/>
+      </div>
 
-          <div class="mb-4 row">
-            <label class="col-sm-6 col-form-label text-end" for="firstname">Firstname</label>
-            <div class="col-sm-6 text-center">
-              <input ngModel="{{ userData.firstname }}" #firstname="ngModel" type="text" name="firstname"
-                class="form-control" placeholder="Firstname" />
-            </div>
-          </div>
+      <div class="mb-4 row">
+        <label class="label" for="address">Address</label>
+        <input ngModel="{{ userData.address }}" #address="ngModel" type="text" name="address"
+               class="input input-bordered w-full max-w-xs" id="address"/>
+      </div>
 
-          <div class="mb-4 row">
-            <label class="col-sm-6 col-form-label text-end" for="lastname">Lastname</label>
-            <div class="col-sm-6 text-center">
-              <input ngModel="{{ userData.lastname }}" #lastname="ngModel" type="text" name="lastname"
-                class="form-control" placeholder="Lastname" />
-            </div>
-          </div>
+      <div class="mb-4 row">
+        <label class="label" for="email">Email</label>
+        <input ngModel="{{ userData.email }}" #email="ngModel" type="text" name="email"
+               class="input input-bordered w-full max-w-xs" id="email"/>
+      </div>
 
-          <div class="mb-4 row">
-            <label class="col-sm-6 col-form-label text-end" for="address">Address</label>
-            <div class="col-sm-6 text-center">
-              <input ngModel="{{ userData.address }}" #address="ngModel" type="text" name="address" class="form-control"
-                placeholder="Address" />
-            </div>
-          </div>
+      <div class="mb-4 row">
+        <label class="label" for="phone">Phone</label>
+        <input ngModel="{{ userData.phone }}" #phone="ngModel" type="text" name="phone"
+               class="input input-bordered w-full max-w-xs" id="phone"/>
+      </div>
 
-          <div class="mb-4 row">
-            <label class="col-sm-6 col-form-label text-end" for="email">Email</label>
-            <div class="col-sm-6 text-center">
-              <input ngModel="{{ userData.email }}" #email="ngModel" type="text" name="email" class="form-control"
-                placeholder="Email" />
-            </div>
-          </div>
+      <button type="submit" data-bs-dismiss="modal" class="btn btn-primary"
+              onclick="updateUserModal.close()">Save changes
+      </button>
 
-          <div class="mb-4 row">
-            <label class="col-sm-6 col-form-label text-end" for="phone">Phone</label>
-            <div class="col-sm-6 text-center">
-              <input ngModel="{{ userData.phone }}" #phone="ngModel" type="text" name="phone" class="form-control"
-                placeholder="Phone" />
-            </div>
-          </div>
-
-
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="submit" data-bs-dismiss="modal" class="btn btn-primary">Save changes</button>
-        </div>
+    </form>
+    <div class="modal-action">
+      <form method="dialog">
+        <button class="btn">Close</button>
       </form>
-
     </div>
   </div>
-</div>
+</dialog>
 
 
 <!-- UPDATE DOCTOR MODAL -->
-<div class="modal fade" id="updateModalDoctor" tabindex="-1" aria-labelledby="updateModalDoctorLabel" aria-hidden="true" *ngIf="isDoctor">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="updateModalDoctorLabel">Edit info</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<dialog id="updateDoctorModal" class="modal" *ngIf="isDoctor">
+  <div class="modal-box">
+    <form #updateDoctorForm="ngForm" (ngSubmit)="onUpdateDoctor(updateDoctorForm.value)">
+      <input ngModel="{{ doctorData.id }}" type="hidden" name="id"/>
+
+      <div class="mb-4">
+        <label class="label" for="firstname">Firstname</label>
+        <input ngModel="{{ doctorData.firstname }}" #firstname="ngModel" type="text" name="firstname"
+               class="input input-bordered w-full max-w-xs"/>
       </div>
 
-      <form #updateDoctorForm="ngForm" (ngSubmit)="onUpdateDoctor(updateDoctorForm.value)">
+      <div class="mb-4">
+        <label class="label" for="lastname">Lastname</label>
+        <input ngModel="{{ doctorData.lastname }}" #lastname="ngModel" type="text" name="lastname"
+               class="input input-bordered w-full max-w-xs"/>
+      </div>
 
-        <div class="modal-body">
-          <input ngModel="{{ doctorData.id }}" type="hidden" name="id" />
+      <div class="mb-4">
+        <label class="label" for="address">Address</label>
+        <input ngModel="{{ doctorData.address }}" #address="ngModel" type="text" name="address"
+               class="input input-bordered w-full max-w-xs"/>
+      </div>
 
-          <div class="mb-4 row">
-            <label class="col-sm-6 col-form-label text-end" for="firstname">Firstname</label>
-            <div class="col-sm-6 text-center">
-              <input ngModel="{{ doctorData.firstname }}" #firstname="ngModel" type="text" name="firstname"
-                class="form-control" placeholder="Firstname" />
-            </div>
-          </div>
+      <div class="mb-4">
+        <label class="label" for="email">Email</label>
+        <input ngModel="{{ doctorData.email }}" #email="ngModel" type="text" name="email"
+               class="input input-bordered w-full max-w-xs"/>
+      </div>
 
-          <div class="mb-4 row">
-            <label class="col-sm-6 col-form-label text-end" for="lastname">Lastname</label>
-            <div class="col-sm-6 text-center">
-              <input ngModel="{{ doctorData.lastname }}" #lastname="ngModel" type="text" name="lastname"
-                class="form-control" placeholder="Lastname" />
-            </div>
-          </div>
+      <div class="mb-4 ">
+        <label class="label" for="phone">Phone</label>
+        <input ngModel="{{ doctorData.phone }}" #phone="ngModel" type="text" name="phone"
+               class="input input-bordered w-full max-w-xs"/>
+      </div>
 
-          <div class="mb-4 row">
-            <label class="col-sm-6 col-form-label text-end" for="address">Address</label>
-            <div class="col-sm-6 text-center">
-              <input ngModel="{{ doctorData.address }}" #address="ngModel" type="text" name="address" class="form-control"
-                placeholder="Address" />
-            </div>
-          </div>
+      <div class="mb-4">
+        <label class="label" for="placeOfWork">Place of work</label>
+        <input ngModel="{{ doctorData.placeOfWork }}" #placeOfWork="ngModel" type="text" name="placeOfWork"
+               class="input input-bordered w-full max-w-xs" id="placeOfWork"/>
+      </div>
 
-          <div class="mb-4 row">
-            <label class="col-sm-6 col-form-label text-end" for="email">Email</label>
-            <div class="col-sm-6 text-center">
-              <input ngModel="{{ doctorData.email }}" #email="ngModel" type="text" name="email" class="form-control"
-                placeholder="Email" />
-            </div>
-          </div>
+      <button type="submit" data-bs-dismiss="modal" class="btn btn-primary"
+              onclick="updateDoctorModal.close()">Save changes</button>
+    </form>
 
-          <div class="mb-4 row">
-            <label class="col-sm-6 col-form-label text-end" for="phone">Phone</label>
-            <div class="col-sm-6 text-center">
-              <input ngModel="{{ doctorData.phone }}" #phone="ngModel" type="text" name="phone" class="form-control"
-                placeholder="Phone" />
-            </div>
-          </div>
-
-          <div class="mb-4 row">
-            <label class="col-sm-6 col-form-label text-end" for="placeOfWork">Place of work</label>
-            <div class="col-sm-6 text-center">
-              <input ngModel="{{ doctorData.placeOfWork }}" #placeOfWork="ngModel" type="text" name="placeOfWork" class="form-control"
-                placeholder="Place of work" />
-            </div>
-          </div>
-
-
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="submit" data-bs-dismiss="modal" class="btn btn-primary">Save changes</button>
-        </div>
+    <div class="modal-action">
+      <form method="dialog">
+        <button class="btn">Close</button>
       </form>
-
     </div>
   </div>
-  </div>
+</dialog>
 
 
