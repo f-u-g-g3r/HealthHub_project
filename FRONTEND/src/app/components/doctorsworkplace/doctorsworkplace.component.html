@@ -33,7 +33,7 @@
     <h2>Patient List</h2>
   </article>
     <input type="text" placeholder="Search">
-    <a class="btn ms-5">Add new patient</a>
+    <a class="btn ms-5" onclick="my_modal_2.showModal()">Add new patient</a>
     <table class="table table-zebra table-hover">
       <thead>
         <tr>
@@ -49,3 +49,17 @@
       </tbody>
     </table>
 </div>
+
+
+
+<dialog id="my_modal_2" class="modal">
+  <div class="modal-box">
+    <h3 class="font-bold text-lg">Add new patient</h3>
+    <input type="text" placeholder="Unique identificator" class="input input-bordered my-5" />
+    <input type="button" value="Find" class="btn ms-4" />
+
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button>close</button>
+  </form>
+</dialog>
