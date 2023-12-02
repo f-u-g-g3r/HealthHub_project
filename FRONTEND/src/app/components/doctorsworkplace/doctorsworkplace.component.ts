@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { User } from 'src/app/interfaces/user';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { UserService } from 'src/app/services/user.service';
+import { NgForm } from "@angular/forms";
 
 @Component({
   selector: 'app-doctorsworkplace',
@@ -11,6 +12,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class DoctorsworkplaceComponent implements OnInit {
   public patients!: User[];
+  public foundUser!: User;
 
   constructor (private router: Router, public service: AuthenticationService, public userService: UserService) {}
 
@@ -29,6 +31,16 @@ export class DoctorsworkplaceComponent implements OnInit {
 
   public viewPatientDetails(patientId: number) {
     this.router.navigate(["/doctors-workplace/patient/", patientId]);
+  }
+
+  public findPatientByUuid(data: any) {
+    const uuid = data['uuid'];
+    this.userService.getUserByUuid(uuid).subscribe({
+      next: (response: User) => {
+        this.foundUser = response
+      },
+          error: console.error
+      });
   }
 
 }

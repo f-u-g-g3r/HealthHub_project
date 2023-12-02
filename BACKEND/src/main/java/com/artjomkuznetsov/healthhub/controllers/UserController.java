@@ -52,22 +52,20 @@ public class UserController {
         return users;
     }
 
-    /*@PostMapping("/users")
-    public ResponseEntity<?> newUser(@RequestBody User newUser) {
-        newUser.setUuid(generateUUID());
-        EntityModel<User> entityModel = assembler.toModel(repository.save(newUser));
-        String jwtToken = jwtService.generateToken(newUser);
-        return ResponseEntity
-                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
-                .body(entityModel)
-                .ok(jwtToken);
-    }*/
 
     @GetMapping("/users/{id}")
     @CrossOrigin(origins="*", maxAge=3600)
     public EntityModel<User> one(@PathVariable("id") Long id) {
         User user = repository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
+        return assembler.toModel(user);
+    }
+
+    @GetMapping("/users/uuid/{uuid}")
+    @CrossOrigin(origins="*", maxAge=3600)
+    public EntityModel<User> oneByUuid(@PathVariable("uuid") String uuid) {
+        User user = repository.findByUuid(uuid)
+                .orElseThrow(() -> new UserNotFoundException(uuid));
         return assembler.toModel(user);
     }
 
@@ -115,16 +113,6 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    /*public String generateUUID() {
-        String[] numbers = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0"};
-        StringBuilder uuid = new StringBuilder("");
-        Random rand = new Random();
-        for (int i = 0; i<10; i++) {
-            int randNum = rand.nextInt(0, 10);
-            uuid.append(numbers[randNum]);
-        }
-        System.out.println(uuid);
-        return uuid.toString();
-    }*/
+
 
 }

@@ -36,15 +36,19 @@ export class UserService {
     return this.http.get<User>(`${this.serverUrl}/users/` + uid, this.httpOptions);
   }
 
-  
+
 
   public updateUser(uid: any, user: UpdatedUser): Observable<User> {
     return this.http.put<User>(`${this.serverUrl}/users/` + uid, user, this.httpOptions);
   }
 
-  
+
   public getUsersByDoctorId(doctorId: string): Observable<User[]> {
     return this.http.get<User[]>(`${this.serverUrl}/users-by-doctor/` + doctorId, this.httpOptions);
+  }
+
+  public getUserByUuid(uuid: string): Observable<User> {
+    return this.http.get<User>(`${this.serverUrl}/users/uuid/` + uuid, this.httpOptions);
   }
 
   public getOneMedcard(ownerId: any): Observable<MedCard> {
@@ -100,5 +104,5 @@ export class UserService {
   public deactivateDoctor(docId: any): Observable<Doctor> {
     return this.http.put<Doctor>(`${this.serverUrl}/doctors/` + docId, {"status": "INACTIVE"}, this.httpOptions);
   }
-  
+
 }
