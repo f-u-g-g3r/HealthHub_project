@@ -2,8 +2,11 @@ package com.artjomkuznetsov.healthhub.controllers;
 
 
 import com.artjomkuznetsov.healthhub.assemblers.UserModelAssembler;
+import com.artjomkuznetsov.healthhub.exceptions.DoctorNotFoundException;
 import com.artjomkuznetsov.healthhub.exceptions.UserNotFoundException;
+import com.artjomkuznetsov.healthhub.models.Doctor;
 import com.artjomkuznetsov.healthhub.models.User;
+import com.artjomkuznetsov.healthhub.repositories.DoctorRepository;
 import com.artjomkuznetsov.healthhub.repositories.UserRepository;
 import com.artjomkuznetsov.healthhub.security.config.JwtService;
 import org.springframework.hateoas.CollectionModel;
@@ -23,14 +26,14 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class UserController {
     private final UserRepository repository;
     private final UserModelAssembler assembler;
-    private final JwtService jwtService;
     private final MedCardController medCardController;
+    private final DoctorRepository doctorRepository;
 
-    public UserController(UserRepository repository, UserModelAssembler assembler, JwtService jwtService, MedCardController medCardController) {
+    public UserController(UserRepository repository, UserModelAssembler assembler, MedCardController medCardController, DoctorRepository doctorRepository) {
         this.repository = repository;
         this.assembler = assembler;
-        this.jwtService = jwtService;
         this.medCardController = medCardController;
+        this.doctorRepository = doctorRepository;
     }
 
     // Aggregate root
@@ -63,11 +66,58 @@ public class UserController {
 
     @GetMapping("/users/uuid/{uuid}")
     @CrossOrigin(origins="*", maxAge=3600)
-    public EntityModel<User> oneByUuid(@PathVariable("uuid") String uuid) {
+    public User oneByUuid(@PathVariable("uuid") String uuid) {
         User user = repository.findByUuid(uuid)
                 .orElseThrow(() -> new UserNotFoundException(uuid));
-        return assembler.toModel(user);
+        return user;
     }
+
+    @GetMapping("/users/family-doctor/{userId}/{familyDoctorId}")
+    @CrossOrigin(origins="*", maxAge=3600)
+    public ResponseEntity<?> setFamilyDoctor(@PathVariable Long userId, @PathVariable Long familyDoctorId) {
+        User user = repository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(userId));
+
+        if (!doctorRepository.existsById(familyDoctorId)) {
+            throw new DoctorNotFoundException(familyDoctorId);
+        }
+        user.setFamilyDoctorId(familyDoctorId);
+        repository.save(user);
+        medCardController.setFamilyDoctor(user.getMedCardID(), familyDoctorId);
+
+        EntityModel<User> entityModel = assembler.toModel(user);
+
+        return ResponseEntity
+                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(entityModel);
+    }
+
+//    @PatchMapping("/users/family-doctor/{familyDoctorId}")
+//    @CrossOrigin(origins="*", maxAge=3600)
+//    public ResponseEntity<?> setFamilyDoctor(@RequestBody User newUser, @PathVariable Long familyDoctorId) {
+//        if (!doctorRepository.existsById(familyDoctorId)) {
+//            throw new DoctorNotFoundException(familyDoctorId);
+//        }
+//        User updatedUser = repository.findById(newUser.getId())
+//                .map(user -> {
+//                    user.setFamilyDoctorId(familyDoctorId);
+//                    return repository.save(user);
+//                })
+//
+//                .orElseGet(() -> {
+//                    throw new UserNotFoundException(newUser.getId());
+//                });
+//
+//        medCardController.setFamilyDoctor(updatedUser.getMedCardID(), familyDoctorId);
+//
+//        EntityModel<User> entityModel = assembler.toModel(updatedUser);
+//
+//        return ResponseEntity
+//                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+//                .body(entityModel);
+//    }
+
+
 
     @PutMapping("/users/{id}")
     @CrossOrigin(origins="*", maxAge=3600)
@@ -101,6 +151,8 @@ public class UserController {
 
 
     }
+
+
 
     @DeleteMapping("/users/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {

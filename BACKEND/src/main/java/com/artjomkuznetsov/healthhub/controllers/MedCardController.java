@@ -88,4 +88,12 @@ public class MedCardController {
         repository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
+    public void setFamilyDoctor(Long medCardId, Long familyDoctorId) {
+        MedCard medCard = repository.findById(medCardId)
+                .orElseThrow(() -> new MedCardNotFoundException(medCardId));
+
+        medCard.setFamilyDoctorID(familyDoctorId);
+        repository.save(medCard);
+    }
 }

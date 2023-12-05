@@ -12,6 +12,7 @@ import { ChronicDisease } from '../interfaces/medCard/chronicDisease';
 import { ResultOfSurvey } from '../interfaces/medCard/resultOfSurvey';
 import { Doctor } from '../interfaces/doctor';
 import { UpdatedDoctor } from '../interfaces/updatedDoctor';
+import {UpdateFamDoctorRequest} from "../interfaces/updateFamDoctorRequest";
 
 @Injectable({
   providedIn: 'root'
@@ -36,14 +37,15 @@ export class UserService {
     return this.http.get<User>(`${this.serverUrl}/users/` + uid, this.httpOptions);
   }
 
-
-
   public updateUser(uid: any, user: UpdatedUser): Observable<User> {
     return this.http.put<User>(`${this.serverUrl}/users/` + uid, user, this.httpOptions);
   }
 
+  public setFamilyDoctor(userId: any, doctorId: any): Observable<User> {
+    return this.http.get<User>(`${this.serverUrl}/users/family-doctor/` + userId + "/" + doctorId, this.httpOptions);
+  }
 
-  public getUsersByDoctorId(doctorId: string): Observable<User[]> {
+  public getUsersByDoctorId(doctorId: any): Observable<User[]> {
     return this.http.get<User[]>(`${this.serverUrl}/users-by-doctor/` + doctorId, this.httpOptions);
   }
 

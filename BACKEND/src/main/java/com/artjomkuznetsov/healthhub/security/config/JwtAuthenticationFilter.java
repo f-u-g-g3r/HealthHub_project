@@ -44,6 +44,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         boolean isPermitted = false;
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            System.out.println(authHeader == null);
             filterChain.doFilter(request, response);
             return;
         }
@@ -65,6 +66,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if (part.equals("uuid")) {
                 isPermitted = true;
             }
+            System.out.println(part);
+            if (part.equals("family-doctor") && jwtService.extractRole(jwt).equals("DOCTOR")) {
+                System.out.println(1);
+                isPermitted = true;
+            }
         }
 
         if (!isPermitted) {
@@ -77,8 +83,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         
         if (isPermitted || userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null && id.equals(userId) || jwtService.extractRole(jwt).equals("ADMIN")) {
-            System.out.println("lox");
+            System.out.println(123);
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
+
             if (jwtService.isTokenValid(jwt, userDetails)) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails,

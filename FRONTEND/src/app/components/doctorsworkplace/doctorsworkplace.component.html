@@ -33,16 +33,18 @@
     <h2>Patient List</h2>
   </article>
     <input type="text" placeholder="Search">
-    <a class="btn ms-5" onclick="search_patient.showModal()">Add new patient</a>
+    <a class="btn ms-5" (click)="searchPatientModalIsOpen = true" onclick="search_patient.showModal()">Add new patient</a>
     <table class="table table-zebra table-hover">
       <thead>
         <tr>
+          <th>№</th>
           <th>Name</th>
           <th>Info</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let patient of patients" (click)="viewPatientDetails(patient.id)">
+        <tr *ngFor="let patient of patients; index as i;" (click)="viewPatientDetails(patient.id)">
+          <td>{{i+1}}</td>
           <td>{{ patient.firstname + " " + patient.lastname }}</td>
           <td>{{ patient.uuid }}</td>
         </tr>
@@ -52,13 +54,14 @@
 
 
 
+
 <dialog id="search_patient" class="modal">
-  <div class="modal-box">
+  <div class="modal-box" *ngIf="searchPatientModalIsOpen">
     <h3 class="font-bold text-lg">Add new patient</h3>
     <form #findByUuidForm="ngForm" (ngSubmit)="findPatientByUuid(findByUuidForm.value)">
       <input type="text" placeholder="Unique identificator" class="input input-bordered my-5"
              name="uuid" id="uuid" ngModel #uuid="ngModel" />
-      <input type="submit" onclick="search_patient.close();foundUser.showModal()"  value="Find" class="btn ms-4" />
+      <input type="submit" (click)="foundUserModalIsOpen = true;" onclick="search_patient.close(); found_user.showModal()"  value="Find" class="btn ms-4" />
     </form>
   </div>
   <form method="dialog" class="modal-backdrop">
@@ -76,16 +79,20 @@
 
  -->
 
-<dialog id="foundUser" class="modal">
-  <div class="modal-box">
+<dialog id="found_user" class="modal">
+  <div class="modal-box" *ngIf="foundUserModalIsOpen">
     <h3 class="font-bold text-lg">Patient info</h3>
-    <p class="py-4">Name: {{ foundUser.firstname }} {{ foundUser.lastname }}</p>
-    <p class="py-4">Date of birth: {{ foundUser.dateOfBirth }}</p>
-    <p class="py-4">Address: {{ foundUser.address }}</p>
+    <p class="py-4"><b>Name:</b> {{ foundUser.firstname }} {{ foundUser.lastname }}</p>
+    <p class="py-4"><b>Date of birth:</b> {{ foundUser.dateOfBirth }}</p>
+    <p class="py-4"><b>Gender:</b> {{ foundUser.gender }}</p>
+    <p class="py-4"><b>Address:</b> {{ foundUser.address }}</p>
+    <p class="py-4"><b>Email:</b> {{ foundUser.email }}</p>
+    <p class="py-4"><b>Phone:</b> {{ foundUser.phone }}</p>
+
     <div class="modal-action">
       <form method="dialog">
-
-        <button class="btn">Close</button>
+        <button class="btn mx-2" (click)="foundUserModalIsOpen = false;searchPatientModalIsOpen = true" onclick="search_patient.showModal(); found_user.close();">Back</button>
+        <button class="btn btn-success mx-2" (click)="addPatientToDoctor(foundUser); foundUserModalIsOpen = false;" onclick="found_user.close()">Add patient</button>
       </form>
     </div>
   </div>

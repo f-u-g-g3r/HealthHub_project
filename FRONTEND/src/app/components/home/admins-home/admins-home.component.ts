@@ -28,7 +28,6 @@ export class AdminsHomeComponent implements OnInit {
     this.userService.getInactivatedDoctors().subscribe({
       next: (response: Doctor[]) => {
         this.inactivatedDoctors = response;
-        console.log(this.inactivatedDoctors)
       },
       error: console.error
     });
