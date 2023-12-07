@@ -1,382 +1,330 @@
-<div class="container">
-    <div class="row">
-        <div class="col-2 me-auto mb-5">
-            <a class="btn btn-primary" href="doctors-workplace">Back</a>
-        </div>
-        <div class="dropdown col-2 ms-auto mb-5">
-            <button class="btn btn-primary dropdown-toggle col-12" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Menu
-            </button>
-            <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="home">Home</a></li>
-            <li><a class="dropdown-item" href="home/profile">My profile</a></li>
-            <li><a class="dropdown-item" href="#">Options</a></li>
-            <li><a class="dropdown-item" href="#" (click)="service.logOut()">Log out</a></li>
-            </ul>
-        </div>
+
+<div class="navbar bg-base-100">
+  <div class="navbar-start">
+    <div class="dropdown">
+      <label tabindex="0" class="btn btn-ghost lg:hidden">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16"/>
+        </svg>
+      </label>
+      <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+        <li><a href="home">Home</a></li>
+        <li><a href="doctors-workplace">Switch to workplace</a></li>
+        <li><a href="home/profile">My profile</a></li>
+        <li><a href="#">Options</a></li>
+      </ul>
     </div>
-    <h3>Patient Information</h3>
+    <a class="btn btn-ghost text-xl">Health hub</a>
+  </div>
+  <div class="navbar-center hidden lg:flex">
+    <ul class="menu menu-horizontal px-1">
+      <li><a href="home">Home</a></li>
+      <li><a href="doctors-workplace">Switch to workplace</a></li>
+      <li><a href="home/profile">My profile</a></li>
+      <li><a href="#">Options</a></li>
+    </ul>
+  </div>
+  <div class="navbar-end">
+    <a class="btn btn-primary" href="#" (click)="service.logOut()">Log out</a>
+  </div>
+</div>
 
-    <div class="card p-3" >
-        <div class="row">
-            <div class="col-6">
-                <h4>Personal information</h4>
-                <div>
-                    <p><b>Name:</b> {{ this.user.firstname }} {{ this.user.lastname }}</p>
-                </div>
-                <div>
-                    <p><b>Date of birth:</b> {{ this.user.dateOfBirth }}</p>
-                </div>
-                <div>
-                    <p><b>Gender:</b> {{ this.user.gender }}</p>
-                </div>
-            </div>
-            
-            <div class="col-6">
-                <h4>Contact information</h4>
-                <div>
-                    <p><b>Email:</b> {{ this.user.email }}</p>
-                </div>
-                <div>
-                    <p><b>Phone:</b> {{ this.user.phone }}</p>
-                </div>
-            </div>
+<div class="container mx-auto">
+  <article class="prose text-center mx-auto my-4">
+    <h2>Patient Information</h2>
+  </article>
+
+    <div class="flex flex-row">
+        <div class="card bg-base-200 shadow-xl mx-auto basis-1/3 p-4">
+          <article class="prose">
+              <h3>Personal information</h3>
+          </article>
+              <p class="my-2"><b>Name:</b> {{ this.user.firstname }} {{ this.user.lastname }}</p>
+              <p class="my-2"><b>Date of birth:</b> {{ this.user.dateOfBirth }}</p>
+              <p class="my-2"><b>Gender:</b> {{ this.user.gender }}</p>
         </div>
 
-        <div class="row mt-5">
-            <div>
-                <h4>Medical information</h4>
+      <div class="card bg-base-200 shadow-xl mx-auto basis-1/3 p-4">
+        <article class="prose">
+          <h3>Contact information</h3>
+        </article>
+        <p class="my-2"><b>Email:</b> {{ this.user.email }}</p>
+        <p class="my-2"><b>Phone:</b> {{ this.user.phone }}</p>
+      </div>
+    </div>
 
-                <div class="my-2">
-                    <b>Blood type: </b>
-                    <span *ngIf="this.medCard.bloodType === null">Empty</span>
-                    <span *ngIf="this.medCard.bloodType !== null">{{ this.medCard.bloodType }}</span>
-                    <span><a class="bi bi-pencil ps-1" (click)="onOpenModal('bloodType')"></a></span>
-                </div>
 
-                <div class="my-2">
-                    <b>Rh factor: </b>
-                    <span *ngIf="this.medCard.rhFactor === null">Empty</span>
-                    <span *ngIf="this.medCard.rhFactor !== null">{{ this.medCard.rhFactor }}</span>
-                    <span><a class="bi bi-pencil ps-1" (click)="onOpenModal('rhFactor')"></a></span>
-                </div>
+    <article class="prose text-center mx-auto mt-10 my-4">
+      <h2>Medical information</h2>
+    </article>
 
-                <div class="my-2">
-                    <b>Med History: </b>
-                    <span *ngIf="this.medCard.medHistory.length === 0">Empty</span>
-                    <span><a class="bi bi-pencil ps-1" (click)="onOpenModal('medHistory')"></a></span>
-                    <table class="table table-light table-striped" *ngIf="this.medCard.medHistory.length !== 0">
-                        <thead>
-                            <tr>
-                                <th>Disease</th>
-                                <th>Description</th>
-                                <th>Date of illness</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let medHistory of this.medCard.medHistory">
-                                <td>{{ medHistory.disease }}</td>
-                                <td>{{ medHistory.description }}</td>
-                                <td>{{ medHistory.dateOfIllness }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+    <div class="card bg-base-300 shadow-md mx-auto my-3 p-5">
+      <span><a class="btn btn-primary btn-sm my-2" (click)="bloodTypeModalIsOpen=true" onclick="bloodTypeModal.showModal()">Change</a></span>
+      <b>Blood type: </b>
+      <span *ngIf="this.medCard.bloodType === null">Empty</span>
+      <span *ngIf="this.medCard.bloodType !== null">{{ this.medCard.bloodType }}</span>
+    </div>
 
-                <div class="my-2">
-                    <b>Allergies: </b>
-                    <span *ngIf="this.medCard.allergies.length === 0">Empty</span>
-                    <span><a class="bi bi-pencil ps-1" (click)="onOpenModal('allergies')"></a></span>
-                    <table class="table table-light table-striped" *ngIf="this.medCard.allergies.length !== 0">
-                        <thead>
-                            <tr>
-                                <th>Allergy</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let allergy of this.medCard.allergies">
-                                <td>{{ allergy.allergy }}</td>
-                                <td>{{ allergy.description }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+    <div class="card bg-base-300 shadow-md mx-auto my-3 p-5">
+      <span><a class="btn btn-primary btn-sm my-2" (click)="rhFactorModalIsOpen=true" onclick="rhFactorModal.showModal()">Change</a></span>
+      <b>Rh factor: </b>
+      <span *ngIf="this.medCard.rhFactor === null">Empty</span>
+      <span *ngIf="this.medCard.rhFactor !== null">{{ this.medCard.rhFactor }}</span>
+    </div>
 
-                <div class="my-2">
-                    <b>Chronic diseases: </b>
-                    <span *ngIf="this.medCard.chronicDiseases.length === 0">Empty</span>
-                    <span><a class="bi bi-pencil ps-1" (click)="onOpenModal('chronicDiseases')"></a></span>
-                    <table class="table table-light table-striped" *ngIf="this.medCard.chronicDiseases.length !== 0">
-                        <thead>
-                            <tr>
-                                <th>Disease</th>
-                                <th>Description</th>
-                                <th>Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let chronicDisease of this.medCard.chronicDiseases">
-                                <td>{{ chronicDisease.disease }}</td>
-                                <td>{{ chronicDisease.description }}</td>
-                                <td>{{ chronicDisease.date }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+    <div class="card bg-base-300 shadow-md mx-auto my-3 p-5">
+      <span><a class="btn btn-primary btn-sm my-2" (click)="medHistoryModalIsOpen=true" onclick="medHistoryModal.showModal()">Add</a></span>
+      <b class="text-center text-xl mb-2">Med History</b>
+      <span *ngIf="this.medCard.medHistory.length === 0">Empty</span>
+      <table class="table table-zebra" *ngIf="this.medCard.medHistory.length !== 0">
+          <thead>
+              <tr class="bg-base-200">
+                  <th>Disease</th>
+                  <th>Description</th>
+                  <th>Date of illness</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor="let medHistory of this.medCard.medHistory">
+                  <td>{{ medHistory.disease }}</td>
+                  <td>{{ medHistory.description }}</td>
+                  <td>{{ medHistory.dateOfIllness }}</td>
+              </tr>
+          </tbody>
+      </table>
+    </div>
 
-                <div class="my-2">
-                    <b>Results of surveys: </b>
-                    <span *ngIf="this.medCard.resultsOfSurveys.length === 0">Empty</span>
-                    <span><a class="bi bi-pencil ps-1" (click)="onOpenModal('resultsOfSurveys')"></a></span>
-                    <table class="table table-light table-striped" *ngIf="this.medCard.resultsOfSurveys.length !== 0">
-                        <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Description</th>
-                                <th>Survey's date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let resultOfSurvey of this.medCard.resultsOfSurveys">
-                                <td>{{ resultOfSurvey.title }}</td>
-                                <td>{{ resultOfSurvey.description }}</td>
-                                <td>{{ resultOfSurvey.surveysDate }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+    <div class="card bg-base-300 shadow-md mx-auto my-3 p-5">
+      <span><a class="btn btn-primary btn-sm my-2" (click)="allergiesModalIsOpen=true" onclick="allergiesModal.showModal()">Add</a></span>
+      <b class="text-center text-xl mb-2">Allergies</b>
+      <span *ngIf="this.medCard.allergies.length === 0">Empty</span>
+      <table class="table table-zebra" *ngIf="this.medCard.allergies.length !== 0">
+          <thead>
+              <tr class="bg-base-200">
+                  <th>Allergy</th>
+                  <th>Description</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor="let allergy of this.medCard.allergies">
+                  <td>{{ allergy.allergy }}</td>
+                  <td>{{ allergy.description }}</td>
+              </tr>
+          </tbody>
+      </table>
+    </div>
+
+    <div class="card bg-base-300 shadow-md mx-auto my-3 p-5">
+      <span><a class="btn btn-primary btn-sm my-2" (click)="chronicDiseasesModalIsOpen=true" onclick="chronicDiseasesModal.showModal()">Add</a></span>
+      <b class="text-center text-xl mb-2">Chronic diseases</b>
+      <span *ngIf="this.medCard.chronicDiseases.length === 0">Empty</span>
+      <table class="table table-zebra" *ngIf="this.medCard.chronicDiseases.length !== 0">
+          <thead>
+              <tr class="bg-base-200">
+                  <th>Disease</th>
+                  <th>Description</th>
+                  <th>Date</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor="let chronicDisease of this.medCard.chronicDiseases">
+                  <td>{{ chronicDisease.disease }}</td>
+                  <td>{{ chronicDisease.description }}</td>
+                  <td>{{ chronicDisease.date }}</td>
+              </tr>
+          </tbody>
+      </table>
+    </div>
+
+    <div class="card bg-base-300 shadow-md mx-auto my-3 p-5">
+      <span><a class="btn btn-primary btn-sm my-2" (click)="resultsOfSurveysModalIsOpen=true" onclick="resultsOfSurveysModal.showModal()">Add</a></span>
+      <b class="text-center text-xl mb-2">Results of surveys</b>
+      <span *ngIf="this.medCard.resultsOfSurveys.length === 0">Empty</span>
+      <table class="table table-zebra" *ngIf="this.medCard.resultsOfSurveys.length !== 0">
+          <thead>
+              <tr class="bg-base-200">
+                  <th>Title</th>
+                  <th>Description</th>
+                  <th>Survey's date</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor="let resultOfSurvey of this.medCard.resultsOfSurveys">
+                  <td>{{ resultOfSurvey.title }}</td>
+                  <td>{{ resultOfSurvey.description }}</td>
+                  <td>{{ resultOfSurvey.surveysDate }}</td>
+              </tr>
+          </tbody>
+      </table>
     </div>
 </div>
 
-
-
-<div class="modal fade" id="medHistoryModal" tabindex="-1" aria-labelledby="medHistoryModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="medHistoryModalLabel">Add disease</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form #medHistory="ngForm" (ngSubmit)="addMedHistory(medHistory)">
-            <div class="modal-body">
-                    <div class="row my-2">
-                        <div class="col-auto ms-auto">
-                            <label class="col-form-label" for="disease">Disease: </label>
-                        </div>
-                        <div class="col-auto">
-                            <input type="text" id="disease" name="disease" class="form-control" ngModel #disease="ngModel" />
-                        </div>
-                    </div>
-
-                    <div class="row my-2">
-                        <div class="col-auto ms-auto">
-                            <label class="col-form-label" for="description">Description: </label>
-                        </div>
-                        <div class="col-auto">
-                            <textarea id="description" name="description" class="form-control" ngModel #description="ngModel"></textarea>
-                        </div>
-                    </div>
-
-                    <div class="row my-2">
-                        <div class="col-auto ms-auto">
-                            <label class="col-form-label" for="dateOfIllness">Date of illness: </label>
-                        </div>
-                        <div class="col-auto">
-                            <input type="date" id="dateOfIllness" name="dateOfIllness" class="form-control" ngModel #dateOfIllness="ngModel" />
-                        </div>
-                    </div>
-                
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Save and add</button>
-            </div>
-            </form>
+<dialog id="medHistoryModal" class="modal">
+  <div class="modal-box" *ngIf="medHistoryModalIsOpen">
+    <h3 class="font-bold text-lg">Add disease</h3>
+    <form #medHistory="ngForm" (ngSubmit)="addMedHistory(medHistory)">
+      <label class="form-control w-full max-w-xs">
+        <div class="label">
+          <span class="label-text">Disease: </span>
         </div>
-    </div>
-</div>
+        <input type="text" name="disease" class="input input-bordered w-full max-w-xs" ngModel #disease="ngModel" />
+      </label>
 
-<div class="modal fade" id="bloodTypeModal" tabindex="-1" aria-labelledby="bloodTypeModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="bloodTypeModalLabel">Change blood type</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form #bloodTypeForm="ngForm" (ngSubmit)="changeBloodType(bloodTypeForm)">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-auto ms-auto">
-                            <label class="col-form-label" for="bloodType">Blood type: </label>
-                        </div>
-                        <div class="col-auto">
-                            <input type="text" id="bloodType" name="bloodType" class="form-control" ngModel #bloodType="ngModel"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
-                </div>
-            </form>
+      <label class="form-control w-full max-w-xs">
+        <div class="label">
+          <span class="label-text">Description: </span>
         </div>
-    </div>
-</div>
+        <textarea name="description" class="textarea textarea-bordered max-h-52" ngModel #description="ngModel"></textarea>
+      </label>
 
-<div class="modal fade" id="rhFactorModal" tabindex="-1" aria-labelledby="rhFactorModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="rhFactorModalLabel">Change rh factor</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form #rhFactorForm="ngForm" (ngSubmit)="changeRhFactor(rhFactorForm)">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-auto ms-auto">
-                            <label class="col-form-label" for="rhFactor">Rh factor: </label>
-                        </div>
-                        <div class="col-auto">
-                            <input type="text" id="rhFactor" name="rhFactor" class="form-control" ngModel #rhFactor="ngModel"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
-                </div>
-            </form>
+      <label class="form-control w-full max-w-xs">
+        <div class="label">
+          <span class="label-text">Date of illness: </span>
         </div>
-    </div>
-</div>
+        <input type="date" name="dateOfIllness" class="input input-bordered w-full max-w-xs" ngModel #dateOfIllness="ngModel" />
+      </label>
 
-<div class="modal fade" id="allergiesModal" tabindex="-1" aria-labelledby="allergiesModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="allergiesModalLabel">Add allergy</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form #allergyForm="ngForm" (ngSubmit)="addAllergy(allergyForm)">
-                <div class="modal-body">
-                    <div class="row my-2">
-                        <div class="col-auto ms-auto">
-                            <label class="col-form-label" for="allergy">Allergy: </label>
-                        </div>
-                        <div class="col-auto">
-                            <input type="text" id="allergy" name="allergy" class="form-control" ngModel #allergy="ngModel"/>
-                        </div>
-                    </div>
+      <div class="modal-action">
+          <button type="button" class="btn btn-secondary"
+                  onclick="medHistoryModal.close()" (click)="medHistoryModalIsOpen=false">Close</button>
+          <button type="submit" class="btn btn-primary">Save and add</button>
+      </div>
+    </form>
+  </div>
+</dialog>
 
-                    <div class="row my-2">
-                        <div class="col-auto ms-auto">
-                            <label class="col-form-label" for="allergyDesc">Description: </label>
-                        </div>
-                        <div class="col-auto">
-                            <input type="text" id="allergyDesc" name="description" class="form-control" ngModel #description="ngModel"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save and add</button>
-                </div>
-            </form>
+<dialog id="bloodTypeModal" class="modal">
+  <div class="modal-box" *ngIf="bloodTypeModalIsOpen">
+    <h3 class="font-bold text-lg">Change blood type</h3>
+    <form #bloodTypeForm="ngForm" (ngSubmit)="changeBloodType(bloodTypeForm)">
+      <label class="form-control w-full max-w-xs">
+        <div class="label">
+          <span class="label-text">Blood type: </span>
         </div>
-    </div>
-</div>
+        <input type="text" name="bloodType" class="input input-bordered w-full max-w-xs" ngModel #bloodType="ngModel" />
+      </label>
 
-<div class="modal fade" id="chronicDiseasesModal" tabindex="-1" aria-labelledby="chronicDiseasesModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="chronicDiseasesModalLabel">Add chronic disease</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form #chronicDiseaseForm="ngForm" (ngSubmit)="addChronicDisease(chronicDiseaseForm)">
-                <div class="modal-body">
-                    <div class="row my-2">
-                        <div class="col-auto ms-auto">
-                            <label class="col-form-label" for="disease">Disease: </label>
-                        </div>
-                        <div class="col-auto">
-                            <input type="text" id="disease" name="disease" class="form-control" ngModel #disease="ngModel"/>
-                        </div>
-                    </div>
+      <div class="modal-action">
+        <button type="button" class="btn btn-secondary"
+                onclick="bloodTypeModal.close()" (click)="bloodTypeModalIsOpen=false">Close</button>
+        <button type="submit" class="btn btn-primary">Save and add</button>
+      </div>
+    </form>
+  </div>
+</dialog>
 
-                    <div class="row my-2">
-                        <div class="col-auto ms-auto">
-                            <label class="col-form-label" for="chronicDesc">Description: </label>
-                        </div>
-                        <div class="col-auto">
-                            <textarea id="chronicDesc" name="description" class="form-control" ngModel #description="ngModel"></textarea>
-                        </div>
-                    </div>
-
-                    <div class="row my-2">
-                        <div class="col-auto ms-auto">
-                            <label class="col-form-label" for="diseaseDate">Date: </label>
-                        </div>
-                        <div class="col-auto">
-                            <input type="date" id="diseaseDate" name="date" class="form-control" ngModel #date="ngModel"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save and add</button>
-                </div>
-            </form>
+<dialog id="rhFactorModal" class="modal">
+  <div class="modal-box" *ngIf="rhFactorModalIsOpen">
+    <h3 class="font-bold text-lg">Change rh factor</h3>
+    <form #rhFactorForm="ngForm" (ngSubmit)="changeRhFactor(rhFactorForm)">
+      <label class="form-control w-full max-w-xs">
+        <div class="label">
+          <span class="label-text">Rh factor: </span>
         </div>
-    </div>
-</div>
+        <input type="text" name="rhFactor" class="input input-bordered w-full max-w-xs" ngModel #rhFactor="ngModel" />
+      </label>
 
+      <div class="modal-action">
+        <button type="button" class="btn btn-secondary"
+                onclick="rhFactorModal.close()" (click)="rhFactorModalIsOpen=false">Close</button>
+        <button type="submit" class="btn btn-primary">Save and add</button>
+      </div>
+    </form>
+  </div>
+</dialog>
 
-
-<div class="modal fade" id="resultsOfSurveysModal" tabindex="-1" aria-labelledby="resultsOfSurveysModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="resultsOfSurveysModalLabel">Add result</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form #resultOfSurveyForm="ngForm" (ngSubmit)="addResultOfSurvey(resultOfSurveyForm)">
-                <div class="modal-body">
-                    <div class="row my-2">
-                        <div class="col-auto ms-auto">
-                            <label class="col-form-label" for="title">Title: </label>
-                        </div>
-                        <div class="col-auto">
-                            <input type="text" id="title" name="title" class="form-control" ngModel #title="ngModel"/>
-                        </div>
-                    </div>
-
-                    <div class="row my-2">
-                        <div class="col-auto ms-auto">
-                            <label class="col-form-label" for="resultDesc">Description: </label>
-                        </div>
-                        <div class="col-auto">
-                            <textarea id="resultDesc" name="description" class="form-control" ngModel #description="ngModel"></textarea>
-                        </div>
-                    </div>
-
-                    <div class="row my-2">
-                        <div class="col-auto ms-auto">
-                            <label class="col-form-label" for="surveysDate">Survey's date: </label>
-                        </div>
-                        <div class="col-auto">
-                            <input type="date" id="surveysDate" name="surveysDate" class="form-control" ngModel #surveysDate="ngModel"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save and add</button>
-                </div>
-            </form>
+<dialog id="allergiesModal" class="modal">
+  <div class="modal-box" *ngIf="allergiesModalIsOpen">
+    <h3 class="font-bold text-lg">Add allergy</h3>
+    <form #allergyForm="ngForm" (ngSubmit)="addAllergy(allergyForm)">
+      <label class="form-control w-full max-w-xs">
+        <div class="label">
+          <span class="label-text">Allergy: </span>
         </div>
-    </div>
-</div>
+        <input type="text" name="allergy" class="input input-bordered w-full max-w-xs" ngModel #allergy="ngModel" />
+      </label>
+
+      <label class="form-control w-full max-w-xs">
+        <div class="label">
+          <span class="label-text">Description: </span>
+        </div>
+        <textarea name="description" class="textarea textarea-bordered max-h-52" ngModel #description="ngModel"></textarea>
+      </label>
+
+      <div class="modal-action">
+        <button type="button" class="btn btn-secondary"
+                onclick="allergiesModal.close()" (click)="allergiesModalIsOpen=false">Close</button>
+        <button type="submit" class="btn btn-primary">Save and add</button>
+      </div>
+    </form>
+  </div>
+</dialog>
+
+<dialog id="chronicDiseasesModal" class="modal">
+  <div class="modal-box" *ngIf="chronicDiseasesModalIsOpen">
+    <h3 class="font-bold text-lg">Add chronic disease</h3>
+    <form #chronicDiseaseForm="ngForm" (ngSubmit)="addChronicDisease(chronicDiseaseForm)">
+      <label class="form-control w-full max-w-xs">
+        <div class="label">
+          <span class="label-text">Disease: </span>
+        </div>
+        <input type="text" name="disease" class="input input-bordered w-full max-w-xs" ngModel #disease="ngModel" />
+      </label>
+
+      <label class="form-control w-full max-w-xs">
+        <div class="label">
+          <span class="label-text">Description: </span>
+        </div>
+        <textarea name="description" class="textarea textarea-bordered max-h-52" ngModel #description="ngModel"></textarea>
+      </label>
+
+      <label class="form-control w-full max-w-xs">
+        <div class="label">
+          <span class="label-text">Date: </span>
+        </div>
+        <input type="date" name="date" class="input input-bordered w-full max-w-xs" ngModel #date="ngModel" />
+      </label>
+
+      <div class="modal-action">
+        <button type="button" class="btn btn-secondary"
+                onclick="chronicDiseasesModal.close()" (click)="chronicDiseasesModalIsOpen=false">Close</button>
+        <button type="submit" class="btn btn-primary">Save and add</button>
+      </div>
+    </form>
+  </div>
+</dialog>
+
+<dialog id="resultsOfSurveysModal" class="modal">
+  <div class="modal-box" *ngIf="resultsOfSurveysModalIsOpen">
+    <h3 class="font-bold text-lg">Add result</h3>
+    <form #resultOfSurveyForm="ngForm" (ngSubmit)="addResultOfSurvey(resultOfSurveyForm)">
+      <label class="form-control w-full max-w-xs">
+        <div class="label">
+          <span class="label-text">Title: </span>
+        </div>
+        <input type="text" name="title" class="input input-bordered w-full max-w-xs" ngModel #title="ngModel" />
+      </label>
+
+      <label class="form-control w-full max-w-xs">
+        <div class="label">
+          <span class="label-text">Description: </span>
+        </div>
+        <textarea name="description" class="textarea textarea-bordered max-h-52" ngModel #description="ngModel"></textarea>
+      </label>
+
+      <label class="form-control w-full max-w-xs">
+        <div class="label">
+          <span class="label-text">Survey's date: </span>
+        </div>
+        <input type="date" name="surveysDate" class="input input-bordered w-full max-w-xs" ngModel #surveysDate="ngModel" />
+      </label>
+
+      <div class="modal-action">
+        <button type="button" class="btn btn-secondary"
+                onclick="resultsOfSurveysModal.close()" (click)="resultsOfSurveysModalIsOpen=false">Close</button>
+        <button type="submit" class="btn btn-primary">Save and add</button>
+      </div>
+    </form>
+  </div>
+</dialog>
+

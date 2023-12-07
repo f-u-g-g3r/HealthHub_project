@@ -66,9 +66,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if (part.equals("uuid")) {
                 isPermitted = true;
             }
-            System.out.println(part);
             if (part.equals("family-doctor") && jwtService.extractRole(jwt).equals("DOCTOR")) {
-                System.out.println(1);
+                isPermitted = true;
+            }
+
+            if (part.equals("users") && jwtService.extractRole(jwt).equals("DOCTOR")) {
+                isPermitted = true;
+            }
+
+            if (part.equals("med-cards") && jwtService.extractRole(jwt).equals("DOCTOR")) {
                 isPermitted = true;
             }
         }

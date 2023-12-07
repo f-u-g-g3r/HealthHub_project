@@ -17,7 +17,15 @@ export class PatientProfileComponent implements OnInit{
   patientId!: string;
   user!: User;
   medCard!: MedCard;
-  
+
+  bloodTypeModalIsOpen = false;
+  rhFactorModalIsOpen = false;
+  medHistoryModalIsOpen = false;
+  allergiesModalIsOpen = false;
+  chronicDiseasesModalIsOpen = false;
+  resultsOfSurveysModalIsOpen = false;
+
+
 
   constructor (private router: Router, private actRoute: ActivatedRoute, private userService: UserService, public service: AuthenticationService) {}
 
@@ -130,7 +138,7 @@ export class PatientProfileComponent implements OnInit{
     });
   }
 
- 
+
 
 
 }

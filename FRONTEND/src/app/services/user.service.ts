@@ -11,8 +11,7 @@ import { Allergy } from '../interfaces/medCard/Allergy';
 import { ChronicDisease } from '../interfaces/medCard/chronicDisease';
 import { ResultOfSurvey } from '../interfaces/medCard/resultOfSurvey';
 import { Doctor } from '../interfaces/doctor';
-import { UpdatedDoctor } from '../interfaces/updatedDoctor';
-import {UpdateFamDoctorRequest} from "../interfaces/updateFamDoctorRequest";
+import { UpdatedDoctor } from '../interfaces/updatedDoctor'
 
 @Injectable({
   providedIn: 'root'
