@@ -3,7 +3,6 @@ import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { MedCard } from 'src/app/interfaces/medCard';
-import { MedHistory } from 'src/app/interfaces/medCard/MedHistory';
 import { User } from 'src/app/interfaces/user';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { UserService } from 'src/app/services/user.service';
@@ -137,8 +136,4 @@ export class PatientProfileComponent implements OnInit{
       error: console.error
     });
   }
-
-
-
-
 }

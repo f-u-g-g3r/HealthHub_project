@@ -34,16 +34,16 @@
   </article>
     <input type="text" placeholder="Search">
     <a class="btn ms-5" (click)="searchPatientModalIsOpen = true" onclick="search_patient.showModal()">Add new patient</a>
-    <table class="table table-zebra table-hover">
+    <table class="table table-zebra">
       <thead>
         <tr>
           <th>№</th>
           <th>Name</th>
-          <th>Info</th>
+          <th>Unique ID</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let patient of patients; index as i;" (click)="viewPatientDetails(patient.id)">
+        <tr *ngFor="let patient of patients; index as i;" (click)="viewPatientDetails(patient.id)" class="hover">
           <td>{{i+1}}</td>
           <td>{{ patient.firstname + " " + patient.lastname }}</td>
           <td>{{ patient.uuid }}</td>

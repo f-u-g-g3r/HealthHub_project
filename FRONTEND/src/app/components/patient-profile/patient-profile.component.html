@@ -60,22 +60,24 @@
 
     <div class="card bg-base-300 shadow-md mx-auto my-3 p-5">
       <span><a class="btn btn-primary btn-sm my-2" (click)="bloodTypeModalIsOpen=true" onclick="bloodTypeModal.showModal()">Change</a></span>
-      <b>Blood type: </b>
-      <span *ngIf="this.medCard.bloodType === null">Empty</span>
-      <span *ngIf="this.medCard.bloodType !== null">{{ this.medCard.bloodType }}</span>
+      <span><b>Blood type: </b>
+        <span *ngIf="this.medCard.bloodType == '' || this.medCard.bloodType == null">Empty</span>
+        <span *ngIf="this.medCard.bloodType != '' || this.medCard.bloodType != null">{{ this.medCard.bloodType }}</span>
+      </span>
     </div>
 
     <div class="card bg-base-300 shadow-md mx-auto my-3 p-5">
       <span><a class="btn btn-primary btn-sm my-2" (click)="rhFactorModalIsOpen=true" onclick="rhFactorModal.showModal()">Change</a></span>
-      <b>Rh factor: </b>
-      <span *ngIf="this.medCard.rhFactor === null">Empty</span>
-      <span *ngIf="this.medCard.rhFactor !== null">{{ this.medCard.rhFactor }}</span>
+      <span><b>Rh factor: </b>
+        <span *ngIf="this.medCard.rhFactor == '' || this.medCard.rhFactor == null">Empty</span>
+        <span *ngIf="this.medCard.rhFactor != '' || this.medCard.rhFactor != null">{{ this.medCard.rhFactor }}</span>
+      </span>
     </div>
 
     <div class="card bg-base-300 shadow-md mx-auto my-3 p-5">
       <span><a class="btn btn-primary btn-sm my-2" (click)="medHistoryModalIsOpen=true" onclick="medHistoryModal.showModal()">Add</a></span>
       <b class="text-center text-xl mb-2">Med History</b>
-      <span *ngIf="this.medCard.medHistory.length === 0">Empty</span>
+      <span *ngIf="this.medCard.medHistory.length === 0" class="text-center">Empty</span>
       <table class="table table-zebra" *ngIf="this.medCard.medHistory.length !== 0">
           <thead>
               <tr class="bg-base-200">
@@ -97,7 +99,7 @@
     <div class="card bg-base-300 shadow-md mx-auto my-3 p-5">
       <span><a class="btn btn-primary btn-sm my-2" (click)="allergiesModalIsOpen=true" onclick="allergiesModal.showModal()">Add</a></span>
       <b class="text-center text-xl mb-2">Allergies</b>
-      <span *ngIf="this.medCard.allergies.length === 0">Empty</span>
+      <span *ngIf="this.medCard.allergies.length === 0" class="text-center">Empty</span>
       <table class="table table-zebra" *ngIf="this.medCard.allergies.length !== 0">
           <thead>
               <tr class="bg-base-200">
@@ -117,7 +119,7 @@
     <div class="card bg-base-300 shadow-md mx-auto my-3 p-5">
       <span><a class="btn btn-primary btn-sm my-2" (click)="chronicDiseasesModalIsOpen=true" onclick="chronicDiseasesModal.showModal()">Add</a></span>
       <b class="text-center text-xl mb-2">Chronic diseases</b>
-      <span *ngIf="this.medCard.chronicDiseases.length === 0">Empty</span>
+      <span *ngIf="this.medCard.chronicDiseases.length === 0" class="text-center">Empty</span>
       <table class="table table-zebra" *ngIf="this.medCard.chronicDiseases.length !== 0">
           <thead>
               <tr class="bg-base-200">
@@ -139,7 +141,7 @@
     <div class="card bg-base-300 shadow-md mx-auto my-3 p-5">
       <span><a class="btn btn-primary btn-sm my-2" (click)="resultsOfSurveysModalIsOpen=true" onclick="resultsOfSurveysModal.showModal()">Add</a></span>
       <b class="text-center text-xl mb-2">Results of surveys</b>
-      <span *ngIf="this.medCard.resultsOfSurveys.length === 0">Empty</span>
+      <span *ngIf="this.medCard.resultsOfSurveys.length === 0" class="text-center">Empty</span>
       <table class="table table-zebra" *ngIf="this.medCard.resultsOfSurveys.length !== 0">
           <thead>
               <tr class="bg-base-200">
