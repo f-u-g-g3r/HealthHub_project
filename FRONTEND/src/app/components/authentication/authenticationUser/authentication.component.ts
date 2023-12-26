@@ -37,16 +37,7 @@ export class AuthenticationComponent implements OnInit{
     });
   }
 
-  public registerUser(registerForm: NgForm) {
-    const formFields = registerForm.value;
-    this.authenticationService.register(formFields).subscribe({
-      next: (response: AuthenticationResponse) => {
-        sessionStorage.setItem('password', formFields["password"])
-        this.authenticateUser(response);
-      },
-      error: console.error
-    });
-  }
+
 
   private authenticateUser(response: AuthenticationResponse) {
     sessionStorage.setItem("token", response.token.toString());
@@ -62,7 +53,7 @@ export class AuthenticationComponent implements OnInit{
     sessionStorage.setItem("role", response.role);
     this.router.navigate(["/doctors-home"]);
   }
-  
+
 
 
 }

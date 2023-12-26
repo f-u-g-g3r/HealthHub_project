@@ -1,30 +1,28 @@
 <div class="container mx-auto">
-
-  <a class="btn btn-primary w-full max-w-xs" href="login">Back</a>
-  <div class="flex flex-row">
-    <div class="basis-1/5 mt-5 mx-auto">
+  <div class="flex justify-center">
+    <div class="mt-5 w-96">
     <article class="prose">
       <h2>Registration as a doctor</h2>
     </article>
     <form #registerForm="ngForm" (ngSubmit)="registerDoctor(registerForm)">
       <div>
         <label for="firstname" class="label">First name</label>
-          <input type="text" class="input input-bordered w-full max-w-xs" id="firstName" name="firstname" ngModel #firstname="ngModel"/>
+          <input type="text" class="input input-bordered w-full brz" id="firstName" name="firstname" ngModel #firstname="ngModel"/>
       </div>
 
       <div class="mt-4">
         <label for="lastname" class="label">Last name</label>
-          <input type="text" class="input input-bordered w-full max-w-xs" id="lastname" name="lastname" ngModel #lastname="ngModel"/>
+          <input type="text" class="input input-bordered w-full brz" id="lastname" name="lastname" ngModel #lastname="ngModel"/>
       </div>
 
       <div class="mt-4">
         <label for="dateOfBirth" class="label">Date of birth</label>
-          <input type="date" class="input input-bordered w-full max-w-xs" id="dateOfBirth" name="dateOfBirth" ngModel #dateOfBirth="ngModel"/>
+          <input type="date" class="input input-bordered w-full brz" id="dateOfBirth" name="dateOfBirth" ngModel #dateOfBirth="ngModel"/>
       </div>
 
       <div class="mt-4">
         <label for="gender" class="label">Gender</label>
-          <select class="select select-bordered w-full max-w-xs" name="gender" id="gender" ngModel #gender="ngModel">
+          <select class="select select-bordered w-full brz" name="gender" id="gender" ngModel #gender="ngModel">
             <option value="Male">Male</option>
             <option value="Female">Female</option>
           </select>
@@ -32,55 +30,62 @@
 
       <div class="mt-4">
         <label for="address" class="label">Address</label>
-          <input type="text" class="input input-bordered w-full max-w-xs" id="address" name="address" ngModel #address="ngModel"/>
+          <input type="text" class="input input-bordered w-full brz" id="address" name="address" ngModel #address="ngModel"/>
       </div>
 
       <div class="mt-4">
         <label for="email" class="label">Email</label>
-          <input type="text" class="input input-bordered w-full max-w-xs" id="email" name="email" ngModel #email="ngModel"/>
+          <input type="text" class="input input-bordered w-full brz" id="email" name="email" ngModel #email="ngModel"/>
       </div>
 
       <div class="mt-4">
         <label for="phone" class="label">Phone number</label>
-          <input type="text" class="input input-bordered w-full max-w-xs" id="phone" name="phone" ngModel #phone="ngModel"/>
+          <input type="text" class="input input-bordered w-full brz" id="phone" name="phone" ngModel #phone="ngModel"/>
       </div>
 
       <div class="mt-4">
         <label for="specialization" class="label">Specialization</label>
-          <input type="text" class="input input-bordered w-full max-w-xs" id="specialization" name="specialization" ngModel
+          <input type="text" class="input input-bordered w-full brz" id="specialization" name="specialization" ngModel
                  #specialization="ngModel"/>
       </div>
 
       <div class="mt-4">
         <label for="placeOfWork" class="label">Place of work</label>
-          <input type="text" class="input input-bordered w-full max-w-xs" id="placeOfWork" name="placeOfWork" ngModel #placeOfWork="ngModel"/>
+          <input type="text" class="input input-bordered w-full brz" id="placeOfWork" name="placeOfWork" ngModel #placeOfWork="ngModel"/>
       </div>
 
       <div class="mt-4">
         <label for="licenseNumber" class="label">License number</label>
-          <input type="text" class="input input-bordered w-full max-w-xs" id="licenseNumber" name="licenseNumber" ngModel
+          <input type="text" class="input input-bordered w-full brz" id="licenseNumber" name="licenseNumber" ngModel
                  #licenseNumber="ngModel"/>
       </div>
 
       <div class="mt-4">
         <label for="licenseIssuingDate" class="label">License issuing date</label>
-          <input type="date" class="input input-bordered w-full max-w-xs" id="licenseIssuingDate" name="licenseIssuingDate" ngModel
+          <input type="date" class="input input-bordered w-full brz" id="licenseIssuingDate" name="licenseIssuingDate" ngModel
                  #licenseIssuingDate="ngModel"/>
       </div>
 
       <div class="mt-4">
         <label for="licenseIssuingAuthority" class="label">License issuing authority</label>
-          <input type="text" class="input input-bordered w-full max-w-xs" id="licenseIssuingAuthority" name="licenseIssuingAuthority" ngModel
+          <input type="text" class="input input-bordered w-full brz" id="licenseIssuingAuthority" name="licenseIssuingAuthority" ngModel
                  #licenseIssuingAuthority="ngModel"/>
       </div>
 
 
       <div class="mt-4">
         <label for="password" class="label">Password</label>
-          <input type="password" class="input input-bordered w-full max-w-xs" id="password" name="password" ngModel #password="ngModel"/>
+          <input type="password" class="input input-bordered w-full brz" id="password" name="password" ngModel #password="ngModel"/>
       </div>
 
-      <button type="submit" class="btn btn-primary mt-3 mb-20">Send a request</button>
+      <button type="submit" class="btn btn-primary mt-3 mb-10 brz">Register</button>
+
+      <div class="mb-3 flex justify-center">
+        <a href="/login" class="btn btn-neutral brz">Login to an existing account</a>
+      </div>
+      <div class="mb-20 flex justify-center">
+        <a href="/register" class="btn btn-neutral brz">Create a new account</a>
+      </div>
     </form>
     </div>
   </div>

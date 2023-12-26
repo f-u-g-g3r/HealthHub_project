@@ -15,6 +15,7 @@ import { PatientProfileComponent } from './components/patient-profile/patient-pr
 import { AuthenticationDoctorComponent } from './components/authentication/authenticationDoctors/authenticationDoctor.component';
 import { DoctorsHomeComponent } from './components/home/doctors-home/doctors-home.component';
 import { AdminsHomeComponent } from './components/home/admins-home/admins-home.component';
+import { RegistrationUserComponent } from './components/authentication/registrationUser/registrationUser.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { AdminsHomeComponent } from './components/home/admins-home/admins-home.c
     PatientProfileComponent,
     AuthenticationDoctorComponent,
     DoctorsHomeComponent,
-    AdminsHomeComponent
+    AdminsHomeComponent,
+    RegistrationUserComponent
   ],
   imports: [
     BrowserModule,

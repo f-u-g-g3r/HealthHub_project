@@ -1,39 +1,45 @@
-<div class="navbar bg-base-100">
-  <div class="navbar-start">
-    <div class="dropdown">
-      <label tabindex="0" class="btn btn-ghost lg:hidden">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16"/>
-        </svg>
-      </label>
-      <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-        <li><a href="home">Home</a></li>
-        <li><a href="doctors-workplace">Switch to workplace</a></li>
-        <li><a href="home/profile">My profile</a></li>
-        <li><a href="#">Options</a></li>
+  <div class="navbar bg-base-100">
+    <div class="navbar-start">
+      <div class="dropdown">
+        <label tabindex="0" class="btn btn-ghost lg:hidden">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16"/>
+          </svg>
+        </label>
+        <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 brz">
+          <li><a href="home" class="brz">Home</a></li>
+          <li><a href="doctors-workplace" class="brz">Switch to workplace</a></li>
+          <li><a href="home/profile" class="brz">My profile</a></li>
+          <li><a href="#" class="brz">Options</a></li>
+        </ul>
+      </div>
+      <a class="btn btn-ghost text-xl brz">Health hub</a>
+    </div>
+    <div class="navbar-center hidden lg:flex">
+      <ul class="menu menu-horizontal px-1">
+        <li><a href="home" class="brz">Home</a></li>
+        <li><a href="doctors-workplace" class="brz">Switch to workplace</a></li>
+        <li><a href="home/profile" class="brz">My profile</a></li>
+        <li><a href="#" class="brz">Options</a></li>
       </ul>
     </div>
-    <a class="btn btn-ghost text-xl">Health hub</a>
+    <div class="navbar-end">
+      <a class="btn btn-primary brz" href="#" (click)="service.logOut()">Log out</a>
+    </div>
   </div>
-  <div class="navbar-center hidden lg:flex">
-    <ul class="menu menu-horizontal px-1">
-      <li><a href="home">Home</a></li>
-      <li><a href="doctors-workplace">Switch to workplace</a></li>
-      <li><a href="home/profile">My profile</a></li>
-      <li><a href="#">Options</a></li>
-    </ul>
-  </div>
-  <div class="navbar-end">
-    <a class="btn btn-primary" href="#" (click)="service.logOut()">Log out</a>
-  </div>
-</div>
 
 <div class="container mx-auto">
   <article class="prose">
     <h2>Patient List</h2>
   </article>
-    <input type="text" placeholder="Search">
-    <a class="btn ms-5" (click)="searchPatientModalIsOpen = true" onclick="search_patient.showModal()">Add new patient</a>
+  <a class="btn btn-neutral brz my-3" (click)="searchPatientModalIsOpen = true" onclick="search_patient.showModal()">Add new patient</a>
+  <div class="form-control flex flex-row my-3">
+    <form #searchForm="ngForm" (ngSubmit)="search(searchForm)">
+      <input type="text" name="query" placeholder="Search (By name or unique ID)" class="input input-bordered w-64 brz" ngModel #query="ngModel" />
+      <input type="submit" value="Find" class="btn btn-primary brz ms-5" *ngIf="!searchForm.submitted">
+      <input type="button" class="btn btn-primary brz ms-5" value="Clear" *ngIf="searchForm.submitted" (click)="getDoctorsUsers(); searchForm.resetForm()">
+    </form>
+  </div>
     <table class="table table-zebra">
       <thead>
         <tr>

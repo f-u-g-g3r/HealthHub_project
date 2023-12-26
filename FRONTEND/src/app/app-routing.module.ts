@@ -8,9 +8,11 @@ import { PatientProfileComponent } from './components/patient-profile/patient-pr
 import { AuthenticationDoctorComponent } from './components/authentication/authenticationDoctors/authenticationDoctor.component';
 import { DoctorsHomeComponent } from './components/home/doctors-home/doctors-home.component';
 import { AdminsHomeComponent } from './components/home/admins-home/admins-home.component';
+import {RegistrationUserComponent} from "./components/authentication/registrationUser/registrationUser.component";
 
 const routes: Routes = [
   { path: 'login', component: AuthenticationComponent },
+  { path: 'register', component: RegistrationUserComponent },
   { path: 'login/doctor', component: AuthenticationDoctorComponent },
   { path: 'home', component: HomeComponent },
   { path: 'home/profile', component: ProfileComponent },

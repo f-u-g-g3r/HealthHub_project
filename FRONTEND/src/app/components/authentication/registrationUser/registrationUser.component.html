@@ -1,0 +1,66 @@
+<div class="container mx-auto">
+  <div class="flex justify-center">
+    <div class="mt-5 w-96">
+      <article class="prose">
+        <h2>Registration</h2>
+      </article>
+      <form #registerForm="ngForm" (ngSubmit)="registerUser(registerForm)">
+        <div>
+          <label for="firstname" class="label">First name</label>
+          <input type="text" class="input input-bordered w-full brz" id="firstName" name="firstname" ngModel
+                 #firstname="ngModel"/>
+        </div>
+
+        <div class="mt-4">
+          <label for="lastname" class="label">Last name</label>
+          <input type="text" class="input input-bordered w-full brz" id="lastname" name="lastname" ngModel
+                 #lastname="ngModel"/>
+        </div>
+
+        <div class="mt-4">
+          <label for="dateOfBirth" class="label">Date of birth</label>
+          <input type="date" class="input input-bordered w-full brz" id="dateOfBirth" name="dateOfBirth" ngModel
+                 #dateOfBirth="ngModel"/>
+        </div>
+
+        <div class="mt-4">
+          <label for="gender" class="label">Gender</label>
+          <select class="select select-bordered w-full brz" name="gender" id="gender" ngModel #gender="ngModel">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+        </div>
+
+        <div class="mt-4">
+          <label for="address" class="label">Address</label>
+          <input type="text" class="input input-bordered w-full brz" id="address" name="address" ngModel
+                 #address="ngModel"/>
+        </div>
+
+        <div class="mt-4">
+          <label for="email" class="label">Email</label>
+          <input type="text" class="input input-bordered w-full brz" id="email" name="email" ngModel
+                 #email="ngModel"/>
+        </div>
+
+        <div class="mt-4">
+          <label for="phone" class="label">Phone number</label>
+          <input type="text" class="input input-bordered w-full brz" id="phone" name="phone" ngModel
+                 #phone="ngModel"/>
+        </div>
+
+        <div class="mt-4">
+          <label for="password" class="label">Password</label>
+          <input type="password" class="input input-bordered w-full brz" id="password" name="password" ngModel
+                 #password="ngModel"/>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3 brz">Sign up</button>
+
+        <div class="mt-10 mb-20 flex justify-center">
+          <a class="btn btn-neutral brz" href="/login">Login to an existing account</a><br />
+        </div>
+      </form>
+    </div>
+  </div>
+
+</div>

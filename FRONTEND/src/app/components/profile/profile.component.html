@@ -6,32 +6,32 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16"/>
         </svg>
       </label>
-      <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-        <li><a href="home">Home</a></li>
-        <li *ngIf="isDoctor"><a href="doctors-workplace">Switch to workplace</a></li>
-        <li><a href="home/profile">My profile</a></li>
-        <li><a href="#">Options</a></li>
+      <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 brz">
+        <li><a href="home" class="brz">Home</a></li>
+        <li *ngIf="isDoctor"><a href="doctors-workplace" class="brz">Switch to workplace</a></li>
+        <li><a href="home/profile" class="brz">My profile</a></li>
+        <li><a href="#" class="brz">Options</a></li>
       </ul>
     </div>
-    <a class="btn btn-ghost text-xl">Health hub</a>
+    <a class="btn btn-ghost text-xl brz">Health hub</a>
   </div>
   <div class="navbar-center hidden lg:flex">
     <ul class="menu menu-horizontal px-1">
-      <li><a href="home">Home</a></li>
-      <li *ngIf="isDoctor"><a href="doctors-workplace">Switch to workplace</a></li>
-      <li><a href="home/profile">My profile</a></li>
-      <li><a href="#">Options</a></li>
+      <li><a href="home" class="brz">Home</a></li>
+      <li *ngIf="isDoctor"><a href="doctors-workplace" class="brz">Switch to workplace</a></li>
+      <li><a href="home/profile" class="brz">My profile</a></li>
+      <li><a href="#" class="brz">Options</a></li>
     </ul>
   </div>
   <div class="navbar-end">
-    <a class="btn btn-primary" href="#" (click)="authService.logOut()">Log out</a>
+    <a class="btn btn-primary brz" href="#" (click)="authService.logOut()">Log out</a>
   </div>
 </div>
 
 <div class="container mx-auto">
 
   <div class="flex flex-row">
-    <div class="card bg-base-200 shadow-xl mx-auto basis-1/2" *ngIf="!isDoctor">
+    <div class="card bg-base-200 shadow-xl mx-auto basis-1/2 brz" *ngIf="!isDoctor">
       <div class="card-body">
         <article class="prose ms-5">
           <h2>Your profile info</h2>
@@ -52,12 +52,12 @@
 
           <p class="text-lg font-bold">Your family doctor: {{ this.userData.familyDoctorId }}</p>
 
-          <button class="btn btn-secondary mt-3" onclick="updateUserModal.showModal()">Change info</button>
+          <button class="btn btn-secondary mt-3 brz" onclick="updateUserModal.showModal()">Change info</button>
         </article>
       </div>
     </div>
 
-    <div class="card bg-base-200 shadow-xl mx-auto basis-1/2" *ngIf="isDoctor">
+    <div class="card bg-base-200 shadow-xl mx-auto basis-1/2 brz" *ngIf="isDoctor">
       <div class="card-body">
         <article class="prose ms-5">
           <h2>Your profile info</h2>
@@ -85,7 +85,7 @@
 
           <p class="text-lg font-bold">License issuing authority: {{ doctorData.licenseIssuingAuthority }}</p>
 
-          <button class="btn btn-secondary mt-3" onclick="updateDoctorModal.showModal()">Change info</button>
+          <button class="btn btn-secondary mt-3 brz" onclick="updateDoctorModal.showModal()">Change info</button>
 
         </article>
       </div>
@@ -98,49 +98,49 @@
 <!-- UPDATE USER MODAL -->
 
 <dialog id="updateUserModal" class="modal" *ngIf="!isDoctor">
-  <div class="modal-box">
+  <div class="modal-box brz">
     <form #updateForm="ngForm" (ngSubmit)="onUpdateUser(updateForm.value)">
       <input ngModel="{{ userData.id }}" type="hidden" name="id"/>
 
       <div class="mb-4">
         <label class="label" for="firstname">Firstname</label>
         <input ngModel="{{ userData.firstname }}" #firstname="ngModel" type="text" name="firstname"
-               class="input input-bordered w-full max-w-xs" id="firstname"/>
+               class="input input-bordered w-full max-w-xs brz" id="firstname"/>
       </div>
 
       <div class="mb-4">
         <label class="label" for="lastname">Lastname</label>
 
         <input ngModel="{{ userData.lastname }}" #lastname="ngModel" type="text" name="lastname"
-               class="input input-bordered w-full max-w-xs" id="lastname"/>
+               class="input input-bordered w-full max-w-xs brz" id="lastname"/>
       </div>
 
       <div class="mb-4 row">
         <label class="label" for="address">Address</label>
         <input ngModel="{{ userData.address }}" #address="ngModel" type="text" name="address"
-               class="input input-bordered w-full max-w-xs" id="address"/>
+               class="input input-bordered w-full max-w-xs brz" id="address"/>
       </div>
 
       <div class="mb-4 row">
         <label class="label" for="email">Email</label>
         <input ngModel="{{ userData.email }}" #email="ngModel" type="text" name="email"
-               class="input input-bordered w-full max-w-xs" id="email"/>
+               class="input input-bordered w-full max-w-xs brz" id="email"/>
       </div>
 
       <div class="mb-4 row">
         <label class="label" for="phone">Phone</label>
         <input ngModel="{{ userData.phone }}" #phone="ngModel" type="text" name="phone"
-               class="input input-bordered w-full max-w-xs" id="phone"/>
+               class="input input-bordered w-full max-w-xs brz" id="phone"/>
       </div>
 
-      <button type="submit" data-bs-dismiss="modal" class="btn btn-primary"
+      <button type="submit" data-bs-dismiss="modal" class="btn btn-primary brz"
               onclick="updateUserModal.close()">Save changes
       </button>
 
     </form>
     <div class="modal-action">
       <form method="dialog">
-        <button class="btn">Close</button>
+        <button class="btn brz">Close</button>
       </form>
     </div>
   </div>
@@ -149,53 +149,53 @@
 
 <!-- UPDATE DOCTOR MODAL -->
 <dialog id="updateDoctorModal" class="modal" *ngIf="isDoctor">
-  <div class="modal-box">
+  <div class="modal-box brz">
     <form #updateDoctorForm="ngForm" (ngSubmit)="onUpdateDoctor(updateDoctorForm.value)">
       <input ngModel="{{ doctorData.id }}" type="hidden" name="id"/>
 
       <div class="mb-4">
         <label class="label" for="firstname">Firstname</label>
         <input ngModel="{{ doctorData.firstname }}" #firstname="ngModel" type="text" name="firstname"
-               class="input input-bordered w-full max-w-xs"/>
+               class="input input-bordered w-full max-w-xs brz"/>
       </div>
 
       <div class="mb-4">
         <label class="label" for="lastname">Lastname</label>
         <input ngModel="{{ doctorData.lastname }}" #lastname="ngModel" type="text" name="lastname"
-               class="input input-bordered w-full max-w-xs"/>
+               class="input input-bordered w-full max-w-xs brz"/>
       </div>
 
       <div class="mb-4">
         <label class="label" for="address">Address</label>
         <input ngModel="{{ doctorData.address }}" #address="ngModel" type="text" name="address"
-               class="input input-bordered w-full max-w-xs"/>
+               class="input input-bordered w-full max-w-xs brz"/>
       </div>
 
       <div class="mb-4">
         <label class="label" for="email">Email</label>
         <input ngModel="{{ doctorData.email }}" #email="ngModel" type="text" name="email"
-               class="input input-bordered w-full max-w-xs"/>
+               class="input input-bordered w-full max-w-xs brz"/>
       </div>
 
       <div class="mb-4 ">
         <label class="label" for="phone">Phone</label>
         <input ngModel="{{ doctorData.phone }}" #phone="ngModel" type="text" name="phone"
-               class="input input-bordered w-full max-w-xs"/>
+               class="input input-bordered w-full max-w-xs brz"/>
       </div>
 
       <div class="mb-4">
         <label class="label" for="placeOfWork">Place of work</label>
         <input ngModel="{{ doctorData.placeOfWork }}" #placeOfWork="ngModel" type="text" name="placeOfWork"
-               class="input input-bordered w-full max-w-xs" id="placeOfWork"/>
+               class="input input-bordered w-full max-w-xs brz" id="placeOfWork"/>
       </div>
 
-      <button type="submit" data-bs-dismiss="modal" class="btn btn-primary"
+      <button type="submit" data-bs-dismiss="modal" class="btn btn-primary brz"
               onclick="updateDoctorModal.close()">Save changes</button>
     </form>
 
     <div class="modal-action">
       <form method="dialog">
-        <button class="btn">Close</button>
+        <button class="btn brz">Close</button>
       </form>
     </div>
   </div>

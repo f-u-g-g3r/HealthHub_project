@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { User } from 'src/app/interfaces/user';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { UserService } from 'src/app/services/user.service';
+import {NgForm} from "@angular/forms";
 
 
 @Component({
@@ -27,7 +28,7 @@ export class DoctorsworkplaceComponent implements OnInit {
     this.getDoctorsUsers();
   }
 
-  private getDoctorsUsers() {
+  public getDoctorsUsers() {
     this.userService.getUsersByDoctorId(sessionStorage.getItem("docId")).subscribe({
       next: (response: User[]) => {
         this.patients = response;
@@ -44,7 +45,7 @@ export class DoctorsworkplaceComponent implements OnInit {
     const uuid = data['uuid'];
     this.userService.getUserByUuid(uuid).subscribe({
       next: (response: User) => {
-        this.foundUser = response
+         this.foundUser = response
       },
           error: console.error
       });
@@ -55,5 +56,34 @@ export class DoctorsworkplaceComponent implements OnInit {
       next: () => this.getDoctorsUsers(),
       error: console.error
     });
+  }
+
+  public search(form: NgForm) {
+    const query = form.value;
+    let value = query['query'];
+    if (!isNaN(Number(value))) {
+      this.userService.getUserByUuid(value).subscribe({
+        next: (response: User) => {
+          this.patients = [response];
+        },
+        error: console.error
+      });
+    } else {
+      let oldPatients = this.patients;
+      this.patients = [];
+      value = value.toLowerCase();
+      for (let i = 0; i < oldPatients.length; i++) {
+        let patient = oldPatients[i];
+        if (patient.firstname.toLowerCase() == value) {
+          this.patients.push(patient);
+        } else if (patient.lastname.toLowerCase() == value) {
+          this.patients.push(patient);
+        } else if (patient.firstname.toLowerCase() + " " + patient.lastname.toLowerCase() == value) {
+          this.patients.push(patient);
+        }
+      }
+    }
+
+
   }
 }
