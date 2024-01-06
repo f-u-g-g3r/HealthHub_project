@@ -62,12 +62,12 @@
 
 
 <dialog id="search_patient" class="modal">
-  <div class="modal-box" *ngIf="searchPatientModalIsOpen">
+  <div class="modal-box  brz" *ngIf="searchPatientModalIsOpen">
     <h3 class="font-bold text-lg">Add new patient</h3>
     <form #findByUuidForm="ngForm" (ngSubmit)="findPatientByUuid(findByUuidForm.value)">
-      <input type="text" placeholder="Unique identificator" class="input input-bordered my-5"
+      <input type="text" placeholder="Unique identificator" class="input input-bordered my-5  brz"
              name="uuid" id="uuid" ngModel #uuid="ngModel" />
-      <input type="submit" (click)="foundUserModalIsOpen = true;" onclick="search_patient.close(); found_user.showModal()"  value="Find" class="btn ms-4" />
+      <input type="submit" (click)="foundUserModalIsOpen = true;" onclick="search_patient.close(); found_user.showModal()"  value="Find" class="btn ms-4 brz" />
     </form>
   </div>
   <form method="dialog" class="modal-backdrop">
@@ -86,7 +86,7 @@
  -->
 
 <dialog id="found_user" class="modal">
-  <div class="modal-box" *ngIf="foundUserModalIsOpen">
+  <div class="modal-box brz" *ngIf="foundUserModalIsOpen">
     <h3 class="font-bold text-lg">Patient info</h3>
     <p class="py-4"><b>Name:</b> {{ foundUser.firstname }} {{ foundUser.lastname }}</p>
     <p class="py-4"><b>Date of birth:</b> {{ foundUser.dateOfBirth }}</p>
@@ -97,8 +97,8 @@
 
     <div class="modal-action">
       <form method="dialog">
-        <button class="btn mx-2" (click)="foundUserModalIsOpen = false;searchPatientModalIsOpen = true" onclick="search_patient.showModal(); found_user.close();">Back</button>
-        <button class="btn btn-success mx-2" (click)="addPatientToDoctor(foundUser); foundUserModalIsOpen = false;" onclick="found_user.close()">Add patient</button>
+        <button class="btn mx-2  brz" (click)="foundUserModalIsOpen = false;searchPatientModalIsOpen = true" onclick="search_patient.showModal(); found_user.close();">Back</button>
+        <button class="btn btn-success mx-2  brz" (click)="addPatientToDoctor(foundUser); foundUserModalIsOpen = false;" onclick="found_user.close()">Add patient</button>
       </form>
     </div>
   </div>

@@ -162,169 +162,169 @@
 </div>
 
 <dialog id="medHistoryModal" class="modal">
-  <div class="modal-box" *ngIf="medHistoryModalIsOpen">
+  <div class="modal-box brz" *ngIf="medHistoryModalIsOpen">
     <h3 class="font-bold text-lg">Add disease</h3>
     <form #medHistory="ngForm" (ngSubmit)="addMedHistory(medHistory)">
       <label class="form-control w-full max-w-xs">
         <div class="label">
           <span class="label-text">Disease: </span>
         </div>
-        <input type="text" name="disease" class="input input-bordered w-full max-w-xs" ngModel #disease="ngModel" />
+        <input type="text" name="disease" class="input input-bordered w-full max-w-xs brz" ngModel #disease="ngModel" />
       </label>
 
       <label class="form-control w-full max-w-xs">
         <div class="label">
           <span class="label-text">Description: </span>
         </div>
-        <textarea name="description" class="textarea textarea-bordered max-h-52" ngModel #description="ngModel"></textarea>
+        <textarea name="description" class="textarea textarea-bordered max-h-52 brz" ngModel #description="ngModel"></textarea>
       </label>
 
       <label class="form-control w-full max-w-xs">
         <div class="label">
           <span class="label-text">Date of illness: </span>
         </div>
-        <input type="date" name="dateOfIllness" class="input input-bordered w-full max-w-xs" ngModel #dateOfIllness="ngModel" />
+        <input type="date" name="dateOfIllness" class="input input-bordered w-full max-w-xs brz" ngModel #dateOfIllness="ngModel" />
       </label>
 
       <div class="modal-action">
-          <button type="button" class="btn btn-secondary"
+          <button type="button" class="btn btn-secondary brz"
                   onclick="medHistoryModal.close()" (click)="medHistoryModalIsOpen=false">Close</button>
-          <button type="submit" class="btn btn-primary">Save and add</button>
+          <button type="submit" class="btn btn-primary brz">Save and add</button>
       </div>
     </form>
   </div>
 </dialog>
 
 <dialog id="bloodTypeModal" class="modal">
-  <div class="modal-box" *ngIf="bloodTypeModalIsOpen">
+  <div class="modal-box brz" *ngIf="bloodTypeModalIsOpen">
     <h3 class="font-bold text-lg">Change blood type</h3>
     <form #bloodTypeForm="ngForm" (ngSubmit)="changeBloodType(bloodTypeForm)">
       <label class="form-control w-full max-w-xs">
         <div class="label">
           <span class="label-text">Blood type: </span>
         </div>
-        <input type="text" name="bloodType" class="input input-bordered w-full max-w-xs" ngModel #bloodType="ngModel" />
+        <input type="text" name="bloodType" class="input input-bordered w-full max-w-xs brz" ngModel #bloodType="ngModel" />
       </label>
 
       <div class="modal-action">
-        <button type="button" class="btn btn-secondary"
+        <button type="button" class="btn btn-secondary brz"
                 onclick="bloodTypeModal.close()" (click)="bloodTypeModalIsOpen=false">Close</button>
-        <button type="submit" class="btn btn-primary">Save and add</button>
+        <button type="submit" class="btn btn-primary brz">Save and add</button>
       </div>
     </form>
   </div>
 </dialog>
 
 <dialog id="rhFactorModal" class="modal">
-  <div class="modal-box" *ngIf="rhFactorModalIsOpen">
+  <div class="modal-box brz" *ngIf="rhFactorModalIsOpen">
     <h3 class="font-bold text-lg">Change rh factor</h3>
     <form #rhFactorForm="ngForm" (ngSubmit)="changeRhFactor(rhFactorForm)">
       <label class="form-control w-full max-w-xs">
         <div class="label">
           <span class="label-text">Rh factor: </span>
         </div>
-        <input type="text" name="rhFactor" class="input input-bordered w-full max-w-xs" ngModel #rhFactor="ngModel" />
+        <input type="text" name="rhFactor" class="input input-bordered w-full max-w-xs brz" ngModel #rhFactor="ngModel" />
       </label>
 
       <div class="modal-action">
-        <button type="button" class="btn btn-secondary"
+        <button type="button" class="btn btn-secondary brz"
                 onclick="rhFactorModal.close()" (click)="rhFactorModalIsOpen=false">Close</button>
-        <button type="submit" class="btn btn-primary">Save and add</button>
+        <button type="submit" class="btn btn-primary brz">Save and add</button>
       </div>
     </form>
   </div>
 </dialog>
 
 <dialog id="allergiesModal" class="modal">
-  <div class="modal-box" *ngIf="allergiesModalIsOpen">
+  <div class="modal-box brz" *ngIf="allergiesModalIsOpen">
     <h3 class="font-bold text-lg">Add allergy</h3>
     <form #allergyForm="ngForm" (ngSubmit)="addAllergy(allergyForm)">
       <label class="form-control w-full max-w-xs">
         <div class="label">
           <span class="label-text">Allergy: </span>
         </div>
-        <input type="text" name="allergy" class="input input-bordered w-full max-w-xs" ngModel #allergy="ngModel" />
+        <input type="text" name="allergy" class="input input-bordered w-full max-w-xs brz" ngModel #allergy="ngModel" />
       </label>
 
       <label class="form-control w-full max-w-xs">
         <div class="label">
           <span class="label-text">Description: </span>
         </div>
-        <textarea name="description" class="textarea textarea-bordered max-h-52" ngModel #description="ngModel"></textarea>
+        <textarea name="description" class="textarea textarea-bordered max-h-52 brz" ngModel #description="ngModel"></textarea>
       </label>
 
       <div class="modal-action">
-        <button type="button" class="btn btn-secondary"
+        <button type="button" class="btn btn-secondary brz"
                 onclick="allergiesModal.close()" (click)="allergiesModalIsOpen=false">Close</button>
-        <button type="submit" class="btn btn-primary">Save and add</button>
+        <button type="submit" class="btn btn-primary brz">Save and add</button>
       </div>
     </form>
   </div>
 </dialog>
 
 <dialog id="chronicDiseasesModal" class="modal">
-  <div class="modal-box" *ngIf="chronicDiseasesModalIsOpen">
+  <div class="modal-box brz" *ngIf="chronicDiseasesModalIsOpen">
     <h3 class="font-bold text-lg">Add chronic disease</h3>
     <form #chronicDiseaseForm="ngForm" (ngSubmit)="addChronicDisease(chronicDiseaseForm)">
       <label class="form-control w-full max-w-xs">
         <div class="label">
           <span class="label-text">Disease: </span>
         </div>
-        <input type="text" name="disease" class="input input-bordered w-full max-w-xs" ngModel #disease="ngModel" />
+        <input type="text" name="disease" class="input input-bordered w-full max-w-xs brz" ngModel #disease="ngModel" />
       </label>
 
       <label class="form-control w-full max-w-xs">
         <div class="label">
           <span class="label-text">Description: </span>
         </div>
-        <textarea name="description" class="textarea textarea-bordered max-h-52" ngModel #description="ngModel"></textarea>
+        <textarea name="description" class="textarea textarea-bordered max-h-52 brz" ngModel #description="ngModel"></textarea>
       </label>
 
       <label class="form-control w-full max-w-xs">
         <div class="label">
           <span class="label-text">Date: </span>
         </div>
-        <input type="date" name="date" class="input input-bordered w-full max-w-xs" ngModel #date="ngModel" />
+        <input type="date" name="date" class="input input-bordered w-full max-w-xs brz" ngModel #date="ngModel" />
       </label>
 
       <div class="modal-action">
-        <button type="button" class="btn btn-secondary"
+        <button type="button" class="btn btn-secondary brz"
                 onclick="chronicDiseasesModal.close()" (click)="chronicDiseasesModalIsOpen=false">Close</button>
-        <button type="submit" class="btn btn-primary">Save and add</button>
+        <button type="submit" class="btn btn-primary brz">Save and add</button>
       </div>
     </form>
   </div>
 </dialog>
 
 <dialog id="resultsOfSurveysModal" class="modal">
-  <div class="modal-box" *ngIf="resultsOfSurveysModalIsOpen">
+  <div class="modal-box brz" *ngIf="resultsOfSurveysModalIsOpen">
     <h3 class="font-bold text-lg">Add result</h3>
     <form #resultOfSurveyForm="ngForm" (ngSubmit)="addResultOfSurvey(resultOfSurveyForm)">
       <label class="form-control w-full max-w-xs">
         <div class="label">
           <span class="label-text">Title: </span>
         </div>
-        <input type="text" name="title" class="input input-bordered w-full max-w-xs" ngModel #title="ngModel" />
+        <input type="text" name="title" class="input input-bordered w-full max-w-xs brz" ngModel #title="ngModel" />
       </label>
 
       <label class="form-control w-full max-w-xs">
         <div class="label">
           <span class="label-text">Description: </span>
         </div>
-        <textarea name="description" class="textarea textarea-bordered max-h-52" ngModel #description="ngModel"></textarea>
+        <textarea name="description" class="textarea textarea-bordered max-h-52 brz" ngModel #description="ngModel"></textarea>
       </label>
 
       <label class="form-control w-full max-w-xs">
         <div class="label">
           <span class="label-text">Survey's date: </span>
         </div>
-        <input type="date" name="surveysDate" class="input input-bordered w-full max-w-xs" ngModel #surveysDate="ngModel" />
+        <input type="date" name="surveysDate" class="input input-bordered w-full max-w-xs brz" ngModel #surveysDate="ngModel" />
       </label>
 
       <div class="modal-action">
-        <button type="button" class="btn btn-secondary"
+        <button type="button" class="btn btn-secondary brz"
                 onclick="resultsOfSurveysModal.close()" (click)="resultsOfSurveysModalIsOpen=false">Close</button>
-        <button type="submit" class="btn btn-primary">Save and add</button>
+        <button type="submit" class="btn btn-primary brz">Save and add</button>
       </div>
     </form>
   </div>

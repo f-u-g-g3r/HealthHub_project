@@ -6,51 +6,25 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16"/>
         </svg>
       </label>
-      <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-        <li><a href="home">Home</a></li>
-        <li><a href="home/profile">My profile</a></li>
-        <li>
-          <a>Options</a>
-          <ul class="p-2">
-            <li>
-              Theme
-              <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                <li><a>Dark</a></li>
-                <li><a>White</a></li>
-              </ul>
-            </li>
-          </ul>
-        </li>
+      <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 brz">
+        <li><a href="home" class="brz">Home</a></li>
+        <li><a href="home/profile" class="brz">My profile</a></li>
+        <li><a class="brz">Options</a></li>
       </ul>
     </div>
     <a class="btn btn-ghost text-xl brz">Health hub</a>
   </div>
   <div class="navbar-center hidden lg:flex">
     <ul class="menu menu-horizontal px-1">
-      <li><a href="home">Home</a></li>
-      <li><a href="home/profile">My profile</a></li>
+      <li><a href="home" class="brz">Home</a></li>
+      <li><a href="home/profile" class="brz">My profile</a></li>
 
-      <li tabindex="0">
-        <details>
-          <summary>Options</summary>
-          <ul class="p-2">
-            <li>
-              <div class="dropdown dropdown-right">
-                <label tabindex="0">Themes</label>
-                <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                  <li><a data-set-theme="light" data-act-class="ACTIVECLASS">Light</a></li>
-                  <li><a data-set-theme="dark" data-act-class="ACTIVECLASS">Dark</a></li>
-                </ul>
-              </div>
-            </li>
-          </ul>
-        </details>
-      </li>
+      <li><a class="brz">Options</a></li>
 
     </ul>
   </div>
   <div class="navbar-end">
-    <a class="btn btn-primary" href="#" (click)="service.logOut()">Log out</a>
+    <a class="btn btn-primary brz" href="#" (click)="service.logOut()">Log out</a>
   </div>
 </div>
 
@@ -59,7 +33,7 @@
 
   <div class="grid grid-cols-2 gap-8">
 
-    <div class="collapse collapse-arrow bg-base-200">
+    <div class="collapse collapse-arrow bg-base-200 brz">
       <input type="radio" name="main-accordion" />
       <div class="collapse-title text-xl font-medium">
         Information about your medical card
@@ -67,7 +41,7 @@
       <div class="collapse-content">
         <div class="collapse">
           <input type="radio" name="main-accordion-content-1">
-          <a class="collapse-title text-lg btn btn-primary my-3">
+          <a class="collapse-title text-lg btn btn-primary my-3 brz">
             Medical history and anamnesis
           </a>
           <div class="collapse-content">
@@ -75,14 +49,29 @@
               Empty
             </div>
             <div class="ps-5" *ngIf="medCard.medHistory.length > 0">
-              {{ medCard.medHistory }}
+              <table class="table">
+                <thead>
+                  <tr class="bg-base-200">
+                    <th>Disease</th>
+                    <th>Description</th>
+                    <th>Date of illness</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let medHistory of this.medCard.medHistory">
+                    <td>{{ medHistory.disease }}</td>
+                    <td>{{ medHistory.description }}</td>
+                    <td>{{ medHistory.dateOfIllness }}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
 
         <div class="collapse">
           <input type="radio" name="main-accordion-content-1">
-          <a class="collapse-title text-lg btn btn-primary my-3">
+          <a class="collapse-title text-lg btn btn-primary my-3 brz">
             Blood type and Rh factor
           </a>
           <div class="collapse-content">
@@ -98,7 +87,7 @@
 
         <div class="collapse">
           <input type="radio" name="main-accordion-content-1">
-          <a class="collapse-title text-lg btn btn-primary my-3">
+          <a class="collapse-title text-lg btn btn-primary my-3 brz">
             Allergies and reactions to medications
           </a>
           <div class="collapse-content">
@@ -106,14 +95,27 @@
               Empty
             </div>
             <div class="ps-5" *ngIf="medCard.allergies.length > 0">
-              {{ medCard.allergies }}
+              <table class="table">
+                <thead>
+                  <tr class="bg-base-200">
+                    <th>Allergy</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let allergy of this.medCard.allergies">
+                    <td>{{ allergy.allergy }}</td>
+                    <td>{{ allergy.description }}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
 
         <div class="collapse">
           <input type="radio" name="main-accordion-content-1">
-          <a class="collapse-title text-lg btn btn-primary my-3">
+          <a class="collapse-title text-lg btn btn-primary my-3 brz">
             Chronic diseases
           </a>
           <div class="collapse-content">
@@ -121,14 +123,29 @@
               Empty
             </div>
             <div class="ps-5" *ngIf="medCard.chronicDiseases.length > 0">
-              {{ medCard.chronicDiseases }}
+              <table class="table">
+                <thead>
+                  <tr class="bg-base-200">
+                    <th>Disease</th>
+                    <th>Description</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let chronicDisease of this.medCard.chronicDiseases">
+                    <td>{{ chronicDisease.disease }}</td>
+                    <td>{{ chronicDisease.description }}</td>
+                    <td>{{ chronicDisease.date }}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="collapse collapse-arrow bg-base-200">
+    <div class="collapse collapse-arrow bg-base-200 brz">
       <input type="radio" name="main-accordion" />
       <div class="collapse-title text-xl font-medium">
         Electronic appointments and prescriptions
@@ -136,7 +153,7 @@
       <div class="collapse-content">
         <div class="collapse">
           <input type="radio" name="main-accordion-content-2">
-          <a class="collapse-title text-lg btn btn-primary my-3">
+          <a class="collapse-title text-lg btn btn-primary my-3 brz">
             Doctor's prescriptions and appointments
           </a>
           <div class="collapse-content">
@@ -148,7 +165,7 @@
 
         <div class="collapse">
           <input type="radio" name="main-accordion-content-2">
-          <a class="collapse-title text-lg btn btn-primary my-3">
+          <a class="collapse-title text-lg btn btn-primary my-3 brz">
             Dosages, administration instructions and frequency
           </a>
           <div class="collapse-content">
@@ -160,7 +177,7 @@
       </div>
     </div>
 
-    <div class="collapse collapse-arrow bg-base-200">
+    <div class="collapse collapse-arrow bg-base-200 brz">
       <input type="radio" name="main-accordion" />
       <div class="collapse-title text-xl font-medium">
         History of visits
@@ -168,7 +185,7 @@
       <div class="collapse-content">
         <div class="collapse">
           <input type="radio" name="main-accordion-content-3">
-          <a class="collapse-title text-lg btn btn-primary my-3">
+          <a class="collapse-title text-lg btn btn-primary my-3 brz">
             Dates and descriptions of previous visits to doctors
           </a>
           <div class="collapse-content">
@@ -180,7 +197,7 @@
 
         <div class="collapse">
           <input type="radio" name="main-accordion-content-3">
-          <a class="collapse-title text-lg btn btn-primary my-3">
+          <a class="collapse-title text-lg btn btn-primary my-3 brz">
             Treatment recommendations
           </a>
           <div class="collapse-content">
@@ -193,7 +210,7 @@
       </div>
     </div>
 
-    <div class="collapse collapse-arrow bg-base-200">
+    <div class="collapse collapse-arrow bg-base-200 brz">
       <input type="radio" name="main-accordion" />
       <div class="collapse-title text-xl font-medium">
         Results of examinations and analyzes
@@ -201,7 +218,7 @@
       <div class="collapse-content">
         <div class="collapse">
           <input type="radio" name="main-accordion-content-4">
-          <a class="collapse-title text-lg btn btn-primary my-3">
+          <a class="collapse-title text-lg btn btn-primary my-3 brz">
             Results of laboratory and instrumental examinations
           </a>
           <div class="collapse-content">
@@ -209,14 +226,29 @@
               Empty
             </div>
             <div class="ps-5" *ngIf="medCard.resultsOfSurveys.length > 0">
-              {{ medCard.resultsOfSurveys }}
+              <table class="table">
+                <thead>
+                  <tr class="bg-base-200">
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Survey's date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let resultOfSurvey of this.medCard.resultsOfSurveys">
+                    <td>{{ resultOfSurvey.title }}</td>
+                    <td>{{ resultOfSurvey.description }}</td>
+                    <td>{{ resultOfSurvey.surveysDate }}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
 
         <div class="collapse">
           <input type="radio" name="main-accordion-content-4">
-          <a class="collapse-title text-lg btn btn-primary my-3">
+          <a class="collapse-title text-lg btn btn-primary my-3 brz">
             Physician interpretation of results
           </a>
           <div class="collapse-content">
@@ -227,6 +259,5 @@
         </div>
       </div>
     </div>
-
   </div>
 </div>
