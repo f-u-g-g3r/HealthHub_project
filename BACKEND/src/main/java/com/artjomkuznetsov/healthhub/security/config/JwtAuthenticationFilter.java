@@ -74,6 +74,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 isPermitted = true;
             }
 
+            if (part.equals("calendars") && jwtService.extractRole(jwt).equals("DOCTOR")) {
+                isPermitted = true;
+            }
+
             if (part.equals("med-cards") && jwtService.extractRole(jwt).equals("DOCTOR")) {
                 isPermitted = true;
             }

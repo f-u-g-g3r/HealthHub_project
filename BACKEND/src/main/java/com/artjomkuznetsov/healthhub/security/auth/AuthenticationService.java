@@ -2,10 +2,11 @@ package com.artjomkuznetsov.healthhub.security.auth;
 
 import com.artjomkuznetsov.healthhub.controllers.MedCardController;
 import com.artjomkuznetsov.healthhub.controllers.UserController;
-import com.artjomkuznetsov.healthhub.exceptions.DoctorNotFoundException;
+import com.artjomkuznetsov.healthhub.models.Calendar;
 import com.artjomkuznetsov.healthhub.models.Doctor;
 import com.artjomkuznetsov.healthhub.models.MedCard;
 import com.artjomkuznetsov.healthhub.models.User;
+import com.artjomkuznetsov.healthhub.repositories.CalendarRepository;
 import com.artjomkuznetsov.healthhub.repositories.DoctorRepository;
 import com.artjomkuznetsov.healthhub.repositories.UserRepository;
 import com.artjomkuznetsov.healthhub.security.auth.exceptions.UsernameAlreadyTakenException;
@@ -34,6 +35,7 @@ public class AuthenticationService {
     private final MedCardController medCardController;
     private final UserController userController;
     private final DoctorRepository doctorRepository;
+    private final CalendarRepository calendarRepository;
 
 
 
@@ -44,7 +46,8 @@ public class AuthenticationService {
             AuthenticationManager authenticationManager,
             MedCardController medCardController,
             UserController userController,
-            DoctorRepository doctorRepository
+            DoctorRepository doctorRepository,
+            CalendarRepository calendarRepository
     ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -53,6 +56,7 @@ public class AuthenticationService {
         this.medCardController = medCardController;
         this.userController = userController;
         this.doctorRepository = doctorRepository;
+        this.calendarRepository = calendarRepository;
     }
 
     public AuthenticationResponse registerUser(User newUser) {
@@ -87,9 +91,15 @@ public class AuthenticationService {
         newDoctor.setPassword(passwordEncoder.encode(newDoctor.getPassword()));
         doctorRepository.save(newDoctor);
 
+
+
         HashMap extraClaims = new HashMap();
         extraClaims.put("id", newDoctor.getId());
         extraClaims.put("role", newDoctor.getRole());
+
+        Calendar calendar = new Calendar();
+        calendar.setOwnerId(newDoctor.getId());
+        calendarRepository.save(calendar);
 
         String jwtToken =jwtService.generateToken(extraClaims, newDoctor);
 
