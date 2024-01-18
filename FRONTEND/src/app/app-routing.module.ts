@@ -9,6 +9,8 @@ import { AuthenticationDoctorComponent } from './components/authentication/authe
 import { DoctorsHomeComponent } from './components/home/doctors-home/doctors-home.component';
 import { AdminsHomeComponent } from './components/home/admins-home/admins-home.component';
 import {RegistrationUserComponent} from "./components/authentication/registrationUser/registrationUser.component";
+import {ScheduleComponent} from "./components/schedule/schedule.component";
+import {MakeAnAppointmentComponent} from "./components/make-an-appointment/make-an-appointment.component";
 
 const routes: Routes = [
   { path: 'login', component: AuthenticationComponent },
@@ -20,6 +22,8 @@ const routes: Routes = [
   { path: 'doctors-workplace/patient/:patientId', component: PatientProfileComponent },
   { path: 'doctors-home', component: DoctorsHomeComponent },
   { path: 'admins-home', component: AdminsHomeComponent },
+  { path: 'schedule', component: ScheduleComponent },
+  { path: 'appointment', component: MakeAnAppointmentComponent },
   { path: '**', component: AuthenticationComponent }
 ];
 

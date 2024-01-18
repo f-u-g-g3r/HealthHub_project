@@ -101,6 +101,9 @@ public class AuthenticationService {
         calendar.setOwnerId(newDoctor.getId());
         calendarRepository.save(calendar);
 
+        newDoctor.setCalendarId(calendar.getId());
+        doctorRepository.save(newDoctor);
+
         String jwtToken =jwtService.generateToken(extraClaims, newDoctor);
 
         return new DoctorAuthenticationResponse(jwtToken, newDoctor.getId(), newDoctor.getRole());

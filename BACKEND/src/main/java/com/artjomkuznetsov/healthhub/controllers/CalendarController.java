@@ -3,7 +3,6 @@ package com.artjomkuznetsov.healthhub.controllers;
 import com.artjomkuznetsov.healthhub.assemblers.CalendarAssembler;
 import com.artjomkuznetsov.healthhub.exceptions.CalendarNotFoundException;
 import com.artjomkuznetsov.healthhub.models.Calendar;
-import com.artjomkuznetsov.healthhub.models.Doctor;
 import com.artjomkuznetsov.healthhub.models.Schedule;
 import com.artjomkuznetsov.healthhub.repositories.CalendarRepository;
 import org.springframework.hateoas.CollectionModel;
@@ -37,14 +36,16 @@ public class CalendarController {
                 linkTo(methodOn(CalendarController.class).all()).withSelfRel());
     }
 
-    @GetMapping("/calendars/{id}")
-    public EntityModel<Calendar> one(@PathVariable Long id) {
-        Calendar calendar = repository.findById(id)
-                .orElseThrow(() -> new CalendarNotFoundException(id));
+    @GetMapping("/calendars/{doctorId}")
+    @CrossOrigin(origins="*")
+    public EntityModel<Calendar> one(@PathVariable Long doctorId) {
+        Calendar calendar = repository.findByOwnerId(doctorId)
+                .orElseThrow(() -> new CalendarNotFoundException(doctorId));
         return assembler.toModel(calendar);
     }
 
     @PutMapping("/calendars/{ownerId}")
+    @CrossOrigin(origins="*")
     public ResponseEntity<?> updateSchedule(@RequestBody Schedule newSchedule, @PathVariable Long ownerId) {
         Calendar updatedCalendar = repository.findByOwnerId(ownerId)
                 .map(calendar -> {

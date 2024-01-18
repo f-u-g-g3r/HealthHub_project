@@ -28,5 +28,23 @@
   </div>
 </div>
 
-<div class="container mx-auto">
+<div class="container mx-auto mt-20">
+    <table class="table table-lg">
+      <thead>
+      <tr>
+        <th class="border border-slate-600 text-xl font-black">Date</th>
+        <th class="border border-slate-600 text-xl font-black">Time</th>
+        <th class="border border-slate-600 text-xl font-black">Patient</th>
+      </tr>
+      </thead>
+      <tbody>
+
+      <tr *ngFor="let oneSchedule of schedule">
+        <td class="border border-slate-700 text-lg font-medium">{{ oneSchedule.date }}</td>
+        <td class="border border-slate-700 text-lg font-medium">{{ oneSchedule.time }}</td>
+        <td class="border border-slate-700 text-lg font-medium">{{ oneSchedule.id }}</td>
+      </tr>
+      </tbody>
+    </table>
 </div>
+

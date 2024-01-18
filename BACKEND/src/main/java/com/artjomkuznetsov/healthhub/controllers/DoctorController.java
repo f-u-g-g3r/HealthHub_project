@@ -85,6 +85,7 @@ public class DoctorController {
                     if (newDoctor.getLicenseIssuingDate() != null) doctor.setLicenseIssuingDate(newDoctor.getLicenseIssuingDate());
                     if (newDoctor.getLicenseIssuingAuthority() != null) doctor.setLicenseIssuingAuthority(newDoctor.getLicenseIssuingAuthority());
                     if (newDoctor.getStatus() != null) doctor.setStatus(newDoctor.getStatus());
+                    if (newDoctor.getCalendarId() != null) doctor.setCalendarId(newDoctor.getCalendarId());
                     return repository.save(doctor);
                 })
                 .orElseGet(() -> {

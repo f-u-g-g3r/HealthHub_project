@@ -19,9 +19,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.service.checkAuthentication("USER");
-    console.log(sessionStorage.getItem('role'))
     this.getMedInfo();
-    console.log(sessionStorage.getItem('role'))
   }
 
   private getMedInfo() {

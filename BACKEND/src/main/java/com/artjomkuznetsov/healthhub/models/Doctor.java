@@ -28,6 +28,7 @@ public class Doctor implements UserDetails {
     private String licenseIssuingDate;
     private String licenseIssuingAuthority;
     private String uuid;
+    private Long calendarId;
 
     @Enumerated(EnumType.STRING)
     private Status status;
@@ -40,7 +41,7 @@ public class Doctor implements UserDetails {
         this.role = Role.DOCTOR;
     }
 
-    public Doctor(String firstname, String lastname, String dateOfBirth, String gender, String address, String email, String phone, String password, String specialization, String placeOfWork, String licenseNumber, String licenseIssuingDate, String licenseIssuingAuthority, String uuid) {
+    public Doctor(String firstname, String lastname, String dateOfBirth, String gender, String address, String email, String phone, String password, String specialization, String placeOfWork, String licenseNumber, String licenseIssuingDate, String licenseIssuingAuthority, String uuid, Long calendarId) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.dateOfBirth = dateOfBirth;
@@ -56,6 +57,7 @@ public class Doctor implements UserDetails {
         this.licenseIssuingAuthority = licenseIssuingAuthority;
         this.uuid = uuid;
         this.status = Status.INACTIVE;
+        this.calendarId = calendarId;
     }
 
     public Long getId() {
@@ -194,17 +196,25 @@ public class Doctor implements UserDetails {
         this.role = role;
     }
 
+    public Long getCalendarId() {
+        return calendarId;
+    }
+
+    public void setCalendarId(Long calendarId) {
+        this.calendarId = calendarId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Doctor doctor = (Doctor) o;
-        return Objects.equals(id, doctor.id) && Objects.equals(firstname, doctor.firstname) && Objects.equals(lastname, doctor.lastname) && Objects.equals(dateOfBirth, doctor.dateOfBirth) && Objects.equals(gender, doctor.gender) && Objects.equals(address, doctor.address) && Objects.equals(email, doctor.email) && Objects.equals(phone, doctor.phone) && Objects.equals(password, doctor.password) && Objects.equals(specialization, doctor.specialization) && Objects.equals(placeOfWork, doctor.placeOfWork) && Objects.equals(licenseNumber, doctor.licenseNumber) && Objects.equals(licenseIssuingDate, doctor.licenseIssuingDate) && Objects.equals(licenseIssuingAuthority, doctor.licenseIssuingAuthority) && status == doctor.status && Objects.equals(uuid, doctor.uuid) && role == doctor.role;
+        return Objects.equals(id, doctor.id) && Objects.equals(firstname, doctor.firstname) && Objects.equals(lastname, doctor.lastname) && Objects.equals(dateOfBirth, doctor.dateOfBirth) && Objects.equals(gender, doctor.gender) && Objects.equals(address, doctor.address) && Objects.equals(email, doctor.email) && Objects.equals(phone, doctor.phone) && Objects.equals(password, doctor.password) && Objects.equals(specialization, doctor.specialization) && Objects.equals(placeOfWork, doctor.placeOfWork) && Objects.equals(licenseNumber, doctor.licenseNumber) && Objects.equals(licenseIssuingDate, doctor.licenseIssuingDate) && Objects.equals(licenseIssuingAuthority, doctor.licenseIssuingAuthority) && Objects.equals(uuid, doctor.uuid) && Objects.equals(calendarId, doctor.calendarId) && status == doctor.status && role == doctor.role;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstname, lastname, dateOfBirth, gender, address, email, phone, password, specialization, placeOfWork, licenseNumber, licenseIssuingDate, licenseIssuingAuthority, status, uuid, role);
+        return Objects.hash(id, firstname, lastname, dateOfBirth, gender, address, email, phone, password, specialization, placeOfWork, licenseNumber, licenseIssuingDate, licenseIssuingAuthority, uuid, calendarId, status, role);
     }
 
     @Override
@@ -224,8 +234,9 @@ public class Doctor implements UserDetails {
                 ", licenseNumber='" + licenseNumber + '\'' +
                 ", licenseIssuingDate='" + licenseIssuingDate + '\'' +
                 ", licenseIssuingAuthority='" + licenseIssuingAuthority + '\'' +
-                ", status=" + status +
                 ", uuid='" + uuid + '\'' +
+                ", calendarId=" + calendarId +
+                ", status=" + status +
                 ", role=" + role +
                 '}';
     }

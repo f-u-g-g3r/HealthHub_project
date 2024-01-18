@@ -12,6 +12,7 @@ import { ChronicDisease } from '../interfaces/medCard/chronicDisease';
 import { ResultOfSurvey } from '../interfaces/medCard/resultOfSurvey';
 import { Doctor } from '../interfaces/doctor';
 import { UpdatedDoctor } from '../interfaces/updatedDoctor'
+import {Calendar} from "../interfaces/calendar";
 
 @Injectable({
   providedIn: 'root'
@@ -104,6 +105,10 @@ export class UserService {
 
   public deactivateDoctor(docId: any): Observable<Doctor> {
     return this.http.put<Doctor>(`${this.serverUrl}/doctors/` + docId, {"status": "INACTIVE"}, this.httpOptions);
+  }
+
+  public getDoctorSchedule(docId: any): Observable<Calendar> {
+    return this.http.get<Calendar>(`${this.serverUrl}/calendars/` + docId, this.httpOptions)
   }
 
 }

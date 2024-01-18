@@ -16,6 +16,8 @@ import { AuthenticationDoctorComponent } from './components/authentication/authe
 import { DoctorsHomeComponent } from './components/home/doctors-home/doctors-home.component';
 import { AdminsHomeComponent } from './components/home/admins-home/admins-home.component';
 import { RegistrationUserComponent } from './components/authentication/registrationUser/registrationUser.component';
+import { ScheduleComponent } from './components/schedule/schedule.component';
+import { MakeAnAppointmentComponent } from './components/make-an-appointment/make-an-appointment.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,9 @@ import { RegistrationUserComponent } from './components/authentication/registrat
     AuthenticationDoctorComponent,
     DoctorsHomeComponent,
     AdminsHomeComponent,
-    RegistrationUserComponent
+    RegistrationUserComponent,
+    ScheduleComponent,
+    MakeAnAppointmentComponent
   ],
   imports: [
     BrowserModule,
