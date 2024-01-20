@@ -28,32 +28,47 @@
 </div>
 
 <div class="container mx-auto mt-20">
-  <div class="flex justify-center">
-<!--  (ngSubmit)="submit(appointmentForm)"-->
-  <form #appointmentForm="ngForm" class="w-1/2">
+  <div class="card bg-base-300 shadow-lg py-10 mx-20 brz">
+
+    <div class="text-center mb-10">
+      <p class="text-2xl font-medium">Make an appointment</p>
+    </div>
+    <div class="flex justify-center">
+
+  <form #appointmentForm="ngForm" class="w-1/2" (ngSubmit)="makeAnAppointment(appointmentForm)">
 
     <div>
-      <select class="select select-bordered w-full brz">
+      <select name="doctorsSelect" ngModel #doctorsSelect="ngModel" class="select select-bordered w-full brz" (ngModelChange)="getTime(appointmentForm)">
         <option disabled selected>Choose a doctor</option>
-        <option *ngFor="let doctor of doctors">{{ doctor.firstname + " " + doctor.lastname }}</option>
+        <option *ngFor="let doctor of doctors" value="{{doctor.id}}">{{ doctor.firstname + " " + doctor.lastname }}</option>
       </select>
     </div>
 
     <div class="my-5">
       <label for="date" class="label">Date</label>
-      <input type="date" class="input input-bordered w-full brz" id="date" name="date" ngModel #date="ngModel" />
+      <input type="date" class="input input-bordered w-full brz" id="date" name="date" ngModel #date="ngModel" (ngModelChange)="getTime(appointmentForm)" />
     </div>
 
-    <div class="mt-5">
-      <input type="submit" value="Make an appointment" class="btn btn-primary brz">
+    <div class="flex flex-wrap justify-center">
+          <div class="flex items-center mx-3 my-2" *ngFor="let time of availableTime">
+            <input type="radio" ngModel #appTime="ngModel" id="time_{{time}}" name="appTime" class="hidden" (click)="handleRadioChange($event.target)" value="{{time}}">
+            <label for="time_{{time}}" class="btn cursor-pointer brz w-16" id="labeltime_{{time}}">
+              {{time}}
+            </label>
+          </div>
+    </div>
+
+    <div class="flex justify-center mt-5">
+      <input type="submit" value="Make an appointment" class="btn btn-primary brz w-96">
     </div>
 
 <!--
 todo
 При выборе даты, проверять доступное время, и выводить список (радиокнопок?) на выбор.
 -->
-
-
   </form>
   </div>
+  </div>
 </div>
+
+

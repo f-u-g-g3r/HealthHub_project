@@ -11,6 +11,7 @@ import { AdminsHomeComponent } from './components/home/admins-home/admins-home.c
 import {RegistrationUserComponent} from "./components/authentication/registrationUser/registrationUser.component";
 import {ScheduleComponent} from "./components/schedule/schedule.component";
 import {MakeAnAppointmentComponent} from "./components/make-an-appointment/make-an-appointment.component";
+import {WorkingDetailsComponent} from "./components/working-details/working-details.component";
 
 const routes: Routes = [
   { path: 'login', component: AuthenticationComponent },
@@ -24,6 +25,7 @@ const routes: Routes = [
   { path: 'admins-home', component: AdminsHomeComponent },
   { path: 'schedule', component: ScheduleComponent },
   { path: 'appointment', component: MakeAnAppointmentComponent },
+  { path: 'workingDetails', component: WorkingDetailsComponent },
   { path: '**', component: AuthenticationComponent }
 ];
 

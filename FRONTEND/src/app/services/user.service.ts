@@ -108,7 +108,19 @@ export class UserService {
   }
 
   public getDoctorSchedule(docId: any): Observable<Calendar> {
-    return this.http.get<Calendar>(`${this.serverUrl}/calendars/` + docId, this.httpOptions)
+    return this.http.get<Calendar>(`${this.serverUrl}/calendars/` + docId, this.httpOptions);
+  }
+
+  public updateDoctorCalendar(docId: any, newCalendar: any): Observable<Calendar> {
+    return this.http.put<Calendar>(`${this.serverUrl}/calendars/`+docId, newCalendar, this.httpOptions);
+  }
+
+  public getAvailableTimeByDate(docId: any, date: string): Observable<string[]> {
+    return this.http.get<string[]>(`${this.serverUrl}/calendars/availableTime/${docId}/${date}`, this.httpOptions);
+  }
+
+  public makeAnAppointment(schedule: any, docId: any): Observable<void> {
+    return this.http.put<void>(`${this.serverUrl}/calendars/schedule/${docId}`, schedule, this.httpOptions)
   }
 
 }

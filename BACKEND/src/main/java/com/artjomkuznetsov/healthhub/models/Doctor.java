@@ -30,6 +30,7 @@ public class Doctor implements UserDetails {
     private String uuid;
     private Long calendarId;
 
+
     @Enumerated(EnumType.STRING)
     private Status status;
 

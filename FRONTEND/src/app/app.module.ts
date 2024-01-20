@@ -18,6 +18,7 @@ import { AdminsHomeComponent } from './components/home/admins-home/admins-home.c
 import { RegistrationUserComponent } from './components/authentication/registrationUser/registrationUser.component';
 import { ScheduleComponent } from './components/schedule/schedule.component';
 import { MakeAnAppointmentComponent } from './components/make-an-appointment/make-an-appointment.component';
+import { WorkingDetailsComponent } from './components/working-details/working-details.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { MakeAnAppointmentComponent } from './components/make-an-appointment/mak
     AdminsHomeComponent,
     RegistrationUserComponent,
     ScheduleComponent,
-    MakeAnAppointmentComponent
+    MakeAnAppointmentComponent,
+    WorkingDetailsComponent
   ],
   imports: [
     BrowserModule,
