@@ -29,8 +29,11 @@
   </div>
 </div>
 <div class="container mx-auto mt-20">
+  <div class="flex justify-center" *ngIf="schedules.length == 0">
+    <p class="text-2xl font-medium">You don't have any appointments.</p>
+  </div>
 
-  <table class="table w-full text-center">
+  <table class="table w-full text-center" *ngIf="schedules.length > 0">
     <thead>
       <tr>
         <th>Date</th>

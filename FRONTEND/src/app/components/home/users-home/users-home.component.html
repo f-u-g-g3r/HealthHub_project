@@ -32,8 +32,19 @@
 
 <div class="container mx-auto mt-20">
 
-  <div class="grid grid-cols-2 gap-8">
+  <div class="mb-10">
+    <div *ngIf="famDocId == null">
+      <p class="text-xl font-normal">You don't have a family doctor yet.</p>
+      <a class="btn btn-primary mt-2" onclick="chooseFamilyDoctorModal.showModal()">Choose a family doctor</a>
+    </div>
 
+    <div *ngIf="famDocId != null">
+      <p class="text-xl font-normal">Your family doctor: <span class="font-semibold">{{ doctor?.firstname }} {{ doctor?.lastname }}</span>.</p>
+      <a class="btn btn-primary mt-2" onclick="chooseFamilyDoctorModal.showModal()">Change a family doctor</a>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-2 gap-8">
     <div class="collapse collapse-arrow bg-base-200 brz">
       <input type="radio" name="main-accordion" />
       <div class="collapse-title text-xl font-medium">
@@ -262,3 +273,20 @@
     </div>
   </div>
 </div>
+
+<dialog id="chooseFamilyDoctorModal" class="modal">
+  <div class="modal-box brz">
+    <h3 class="font-bold text-lg">Choose family doctor</h3>
+    <form #chooseFamDoctor="ngForm" (ngSubmit)="setFamilyDoctor(chooseFamDoctor)">
+      <select name="familyDoctor" class="select select-bordered w-full mt-5" ngModel #familyDoctor="ngModel">
+        <option selected disabled>Choose a doctor</option>
+        <option *ngFor="let doctor of doctors" value="{{doctor.id}}">{{doctor.firstname}} {{doctor.lastname}}</option>
+      </select>
+
+    <div class="modal-action">
+        <button type="button" class="btn brz" onclick="chooseFamilyDoctorModal.close()">Close</button>
+        <button type="submit" class="btn brz" onclick="chooseFamilyDoctorModal.close()">Save</button>
+    </div>
+    </form>
+  </div>
+</dialog>

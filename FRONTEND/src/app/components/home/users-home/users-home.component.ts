@@ -4,6 +4,9 @@ import { MedCard } from 'src/app/interfaces/medCard';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { UserService } from 'src/app/services/user.service';
 import { themeChange } from 'theme-change';
+import {DoctorMinimal} from "../../../interfaces/doctorMinimal";
+import {Doctor} from "../../../interfaces/doctor";
+import {NgForm} from "@angular/forms";
 
 @Component({
   selector: 'app-home',
@@ -12,7 +15,10 @@ import { themeChange } from 'theme-change';
 })
 export class HomeComponent implements OnInit {
   public medCard!: MedCard;
+  public famDocId: number | undefined;
   public role: string = sessionStorage.getItem("role") + "";
+  public doctor: DoctorMinimal | undefined;
+  public doctors: Doctor[] | undefined;
 
 
   constructor(private router: Router, public service: AuthenticationService, public userService: UserService) {}
@@ -20,13 +26,47 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.service.checkAuthentication("USER");
     this.getMedInfo();
+    this.getAllDoctors();
   }
 
   private getMedInfo() {
     this.userService.getOneMedcard(sessionStorage.getItem('uid')).subscribe({
-      next: (response: MedCard) => this.medCard = response,
+      next: response => {
+        this.medCard = response;
+        this.famDocId = response.familyDoctorID;
+        if (this.famDocId != null) {
+          this.getDoctor()
+        }
+      },
       error: console.error
     });
   }
 
+  public getDoctor() {
+    this.userService.getDoctorsName(this.famDocId).subscribe({
+      next: response => {
+        this.doctor = response;
+      },
+      error: console.error
+    });
+  }
+
+  public getAllDoctors() {
+    this.userService.getActivatedDoctors().subscribe({
+      next: response => {
+        this.doctors = response;
+      },
+      error: console.error
+    });
+  }
+
+  public setFamilyDoctor(form: NgForm) {
+    const data = form.value;
+    this.userService.setFamilyDoctor(sessionStorage.getItem("uid"), data['familyDoctor']).subscribe({
+      next: response => {
+        this.getMedInfo();
+      },
+      error: console.error
+    });
+  }
 }

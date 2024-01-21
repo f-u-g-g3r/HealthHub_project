@@ -17,6 +17,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.function.Function;
 
 @Component
@@ -66,7 +67,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if (part.equals("uuid")) {
                 isPermitted = true;
             }
-            if (part.equals("family-doctor") && jwtService.extractRole(jwt).equals("DOCTOR")) {
+            if (part.equals("family-doctor") && jwtService.extractRole(jwt).equals("DOCTOR") ||
+                part.equals("family-doctor") && jwtService.extractRole(jwt).equals("USER")) {
+                System.out.println(1);
                 isPermitted = true;
             }
 
@@ -103,6 +106,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         if (!isPermitted) {
+            System.out.println(Arrays.toString(uriParts));
             if (uriParts.length > 2) {
                 id = Long.parseLong(uriParts[2]);
             } else {

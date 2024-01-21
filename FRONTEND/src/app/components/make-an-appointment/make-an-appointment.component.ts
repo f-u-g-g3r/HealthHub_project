@@ -30,14 +30,14 @@ export class MakeAnAppointmentComponent {
         this.familyDocId = response.familyDoctorId;
         if (this.familyDocId != null) {
           this.haveFamDoc = true;
-          this.getDoctor(this.familyDocId);
+          this.getDoctor();
         }
       },
       error: console.error
     });
   }
 
-  public getDoctor(docId: any) {
+  public getDoctor() {
     this.userService.getDoctorsName(this.familyDocId).subscribe({
       next: response => {
         this.doctor = response;

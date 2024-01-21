@@ -89,6 +89,7 @@ public class MedCardController {
         return ResponseEntity.noContent().build();
     }
 
+
     public void setFamilyDoctor(Long medCardId, Long familyDoctorId) {
         MedCard medCard = repository.findById(medCardId)
                 .orElseThrow(() -> new MedCardNotFoundException(medCardId));
