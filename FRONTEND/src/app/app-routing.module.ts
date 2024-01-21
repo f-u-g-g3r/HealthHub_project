@@ -12,6 +12,7 @@ import {RegistrationUserComponent} from "./components/authentication/registratio
 import {ScheduleComponent} from "./components/schedule/schedule.component";
 import {MakeAnAppointmentComponent} from "./components/make-an-appointment/make-an-appointment.component";
 import {WorkingDetailsComponent} from "./components/working-details/working-details.component";
+import {MyAppointmentsComponent} from "./components/my-appointments/my-appointments.component";
 
 const routes: Routes = [
   { path: 'login', component: AuthenticationComponent },
@@ -26,6 +27,7 @@ const routes: Routes = [
   { path: 'schedule', component: ScheduleComponent },
   { path: 'appointment', component: MakeAnAppointmentComponent },
   { path: 'workingDetails', component: WorkingDetailsComponent },
+  { path: 'my-appointments', component: MyAppointmentsComponent },
   { path: '**', component: AuthenticationComponent }
 ];
 

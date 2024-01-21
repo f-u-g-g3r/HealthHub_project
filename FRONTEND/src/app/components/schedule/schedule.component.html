@@ -29,22 +29,41 @@
 </div>
 
 <div class="container mx-auto mt-20">
-    <table class="table table-lg">
+    <table class="table table-lg w-full text-center">
       <thead>
       <tr>
-        <th class="border border-slate-600 text-xl font-black">Date</th>
-        <th class="border border-slate-600 text-xl font-black">Time</th>
-        <th class="border border-slate-600 text-xl font-black">Patient</th>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Patient</th>
       </tr>
       </thead>
       <tbody>
 
-      <tr *ngFor="let oneSchedule of schedule">
-        <td class="border border-slate-700 text-lg font-medium">{{ oneSchedule.date }}</td>
-        <td class="border border-slate-700 text-lg font-medium">{{ oneSchedule.time }}</td>
-        <td class="border border-slate-700 text-lg font-medium">{{ oneSchedule.id }}</td>
+      <tr *ngFor="let schedule of schedules">
+        <td>{{ schedule.date }}</td>
+        <td>{{ schedule.time }}</td>
+        <td><a class="btn" (click)="getUserInfo($event.target)" id="{{schedule.patientId}}" onclick="user_info.showModal()"> {{ patientsArr.get(schedule.patientId) }}</a></td>
       </tr>
       </tbody>
     </table>
 </div>
 
+
+<dialog id="user_info" class="modal">
+  <div class="modal-box brz">
+    <h3 class="font-bold text-lg">Patient info</h3>
+    <p class="py-4"><b>Name:</b> {{ chosenUser?.firstname }} {{ chosenUser?.lastname }}</p>
+    <p class="py-4"><b>Date of birth:</b> {{ chosenUser?.dateOfBirth }}</p>
+    <p class="py-4"><b>Gender:</b> {{ chosenUser?.gender }}</p>
+    <p class="py-4"><b>Address:</b> {{ chosenUser?.address }}</p>
+    <p class="py-4"><b>Email:</b> {{ chosenUser?.email }}</p>
+    <p class="py-4"><b>Phone:</b> {{ chosenUser?.phone }}</p>
+
+    <div class="modal-action">
+      <form method="dialog">
+        <button class="btn mx-2 brz" onclick="user_info.close">Back</button>
+        <a class="btn btn-success mx-2 brz" href="/doctors-workplace/patient/{{chosenUser?.id}}">More info</a>
+      </form>
+    </div>
+  </div>
+</dialog>

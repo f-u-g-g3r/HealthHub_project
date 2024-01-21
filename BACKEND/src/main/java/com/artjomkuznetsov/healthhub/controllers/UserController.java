@@ -92,33 +92,6 @@ public class UserController {
                 .body(entityModel);
     }
 
-//    @PatchMapping("/users/family-doctor/{familyDoctorId}")
-//    @CrossOrigin(origins="*", maxAge=3600)
-//    public ResponseEntity<?> setFamilyDoctor(@RequestBody User newUser, @PathVariable Long familyDoctorId) {
-//        if (!doctorRepository.existsById(familyDoctorId)) {
-//            throw new DoctorNotFoundException(familyDoctorId);
-//        }
-//        User updatedUser = repository.findById(newUser.getId())
-//                .map(user -> {
-//                    user.setFamilyDoctorId(familyDoctorId);
-//                    return repository.save(user);
-//                })
-//
-//                .orElseGet(() -> {
-//                    throw new UserNotFoundException(newUser.getId());
-//                });
-//
-//        medCardController.setFamilyDoctor(updatedUser.getMedCardID(), familyDoctorId);
-//
-//        EntityModel<User> entityModel = assembler.toModel(updatedUser);
-//
-//        return ResponseEntity
-//                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
-//                .body(entityModel);
-//    }
-
-
-
     @PutMapping("/users/{id}")
     @CrossOrigin(origins="*", maxAge=3600)
     public ResponseEntity<?> replaceUser(@RequestBody User newUser, @PathVariable Long id) {

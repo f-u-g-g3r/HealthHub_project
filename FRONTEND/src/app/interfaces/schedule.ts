@@ -3,4 +3,5 @@ export interface Schedule {
   date: string;
   time: string;
   patientId: number;
+  doctorId: number;
 }

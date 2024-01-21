@@ -1,0 +1,52 @@
+<div class="navbar bg-base-100">
+  <div class="navbar-start">
+    <div class="dropdown">
+      <label tabindex="0" class="btn btn-ghost lg:hidden">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16"/>
+        </svg>
+      </label>
+      <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 brz">
+        <li><a href="home" class="brz">Home</a></li>
+        <li><a href="home/profile" class="brz">My profile</a></li>
+        <li><a href="/my-appointments" class="brz">My appointments</a></li>
+        <li><a href="/appointment" class="brz">Make an appointment</a></li>
+      </ul>
+    </div>
+    <a class="btn btn-ghost text-xl brz">Health hub</a>
+  </div>
+  <div class="navbar-center hidden lg:flex">
+    <ul class="menu menu-horizontal px-1">
+      <li><a href="home" class="brz">Home</a></li>
+      <li><a href="home/profile" class="brz">My profile</a></li>
+      <li><a href="/my-appointments" class="brz">My appointments</a></li>
+      <li><a href="/appointment" class="brz">Make an appointment</a></li>
+
+    </ul>
+  </div>
+  <div class="navbar-end">
+    <a class="btn btn-primary brz" href="#" (click)="service.logOut()">Log out</a>
+  </div>
+</div>
+<div class="container mx-auto mt-20">
+
+  <table class="table w-full text-center">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Doctor</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let schedule of schedules">
+        <td>{{schedule.date}}</td>
+        <td>{{schedule.time}}</td>
+        <td>{{doctorsArr.get(schedule.doctorId)}}</td>
+        <td><a class="btn btn-error" (click)='removeAppointment($event.target)' id="{{schedule.id}}">Cancel an appointment</a></td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>

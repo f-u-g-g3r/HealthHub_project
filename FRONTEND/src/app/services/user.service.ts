@@ -13,6 +13,8 @@ import { ResultOfSurvey } from '../interfaces/medCard/resultOfSurvey';
 import { Doctor } from '../interfaces/doctor';
 import { UpdatedDoctor } from '../interfaces/updatedDoctor'
 import {Calendar} from "../interfaces/calendar";
+import {Schedule} from "../interfaces/schedule";
+import {DoctorMinimal} from "../interfaces/doctorMinimal";
 
 @Injectable({
   providedIn: 'root'
@@ -34,27 +36,27 @@ export class UserService {
   }
 
   public getOneUser(uid: any): Observable<User> {
-    return this.http.get<User>(`${this.serverUrl}/users/` + uid, this.httpOptions);
+    return this.http.get<User>(`${this.serverUrl}/users/${uid}`, this.httpOptions);
   }
 
   public updateUser(uid: any, user: UpdatedUser): Observable<User> {
-    return this.http.put<User>(`${this.serverUrl}/users/` + uid, user, this.httpOptions);
+    return this.http.put<User>(`${this.serverUrl}/users/${uid}`, user, this.httpOptions);
   }
 
-  public setFamilyDoctor(userId: any, doctorId: any): Observable<User> {
-    return this.http.get<User>(`${this.serverUrl}/users/family-doctor/` + userId + "/" + doctorId, this.httpOptions);
+  public setFamilyDoctor(uid: any, docId: any): Observable<User> {
+    return this.http.get<User>(`${this.serverUrl}/users/family-doctor/${uid}/${docId}`, this.httpOptions);
   }
 
-  public getUsersByDoctorId(doctorId: any): Observable<User[]> {
-    return this.http.get<User[]>(`${this.serverUrl}/users-by-doctor/` + doctorId, this.httpOptions);
+  public getUsersByDoctorId(docId: any): Observable<User[]> {
+    return this.http.get<User[]>(`${this.serverUrl}/users-by-doctor/${docId}`, this.httpOptions);
   }
 
   public getUserByUuid(uuid: string): Observable<User> {
-    return this.http.get<User>(`${this.serverUrl}/users/uuid/` + uuid, this.httpOptions);
+    return this.http.get<User>(`${this.serverUrl}/users/uuid/${uuid}`, this.httpOptions);
   }
 
   public getOneMedcard(ownerId: any): Observable<MedCard> {
-    return this.http.get<MedCard>(`${this.serverUrl}/med-cards/` + ownerId, this.httpOptions);
+    return this.http.get<MedCard>(`${this.serverUrl}/med-cards/${ownerId}`, this.httpOptions);
   }
 
   public addMedHistory(medCardId: number, data: MedHistory): Observable<MedHistory> {
@@ -83,12 +85,12 @@ export class UserService {
 
   // DOCTORS
 
-  public getOneDoctor(doctorId: any): Observable<Doctor> {
-    return this.http.get<Doctor>(`${this.serverUrl}/doctors/` + doctorId, this.httpOptions);
+  public getOneDoctor(docId: any): Observable<Doctor> {
+    return this.http.get<Doctor>(`${this.serverUrl}/doctors/${docId}`, this.httpOptions);
   }
 
   public updateDoctor(docId: any, doctor: UpdatedDoctor): Observable<Doctor> {
-    return this.http.put<Doctor>(`${this.serverUrl}/doctors/` + docId, doctor, this.httpOptions);
+    return this.http.put<Doctor>(`${this.serverUrl}/doctors/${docId}`, doctor, this.httpOptions);
   }
 
   public getInactivatedDoctors(): Observable<Doctor[]> {
@@ -100,19 +102,19 @@ export class UserService {
   }
 
   public activateDoctor(docId: any): Observable<Doctor> {
-    return this.http.put<Doctor>(`${this.serverUrl}/doctors/` + docId, {"status": "ACTIVE"}, this.httpOptions);
+    return this.http.put<Doctor>(`${this.serverUrl}/doctors/${docId}`, {"status": "ACTIVE"}, this.httpOptions);
   }
 
   public deactivateDoctor(docId: any): Observable<Doctor> {
-    return this.http.put<Doctor>(`${this.serverUrl}/doctors/` + docId, {"status": "INACTIVE"}, this.httpOptions);
+    return this.http.put<Doctor>(`${this.serverUrl}/doctors/${docId}`, {"status": "INACTIVE"}, this.httpOptions);
   }
 
   public getDoctorSchedule(docId: any): Observable<Calendar> {
-    return this.http.get<Calendar>(`${this.serverUrl}/calendars/` + docId, this.httpOptions);
+    return this.http.get<Calendar>(`${this.serverUrl}/calendars/${docId}`, this.httpOptions);
   }
 
   public updateDoctorCalendar(docId: any, newCalendar: any): Observable<Calendar> {
-    return this.http.put<Calendar>(`${this.serverUrl}/calendars/`+docId, newCalendar, this.httpOptions);
+    return this.http.put<Calendar>(`${this.serverUrl}/calendars/${docId}`, newCalendar, this.httpOptions);
   }
 
   public getAvailableTimeByDate(docId: any, date: string): Observable<string[]> {
@@ -120,7 +122,19 @@ export class UserService {
   }
 
   public makeAnAppointment(schedule: any, docId: any): Observable<void> {
-    return this.http.put<void>(`${this.serverUrl}/calendars/schedule/${docId}`, schedule, this.httpOptions)
+    return this.http.put<void>(`${this.serverUrl}/calendars/schedule/${docId}`, schedule, this.httpOptions);
+  }
+
+  public getUserAppointments(uid:any): Observable<Schedule[]> {
+    return this.http.get<Schedule[]>(`${this.serverUrl}/calendars/user-appointments/${uid}`, this.httpOptions);
+  }
+
+  public getDoctorsName(docId: any): Observable<DoctorMinimal> {
+    return this.http.get<DoctorMinimal>(`${this.serverUrl}/doctors-name/${docId}`, this.httpOptions);
+  }
+
+  public deleteSchedule(scheduleId: any, uid:any): Observable<void> {
+    return this.http.delete<void>(`${this.serverUrl}/calendars/schedules/${scheduleId}/${uid}`, this.httpOptions);
   }
 
 }

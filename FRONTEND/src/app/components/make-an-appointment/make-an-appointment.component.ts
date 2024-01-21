@@ -5,6 +5,8 @@ import {UserService} from "../../services/user.service";
 import {Doctor} from "../../interfaces/doctor";
 import {NgForm} from "@angular/forms";
 import {isEmpty} from "rxjs";
+import {User} from "../../interfaces/user";
+import {DoctorMinimal} from "../../interfaces/doctorMinimal";
 
 @Component({
   selector: 'app-make-an-appointment',
@@ -13,14 +15,32 @@ import {isEmpty} from "rxjs";
 })
 export class MakeAnAppointmentComponent {
   constructor(private router: Router, public service: AuthenticationService, public userService: UserService) {}
-  public doctors !: Doctor[];
   public availableTime:string[] = [];
   public isReadyForTime = false;
+  public formSubmitted = false;
+  public isMade = false;
+
+  public familyDocId: number | undefined;
+  public haveFamDoc = false;
+  public doctor: DoctorMinimal | undefined;
   ngOnInit(): void {
     this.service.checkAuthentication("USER");
-    this.userService.getActivatedDoctors().subscribe({
-      next: (response: Doctor[]) => {
-        this.doctors = response;
+    this.userService.getOneUser(sessionStorage.getItem('uid')).subscribe({
+      next: (response: User) => {
+        this.familyDocId = response.familyDoctorId;
+        if (this.familyDocId != null) {
+          this.haveFamDoc = true;
+          this.getDoctor(this.familyDocId);
+        }
+      },
+      error: console.error
+    });
+  }
+
+  public getDoctor(docId: any) {
+    this.userService.getDoctorsName(this.familyDocId).subscribe({
+      next: response => {
+        this.doctor = response;
       },
       error: console.error
     });
@@ -28,8 +48,8 @@ export class MakeAnAppointmentComponent {
 
   public getTime(form:NgForm) {
     let data = form.value;
-    if (data['doctorsSelect'] !== "" && data['date'] !== "") {
-      this.userService.getAvailableTimeByDate(data['doctorsSelect'], data['date']).subscribe({
+    if (data['date'] !== "") {
+      this.userService.getAvailableTimeByDate(this.familyDocId, data['date']).subscribe({
         next: (response: string[]) => {
           this.availableTime = response;
           this.isReadyForTime = true;
@@ -46,9 +66,12 @@ export class MakeAnAppointmentComponent {
       "time": data['appTime'],
       "patientId": sessionStorage.getItem('uid'),
     };
-    this.userService.makeAnAppointment(appointment, data['doctorsSelect']).subscribe({
+    this.userService.makeAnAppointment(appointment, this.familyDocId).subscribe({
       next: () => {
-
+        this.isMade = true;
+        this.isReadyForTime = false;
+        this.formSubmitted = true;
+        form.resetForm();
       },
       error: console.error
     });

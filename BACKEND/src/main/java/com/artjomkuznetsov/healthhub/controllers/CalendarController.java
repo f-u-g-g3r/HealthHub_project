@@ -5,6 +5,7 @@ import com.artjomkuznetsov.healthhub.exceptions.CalendarNotFoundException;
 import com.artjomkuznetsov.healthhub.models.Calendar;
 import com.artjomkuznetsov.healthhub.models.Schedule;
 import com.artjomkuznetsov.healthhub.repositories.CalendarRepository;
+import com.artjomkuznetsov.healthhub.repositories.ScheduleRepository;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
@@ -15,7 +16,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,11 +27,13 @@ public class CalendarController {
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
 
     private final CalendarRepository repository;
+    private final ScheduleRepository scheduleRepository;
     private final CalendarAssembler assembler;
 
 
-    public CalendarController(CalendarRepository repository, CalendarAssembler assembler) {
+    public CalendarController(CalendarRepository repository, ScheduleRepository scheduleRepository, CalendarAssembler assembler) {
         this.repository = repository;
+        this.scheduleRepository = scheduleRepository;
         this.assembler = assembler;
     }
 
@@ -78,6 +80,7 @@ public class CalendarController {
                 .map(calendar -> {
                     if (newSchedule != null) {
                         List<Schedule> oldSchedule = calendar.getSchedule();
+                        newSchedule.setDoctorId(ownerId);
                         oldSchedule.add(newSchedule);
                         calendar.setSchedule(oldSchedule);
                         return repository.save(calendar);
@@ -94,6 +97,14 @@ public class CalendarController {
                 .body(entityModel);
     }
 
+    @GetMapping("/calendars/user-appointments/{patientId}")
+    @CrossOrigin(origins = "*")
+    public List<Schedule> getSchedulesByPatientId(@PathVariable Long patientId) {
+        return scheduleRepository.findAllByPatientId(patientId);
+    }
+
+
+
     @GetMapping("/calendars/availableTime/{ownerId}/{date}")
     @CrossOrigin(origins = "*")
     public List<String> getAvailableTimeByDate(@PathVariable Long ownerId, @PathVariable LocalDate date) {
@@ -109,18 +120,12 @@ public class CalendarController {
         List<String> notAvailableTime = new ArrayList<>();
 
         for(Schedule schedule : schedules) {
-            System.out.println(schedule.getDate());
-            System.out.println(date);
             if (schedule.getDate().equals(date)) {
-                notAvailableTime.add(schedule.getTime().format(TIME_FORMATTER));
+                notAvailableTime.add(schedule.getTime());
             }
         }
 
-        for(String time : notAvailableTime) {
-            System.out.println(time);
-        }
-
-        while (resultTime.isBefore(workEndTime) || !resultTime.equals(workEndTime)) {
+        while (resultTime.isBefore(workEndTime) && !resultTime.equals(workEndTime)) {
             if (!notAvailableTime.contains(resultTime.format(TIME_FORMATTER))) {
                 availableTime.add(resultTime.format(TIME_FORMATTER));
             }
@@ -131,5 +136,12 @@ public class CalendarController {
         }
 
         return availableTime;
+    }
+
+    @DeleteMapping("/calendars/schedules/{scheduleId}/{patientId}")
+    @CrossOrigin(origins = "*")
+    public ResponseEntity<?> deleteSchedule(@PathVariable Long scheduleId) {
+        scheduleRepository.deleteById(scheduleId);
+        return ResponseEntity.noContent().build();
     }
 }

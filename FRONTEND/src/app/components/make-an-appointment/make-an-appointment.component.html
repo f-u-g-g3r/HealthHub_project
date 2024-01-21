@@ -9,7 +9,8 @@
       <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 brz">
         <li><a href="home" class="brz">Home</a></li>
         <li><a href="home/profile" class="brz">My profile</a></li>
-        <li><a class="brz">Options</a></li>
+        <li><a href="/my-appointments" class="brz">My appointments</a></li>
+        <li><a href="/appointment" class="brz">Make an appointment</a></li>
       </ul>
     </div>
     <a class="btn btn-ghost text-xl brz">Health hub</a>
@@ -18,7 +19,8 @@
     <ul class="menu menu-horizontal px-1">
       <li><a href="home" class="brz">Home</a></li>
       <li><a href="home/profile" class="brz">My profile</a></li>
-      <li><a href="appointment" class="brz">Make an appointment</a></li>
+      <li><a href="/my-appointments" class="brz">My appointments</a></li>
+      <li><a href="/appointment" class="brz">Make an appointment</a></li>
 
     </ul>
   </div>
@@ -28,46 +30,62 @@
 </div>
 
 <div class="container mx-auto mt-20">
-  <div class="card bg-base-300 shadow-lg py-10 mx-20 brz">
+  <div *ngIf="isMade">
+    <div role="alert" class="alert alert-success mx-20 mb-5 brz w-auto">
+      <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+      </svg>
+      <div>
+        <p>You have successfully registered for a doctor's appointment!</p>
+        <p class="mt-2">You can view information about your appointments <a class="underline" href="/my-appointments">here</a>.
+        </p>
+      </div>
+    </div>
+  </div>
 
+  <div class="card bg-base-300 shadow-lg py-10 mx-20 brz">
     <div class="text-center mb-10">
       <p class="text-2xl font-medium">Make an appointment</p>
     </div>
-    <div class="flex justify-center">
 
-  <form #appointmentForm="ngForm" class="w-1/2" (ngSubmit)="makeAnAppointment(appointmentForm)">
-
-    <div>
-      <select name="doctorsSelect" ngModel #doctorsSelect="ngModel" class="select select-bordered w-full brz" (ngModelChange)="getTime(appointmentForm)">
-        <option disabled selected>Choose a doctor</option>
-        <option *ngFor="let doctor of doctors" value="{{doctor.id}}">{{ doctor.firstname + " " + doctor.lastname }}</option>
-      </select>
+    <div class="flex justify-center" *ngIf="!haveFamDoc">
+      <p>You don't have a family doctor yet.</p>
     </div>
 
-    <div class="my-5">
-      <label for="date" class="label">Date</label>
-      <input type="date" class="input input-bordered w-full brz" id="date" name="date" ngModel #date="ngModel" (ngModelChange)="getTime(appointmentForm)" />
-    </div>
+    <div class="flex justify-center" *ngIf="haveFamDoc">
+      <form #appointmentForm="ngForm" class="w-1/2" (ngSubmit)="makeAnAppointment(appointmentForm)">
 
-    <div class="flex flex-wrap justify-center">
+        <div class="text-center text-lg">
+          <p>Your family doctor: <span class="font-medium">{{ doctor?.firstname }} {{ doctor?.lastname }}</span></p>
+        </div>
+
+        <div class="my-5">
+          <label for="date" class="label">Date</label>
+          <input type="date" class="input input-bordered w-full brz" id="date" name="date" ngModel #date="ngModel"
+                 (ngModelChange)="getTime(appointmentForm)"/>
+        </div>
+
+        <div class="flex flex-wrap justify-center" *ngIf="isReadyForTime && !formSubmitted">
           <div class="flex items-center mx-3 my-2" *ngFor="let time of availableTime">
-            <input type="radio" ngModel #appTime="ngModel" id="time_{{time}}" name="appTime" class="hidden" (click)="handleRadioChange($event.target)" value="{{time}}">
+            <input type="radio" ngModel #appTime="ngModel" id="time_{{time}}" name="appTime" class="hidden"
+                   (click)="handleRadioChange($event.target)" value="{{time}}">
             <label for="time_{{time}}" class="btn cursor-pointer brz w-16" id="labeltime_{{time}}">
               {{time}}
             </label>
           </div>
-    </div>
+        </div>
 
-    <div class="flex justify-center mt-5">
-      <input type="submit" value="Make an appointment" class="btn btn-primary brz w-96">
-    </div>
+        <div class="flex justify-center mt-5">
+          <input type="submit" value="Make an appointment" class="btn btn-primary brz w-96">
+        </div>
 
-<!--
-todo
-При выборе даты, проверять доступное время, и выводить список (радиокнопок?) на выбор.
--->
-  </form>
-  </div>
+        <!--
+        todo
+        При выборе даты, проверять доступное время, и выводить список (радиокнопок?) на выбор.
+        -->
+      </form>
+    </div>
   </div>
 </div>
 

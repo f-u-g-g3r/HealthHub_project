@@ -19,6 +19,7 @@ import { RegistrationUserComponent } from './components/authentication/registrat
 import { ScheduleComponent } from './components/schedule/schedule.component';
 import { MakeAnAppointmentComponent } from './components/make-an-appointment/make-an-appointment.component';
 import { WorkingDetailsComponent } from './components/working-details/working-details.component';
+import { MyAppointmentsComponent } from './components/my-appointments/my-appointments.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { WorkingDetailsComponent } from './components/working-details/working-de
     RegistrationUserComponent,
     ScheduleComponent,
     MakeAnAppointmentComponent,
-    WorkingDetailsComponent
+    WorkingDetailsComponent,
+    MyAppointmentsComponent
   ],
   imports: [
     BrowserModule,

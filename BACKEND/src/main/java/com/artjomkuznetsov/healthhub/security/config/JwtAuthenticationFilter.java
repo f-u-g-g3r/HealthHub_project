@@ -81,6 +81,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 isPermitted = true;
             }
 
+            if (part.equals("user-appointments") && jwtService.extractRole(jwt).equals("USER") ||
+                part.equals("schedules") && request.getMethod().equals("DELETE") && jwtService.extractRole(jwt).equals("USER")){
+                if (uriParts.length > 2) {
+                    id = Long.parseLong(uriParts[uriParts.length-1]);
+                    if (id.equals(userId)) {
+                        isPermitted = true;
+                    }
+                } else {
+                    filterChain.doFilter(request, response);
+                    return;
+                }
+            }
+
+
 
 
             if (part.equals("med-cards") && jwtService.extractRole(jwt).equals("DOCTOR")) {
@@ -98,7 +112,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         
         if (isPermitted || userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null && id.equals(userId) || jwtService.extractRole(jwt).equals("ADMIN")) {
-            System.out.println(123);
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
 
             if (jwtService.isTokenValid(jwt, userDetails)) {
