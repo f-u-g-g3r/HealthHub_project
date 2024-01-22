@@ -2,9 +2,12 @@ package com.artjomkuznetsov.healthhub.controllers;
 
 import com.artjomkuznetsov.healthhub.assemblers.CalendarAssembler;
 import com.artjomkuznetsov.healthhub.exceptions.CalendarNotFoundException;
+import com.artjomkuznetsov.healthhub.exceptions.DoctorNotFoundException;
 import com.artjomkuznetsov.healthhub.models.Calendar;
+import com.artjomkuznetsov.healthhub.models.Doctor;
 import com.artjomkuznetsov.healthhub.models.Schedule;
 import com.artjomkuznetsov.healthhub.repositories.CalendarRepository;
+import com.artjomkuznetsov.healthhub.repositories.DoctorRepository;
 import com.artjomkuznetsov.healthhub.repositories.ScheduleRepository;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -28,12 +31,14 @@ public class CalendarController {
 
     private final CalendarRepository repository;
     private final ScheduleRepository scheduleRepository;
+    private final DoctorRepository doctorRepository;
     private final CalendarAssembler assembler;
 
 
-    public CalendarController(CalendarRepository repository, ScheduleRepository scheduleRepository, CalendarAssembler assembler) {
+    public CalendarController(CalendarRepository repository, ScheduleRepository scheduleRepository, DoctorRepository doctorRepository, CalendarAssembler assembler) {
         this.repository = repository;
         this.scheduleRepository = scheduleRepository;
+        this.doctorRepository = doctorRepository;
         this.assembler = assembler;
     }
 
@@ -47,7 +52,7 @@ public class CalendarController {
     }
 
     @GetMapping("/calendars/{doctorId}")
-    @CrossOrigin(origins="*")
+    @CrossOrigin(origins = "*")
     public EntityModel<Calendar> one(@PathVariable Long doctorId) {
         Calendar calendar = repository.findByOwnerId(doctorId)
                 .orElseThrow(() -> new CalendarNotFoundException(doctorId));
@@ -55,17 +60,27 @@ public class CalendarController {
     }
 
     @PutMapping("/calendars/{ownerId}")
-    @CrossOrigin(origins="*")
+    @CrossOrigin(origins = "*")
     public ResponseEntity<?> updateCalendar(@RequestBody Calendar newCalendar, @PathVariable Long ownerId) {
         Calendar updatedCalendar = repository.findByOwnerId(ownerId)
                 .map(calendar -> {
-                    if (newCalendar.getOneAppointmentTime() != null) calendar.setOneAppointmentTime(newCalendar.getOneAppointmentTime());
-                    if (newCalendar.getWorkStartTime() != null) calendar.setWorkStartTime(newCalendar.getWorkStartTime());
+                    if (newCalendar.getOneAppointmentTime() != null)
+                        calendar.setOneAppointmentTime(newCalendar.getOneAppointmentTime());
+                    if (newCalendar.getWorkStartTime() != null)
+                        calendar.setWorkStartTime(newCalendar.getWorkStartTime());
                     if (newCalendar.getWorkEndTime() != null) calendar.setWorkEndTime(newCalendar.getWorkEndTime());
-
                     return repository.save(calendar);
                 })
                 .orElseThrow(() -> new CalendarNotFoundException(ownerId));
+        if (updatedCalendar.getOneAppointmentTime() != null &&
+                updatedCalendar.getWorkStartTime() != null && updatedCalendar.getWorkEndTime() != null) {
+            Doctor doctor = doctorRepository.findById(ownerId)
+                    .orElseThrow(() -> new DoctorNotFoundException(ownerId));
+
+            doctor.setConfigured(true);
+            doctorRepository.save(doctor);
+        }
+
         EntityModel<Calendar> entityModel = assembler.toModel(updatedCalendar);
 
         return ResponseEntity
@@ -74,7 +89,7 @@ public class CalendarController {
     }
 
     @PutMapping("/calendars/schedule/{ownerId}")
-    @CrossOrigin(origins="*")
+    @CrossOrigin(origins = "*")
     public ResponseEntity<?> updateSchedule(@RequestBody Schedule newSchedule, @PathVariable Long ownerId) {
         Calendar updatedCalendar = repository.findByOwnerId(ownerId)
                 .map(calendar -> {
@@ -104,7 +119,6 @@ public class CalendarController {
     }
 
 
-
     @GetMapping("/calendars/availableTime/{ownerId}/{date}")
     @CrossOrigin(origins = "*")
     public List<String> getAvailableTimeByDate(@PathVariable Long ownerId, @PathVariable LocalDate date) {
@@ -119,7 +133,7 @@ public class CalendarController {
         List<String> availableTime = new ArrayList<>();
         List<String> notAvailableTime = new ArrayList<>();
 
-        for(Schedule schedule : schedules) {
+        for (Schedule schedule : schedules) {
             if (schedule.getDate().equals(date)) {
                 notAvailableTime.add(schedule.getTime());
             }

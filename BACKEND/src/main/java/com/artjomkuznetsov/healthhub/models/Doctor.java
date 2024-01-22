@@ -29,6 +29,7 @@ public class Doctor implements UserDetails {
     private String licenseIssuingAuthority;
     private String uuid;
     private Long calendarId;
+    private boolean isConfigured;
 
 
     @Enumerated(EnumType.STRING)
@@ -42,7 +43,7 @@ public class Doctor implements UserDetails {
         this.role = Role.DOCTOR;
     }
 
-    public Doctor(String firstname, String lastname, String dateOfBirth, String gender, String address, String email, String phone, String password, String specialization, String placeOfWork, String licenseNumber, String licenseIssuingDate, String licenseIssuingAuthority, String uuid, Long calendarId) {
+    public Doctor(String firstname, String lastname, String dateOfBirth, String gender, String address, String email, String phone, String password, String specialization, String placeOfWork, String licenseNumber, String licenseIssuingDate, String licenseIssuingAuthority, String uuid, Long calendarId, boolean isConfigured) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.dateOfBirth = dateOfBirth;
@@ -59,6 +60,7 @@ public class Doctor implements UserDetails {
         this.uuid = uuid;
         this.status = Status.INACTIVE;
         this.calendarId = calendarId;
+        this.isConfigured = isConfigured;
     }
 
     public Long getId() {
@@ -205,17 +207,25 @@ public class Doctor implements UserDetails {
         this.calendarId = calendarId;
     }
 
+    public boolean isConfigured() {
+        return isConfigured;
+    }
+
+    public void setConfigured(boolean configured) {
+        isConfigured = configured;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Doctor doctor = (Doctor) o;
-        return Objects.equals(id, doctor.id) && Objects.equals(firstname, doctor.firstname) && Objects.equals(lastname, doctor.lastname) && Objects.equals(dateOfBirth, doctor.dateOfBirth) && Objects.equals(gender, doctor.gender) && Objects.equals(address, doctor.address) && Objects.equals(email, doctor.email) && Objects.equals(phone, doctor.phone) && Objects.equals(password, doctor.password) && Objects.equals(specialization, doctor.specialization) && Objects.equals(placeOfWork, doctor.placeOfWork) && Objects.equals(licenseNumber, doctor.licenseNumber) && Objects.equals(licenseIssuingDate, doctor.licenseIssuingDate) && Objects.equals(licenseIssuingAuthority, doctor.licenseIssuingAuthority) && Objects.equals(uuid, doctor.uuid) && Objects.equals(calendarId, doctor.calendarId) && status == doctor.status && role == doctor.role;
+        return isConfigured == doctor.isConfigured && Objects.equals(id, doctor.id) && Objects.equals(firstname, doctor.firstname) && Objects.equals(lastname, doctor.lastname) && Objects.equals(dateOfBirth, doctor.dateOfBirth) && Objects.equals(gender, doctor.gender) && Objects.equals(address, doctor.address) && Objects.equals(email, doctor.email) && Objects.equals(phone, doctor.phone) && Objects.equals(password, doctor.password) && Objects.equals(specialization, doctor.specialization) && Objects.equals(placeOfWork, doctor.placeOfWork) && Objects.equals(licenseNumber, doctor.licenseNumber) && Objects.equals(licenseIssuingDate, doctor.licenseIssuingDate) && Objects.equals(licenseIssuingAuthority, doctor.licenseIssuingAuthority) && Objects.equals(uuid, doctor.uuid) && Objects.equals(calendarId, doctor.calendarId) && status == doctor.status && role == doctor.role;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstname, lastname, dateOfBirth, gender, address, email, phone, password, specialization, placeOfWork, licenseNumber, licenseIssuingDate, licenseIssuingAuthority, uuid, calendarId, status, role);
+        return Objects.hash(id, firstname, lastname, dateOfBirth, gender, address, email, phone, password, specialization, placeOfWork, licenseNumber, licenseIssuingDate, licenseIssuingAuthority, uuid, calendarId, isConfigured, status, role);
     }
 
     @Override
@@ -237,6 +247,7 @@ public class Doctor implements UserDetails {
                 ", licenseIssuingAuthority='" + licenseIssuingAuthority + '\'' +
                 ", uuid='" + uuid + '\'' +
                 ", calendarId=" + calendarId +
+                ", isConfigured=" + isConfigured +
                 ", status=" + status +
                 ", role=" + role +
                 '}';

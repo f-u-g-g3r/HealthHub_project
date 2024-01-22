@@ -8,7 +8,6 @@
       </label>
       <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 brz w-52 ">
         <li><a class="brz" href="home">Home</a></li>
-        <li><a class="brz" href="#">Options</a></li>
       </ul>
     </div>
     <a class="btn btn-ghost text-xl brz">Health hub</a>
@@ -16,7 +15,6 @@
   <div class="navbar-center hidden lg:flex">
     <ul class="menu menu-horizontal px-1">
       <li><a class="brz" href="home">Home</a></li>
-      <li><a class="brz" href="#">Options</a></li>
     </ul>
   </div>
   <div class="navbar-end">
@@ -36,6 +34,7 @@
           <td>Firstname</td>
           <td>Lastname</td>
           <td>UUID</td>
+          <td>Set up working hours</td>
           <td>Action</td>
         </tr>
         </thead>
@@ -44,8 +43,9 @@
           <td>{{ inactivatedDoctor.firstname }}</td>
           <td>{{ inactivatedDoctor.lastname }}</td>
           <td>{{ inactivatedDoctor.uuid }}</td>
+          <td>{{ inactivatedDoctor.configured }}</td>
           <td>
-            <button class="btn btn-success brz" (click)="activateDoctor(inactivatedDoctor.id)">Activate</button>
+            <button class="btn btn-success brz" [disabled]="!inactivatedDoctor.configured" (click)="activateDoctor(inactivatedDoctor.id)">Activate</button>
           </td>
         </tr>
         </tbody>

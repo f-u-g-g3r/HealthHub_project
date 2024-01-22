@@ -15,4 +15,6 @@ export interface Doctor {
     licenseIssuingDate: string;
     licenseIssuingAuthority: string;
     status: string;
+    calendarId: number;
+    configured: boolean;
 }

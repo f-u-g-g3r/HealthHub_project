@@ -15,7 +15,7 @@ import {NgForm} from "@angular/forms";
 })
 export class HomeComponent implements OnInit {
   public medCard!: MedCard;
-  public famDocId: number | undefined;
+  famDocId: number | null = null;
   public role: string = sessionStorage.getItem("role") + "";
   public doctor: DoctorMinimal | undefined;
   public doctors: Doctor[] | undefined;
@@ -62,11 +62,14 @@ export class HomeComponent implements OnInit {
 
   public setFamilyDoctor(form: NgForm) {
     const data = form.value;
-    this.userService.setFamilyDoctor(sessionStorage.getItem("uid"), data['familyDoctor']).subscribe({
-      next: response => {
-        this.getMedInfo();
-      },
-      error: console.error
-    });
+    if (data['familyDoctor'] != null) {
+      this.userService.setFamilyDoctor(sessionStorage.getItem("uid"), data['familyDoctor']).subscribe({
+        next: response => {
+          this.getMedInfo();
+        },
+        error: console.error
+      });
+    }
+
   }
 }

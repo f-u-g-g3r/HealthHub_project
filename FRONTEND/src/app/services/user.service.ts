@@ -137,4 +137,8 @@ export class UserService {
     return this.http.delete<void>(`${this.serverUrl}/calendars/schedules/${scheduleId}/${uid}`, this.httpOptions);
   }
 
+  public isDoctorCalendarConfigured(docId: any): Observable<boolean> {
+    return this.http.get<boolean>(`${this.serverUrl}/calendars/isConfigured/${docId}`, this.httpOptions);
+  }
+
 }
