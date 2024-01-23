@@ -5,6 +5,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
+import java.time.Year;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -12,11 +15,14 @@ import java.util.Objects;
 @Entity
 @Table(name = "users")
 public class User implements UserDetails {
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
     private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;
     private String uuid;
     private String firstname;
     private String lastname;
-    private String dateOfBirth;
+    private LocalDate dateOfBirth;
+    private int age;
     private String gender;
     private String address;
     private String email;
@@ -39,7 +45,7 @@ public class User implements UserDetails {
         this.role = role;
     }
 
-    public User(String firstname, String lastname, String dateOfBirth, String gender, String address, String email, String phone, String password, Long medCardID, String token, Long familyDoctorId, String uuid) {
+    public User(String firstname, String lastname, LocalDate dateOfBirth, String gender, String address, String email, String phone, String password, Long medCardID, String token, Long familyDoctorId, String uuid) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.dateOfBirth = dateOfBirth;
@@ -80,11 +86,23 @@ public class User implements UserDetails {
     }
 
     public String getDateOfBirth() {
-        return dateOfBirth;
+        if (dateOfBirth != null) {
+            return dateOfBirth.format(DATE_FORMATTER);
+        }
+        else {
+            return null;
+        }
     }
 
     public void setDateOfBirth(String dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
+        this.dateOfBirth = LocalDate.parse(dateOfBirth, DATE_FORMATTER);
+        LocalDate currentDate = LocalDate.now();
+        if (Integer.signum((currentDate.getMonthValue() - this.dateOfBirth.getMonthValue())) == -1 ||
+                Integer.signum((currentDate.getDayOfMonth() - this.dateOfBirth.getDayOfMonth())) == -1) {
+            this.age = currentDate.getYear() - this.dateOfBirth.getYear() - 1;
+        } else {
+            this.age = currentDate.getYear() - this.dateOfBirth.getYear();
+        }
     }
 
     public String getGender() {
@@ -163,17 +181,25 @@ public class User implements UserDetails {
         this.uuid = uuid;
     }
 
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(uuid, user.uuid) && Objects.equals(firstname, user.firstname) && Objects.equals(lastname, user.lastname) && Objects.equals(dateOfBirth, user.dateOfBirth) && Objects.equals(gender, user.gender) && Objects.equals(address, user.address) && Objects.equals(email, user.email) && Objects.equals(phone, user.phone) && Objects.equals(password, user.password) && Objects.equals(medCardID, user.medCardID) && Objects.equals(token, user.token) && Objects.equals(familyDoctorId, user.familyDoctorId) && role == user.role;
+        return age == user.age && Objects.equals(id, user.id) && Objects.equals(uuid, user.uuid) && Objects.equals(firstname, user.firstname) && Objects.equals(lastname, user.lastname) && Objects.equals(dateOfBirth, user.dateOfBirth) && Objects.equals(gender, user.gender) && Objects.equals(address, user.address) && Objects.equals(email, user.email) && Objects.equals(phone, user.phone) && Objects.equals(password, user.password) && Objects.equals(medCardID, user.medCardID) && Objects.equals(token, user.token) && Objects.equals(familyDoctorId, user.familyDoctorId) && role == user.role;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, uuid, firstname, lastname, dateOfBirth, gender, address, email, phone, password, medCardID, token, familyDoctorId, role);
+        return Objects.hash(id, uuid, firstname, lastname, dateOfBirth, age, gender, address, email, phone, password, medCardID, token, familyDoctorId, role);
     }
 
     @Override
@@ -183,7 +209,8 @@ public class User implements UserDetails {
                 ", uuid='" + uuid + '\'' +
                 ", firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +
-                ", dateOfBirth='" + dateOfBirth + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", age=" + age +
                 ", gender='" + gender + '\'' +
                 ", address='" + address + '\'' +
                 ", email='" + email + '\'' +

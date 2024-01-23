@@ -18,9 +18,11 @@
   <div class="navbar-center hidden lg:flex">
     <ul class="menu menu-horizontal px-1">
       <li><a href="home" class="brz">Home</a></li>
-      <li *ngIf="isDoctor"><a href="doctors-workplace" class="brz">Switch to workplace</a></li>
+      <li *ngIf="isDoctor"><a href="/doctors-workplace" class="brz">Switch to workplace</a></li>
       <li><a href="home/profile" class="brz">My profile</a></li>
-      <li><a href="#" class="brz">Options</a></li>
+      <li *ngIf="!isDoctor"><a href="/my-appointments" class="brz">My appointments</a></li>
+      <li *ngIf="!isDoctor"><a href="/appointment" class="brz">Make an appointment</a></li>
+      <li *ngIf="isDoctor"><a href="schedule" class="brz">My schedule</a></li>
     </ul>
   </div>
   <div class="navbar-end">
@@ -42,6 +44,8 @@
 
           <p class="text-lg font-bold">Date of Birth: {{ this.userData.dateOfBirth }}</p>
 
+          <p class="text-lg font-bold">Age: {{ this.userData.age }}</p>
+
           <p class="text-lg font-bold">Gender: {{ this.userData.gender }}</p>
 
           <p class="text-lg font-bold">Address: {{ this.userData.address }}</p>
@@ -50,8 +54,8 @@
 
           <p class="text-lg font-bold">Phone: {{ this.userData.phone }}</p>
 
-          <p class="text-lg font-bold">Your family doctor: {{ this.userData.familyDoctorId }}</p>
-
+          <p class="text-lg font-bold" *ngIf="this.userData.familyDoctorId != null">Your family doctor: {{ this.familyDoctor?.firstname }} {{ this.familyDoctor?.lastname }}</p>
+          <p class="text-lg font-bold" *ngIf="this.userData.familyDoctorId == null">Your family doctor: You don't have a family doctor yet.</p>
           <button class="btn btn-secondary mt-3 brz" onclick="updateUserModal.showModal()">Change info</button>
         </article>
       </div>
@@ -66,6 +70,8 @@
           <p class="text-lg font-bold">Last name: {{ doctorData.lastname }}</p>
 
           <p class="text-lg font-bold">Date of birth: {{ doctorData.dateOfBirth }}</p>
+
+          <p class="text-lg font-bold">Age: {{ doctorData.age }}</p>
 
           <p class="text-lg font-bold">Gender: {{ doctorData.gender }}</p>
 

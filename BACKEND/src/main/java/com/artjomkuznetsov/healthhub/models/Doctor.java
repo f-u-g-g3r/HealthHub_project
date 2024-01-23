@@ -6,6 +6,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -13,10 +15,14 @@ import java.util.Objects;
 @Entity
 @Table(name = "doctors")
 public class Doctor implements UserDetails {
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;
     private String firstname;
     private String lastname;
-    private String dateOfBirth;
+    private LocalDate dateOfBirth;
+
+    private int age;
+
     private String gender;
     private String address;
     private String email;
@@ -43,7 +49,7 @@ public class Doctor implements UserDetails {
         this.role = Role.DOCTOR;
     }
 
-    public Doctor(String firstname, String lastname, String dateOfBirth, String gender, String address, String email, String phone, String password, String specialization, String placeOfWork, String licenseNumber, String licenseIssuingDate, String licenseIssuingAuthority, String uuid, Long calendarId, boolean isConfigured) {
+    public Doctor(String firstname, String lastname, LocalDate dateOfBirth, String gender, String address, String email, String phone, String password, String specialization, String placeOfWork, String licenseNumber, String licenseIssuingDate, String licenseIssuingAuthority, String uuid, Long calendarId, boolean isConfigured) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.dateOfBirth = dateOfBirth;
@@ -88,11 +94,22 @@ public class Doctor implements UserDetails {
     }
 
     public String getDateOfBirth() {
-        return dateOfBirth;
+        if (dateOfBirth != null) {
+            return dateOfBirth.format(DATE_FORMATTER);
+        } else {
+            return null;
+        }
     }
 
     public void setDateOfBirth(String dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
+        this.dateOfBirth = LocalDate.parse(dateOfBirth, DATE_FORMATTER);
+        LocalDate currentDate = LocalDate.now();
+        if (Integer.signum((currentDate.getMonthValue() - this.dateOfBirth.getMonthValue())) == -1 ||
+                Integer.signum((currentDate.getDayOfMonth() - this.dateOfBirth.getDayOfMonth())) == -1) {
+            this.age = currentDate.getYear() - this.dateOfBirth.getYear() - 1;
+        } else {
+            this.age = currentDate.getYear() - this.dateOfBirth.getYear();
+        }
     }
 
     public String getGender() {
@@ -215,17 +232,25 @@ public class Doctor implements UserDetails {
         isConfigured = configured;
     }
 
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Doctor doctor = (Doctor) o;
-        return isConfigured == doctor.isConfigured && Objects.equals(id, doctor.id) && Objects.equals(firstname, doctor.firstname) && Objects.equals(lastname, doctor.lastname) && Objects.equals(dateOfBirth, doctor.dateOfBirth) && Objects.equals(gender, doctor.gender) && Objects.equals(address, doctor.address) && Objects.equals(email, doctor.email) && Objects.equals(phone, doctor.phone) && Objects.equals(password, doctor.password) && Objects.equals(specialization, doctor.specialization) && Objects.equals(placeOfWork, doctor.placeOfWork) && Objects.equals(licenseNumber, doctor.licenseNumber) && Objects.equals(licenseIssuingDate, doctor.licenseIssuingDate) && Objects.equals(licenseIssuingAuthority, doctor.licenseIssuingAuthority) && Objects.equals(uuid, doctor.uuid) && Objects.equals(calendarId, doctor.calendarId) && status == doctor.status && role == doctor.role;
+        return age == doctor.age && isConfigured == doctor.isConfigured && Objects.equals(id, doctor.id) && Objects.equals(firstname, doctor.firstname) && Objects.equals(lastname, doctor.lastname) && Objects.equals(dateOfBirth, doctor.dateOfBirth) && Objects.equals(gender, doctor.gender) && Objects.equals(address, doctor.address) && Objects.equals(email, doctor.email) && Objects.equals(phone, doctor.phone) && Objects.equals(password, doctor.password) && Objects.equals(specialization, doctor.specialization) && Objects.equals(placeOfWork, doctor.placeOfWork) && Objects.equals(licenseNumber, doctor.licenseNumber) && Objects.equals(licenseIssuingDate, doctor.licenseIssuingDate) && Objects.equals(licenseIssuingAuthority, doctor.licenseIssuingAuthority) && Objects.equals(uuid, doctor.uuid) && Objects.equals(calendarId, doctor.calendarId) && status == doctor.status && role == doctor.role;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstname, lastname, dateOfBirth, gender, address, email, phone, password, specialization, placeOfWork, licenseNumber, licenseIssuingDate, licenseIssuingAuthority, uuid, calendarId, isConfigured, status, role);
+        return Objects.hash(id, firstname, lastname, dateOfBirth, age, gender, address, email, phone, password, specialization, placeOfWork, licenseNumber, licenseIssuingDate, licenseIssuingAuthority, uuid, calendarId, isConfigured, status, role);
     }
 
     @Override
@@ -234,7 +259,8 @@ public class Doctor implements UserDetails {
                 "id=" + id +
                 ", firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +
-                ", dateOfBirth='" + dateOfBirth + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", age=" + age +
                 ", gender='" + gender + '\'' +
                 ", address='" + address + '\'' +
                 ", email='" + email + '\'' +

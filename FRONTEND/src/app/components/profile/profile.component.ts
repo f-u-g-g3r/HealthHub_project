@@ -8,6 +8,7 @@ import { UpdatedUser } from 'src/app/interfaces/updatedUser';
 import { User } from 'src/app/interfaces/user';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { UserService } from 'src/app/services/user.service';
+import {DoctorMinimal} from "../../interfaces/doctorMinimal";
 
 @Component({
   selector: 'app-profile',
@@ -19,8 +20,9 @@ export class ProfileComponent implements OnInit {
   public userData!: User;
   public doctorData!: Doctor;
   public isDoctor!: boolean;
+  public familyDoctor: DoctorMinimal | undefined;
   constructor(private router: Router, public authService: AuthenticationService, private userService: UserService) {
-    
+
   }
 
   ngOnInit(): void {
@@ -33,22 +35,24 @@ export class ProfileComponent implements OnInit {
       this.userService.getOneDoctor(sessionStorage.getItem('docId')).subscribe({
         next: (response: Doctor) => {
           this.doctorData = response
-          console.log(this.doctorData)
         },
         error: console.error
       });
     }
-    
+
     if (sessionStorage.getItem('role') === "USER") {
       this.isDoctor = false;
       this.userService.getOneUser(sessionStorage.getItem('uid')).subscribe({
-        next: (response: User) => this.userData = response,
+        next: (response: User) => {
+          this.userData = response;
+          if (this.userData.familyDoctorId != null) {
+            this.getFamilyDoctor(this.userData.familyDoctorId);
+          }
+        },
         error: console.error
       });
 
-      if (this.userData.familyDoctorId != null) {
-        this.getFamilyDoctor(this.userData.familyDoctorId);
-      }
+
     }
   }
 
@@ -92,8 +96,14 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  private getFamilyDoctor(doctorId: number) {
-    
+  private getFamilyDoctor(docId: number) {
+    this.userService.getDoctorsName(docId).subscribe({
+      next: (response) => {
+        this.familyDoctor = response;
+        console.log(1)
+      },
+      error: console.error
+    });
   }
 
 
