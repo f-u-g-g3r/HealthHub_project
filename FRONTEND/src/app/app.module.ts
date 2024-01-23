@@ -20,6 +20,7 @@ import { ScheduleComponent } from './components/schedule/schedule.component';
 import { MakeAnAppointmentComponent } from './components/make-an-appointment/make-an-appointment.component';
 import { WorkingDetailsComponent } from './components/working-details/working-details.component';
 import { MyAppointmentsComponent } from './components/my-appointments/my-appointments.component';
+import { ShowDoctorComponent } from './components/show-doctor/show-doctor.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { MyAppointmentsComponent } from './components/my-appointments/my-appoint
     ScheduleComponent,
     MakeAnAppointmentComponent,
     WorkingDetailsComponent,
-    MyAppointmentsComponent
+    MyAppointmentsComponent,
+    ShowDoctorComponent
   ],
   imports: [
     BrowserModule,

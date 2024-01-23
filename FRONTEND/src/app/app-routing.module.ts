@@ -13,6 +13,7 @@ import {ScheduleComponent} from "./components/schedule/schedule.component";
 import {MakeAnAppointmentComponent} from "./components/make-an-appointment/make-an-appointment.component";
 import {WorkingDetailsComponent} from "./components/working-details/working-details.component";
 import {MyAppointmentsComponent} from "./components/my-appointments/my-appointments.component";
+import {ShowDoctorComponent} from "./components/show-doctor/show-doctor.component";
 
 const routes: Routes = [
   { path: 'login', component: AuthenticationComponent },
@@ -28,6 +29,7 @@ const routes: Routes = [
   { path: 'appointment', component: MakeAnAppointmentComponent },
   { path: 'workingDetails', component: WorkingDetailsComponent },
   { path: 'my-appointments', component: MyAppointmentsComponent },
+  { path: 'admin/show-doctor/:docId', component: ShowDoctorComponent },
   { path: '**', component: AuthenticationComponent }
 ];
 

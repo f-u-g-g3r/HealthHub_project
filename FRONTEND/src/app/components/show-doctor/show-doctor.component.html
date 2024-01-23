@@ -1,0 +1,63 @@
+<div class="navbar bg-base-100">
+  <div class="navbar-start">
+    <div class="dropdown brz">
+      <label tabindex="0" class="btn btn-ghost lg:hidden brz">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 brz" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16"/>
+        </svg>
+      </label>
+      <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 brz w-52 ">
+        <li><a class="brz" href="home">Home</a></li>
+      </ul>
+    </div>
+    <a class="btn btn-ghost text-xl brz">Health hub</a>
+  </div>
+  <div class="navbar-center hidden lg:flex">
+    <ul class="menu menu-horizontal px-1">
+      <li><a class="brz" href="home">Home</a></li>
+    </ul>
+  </div>
+  <div class="navbar-end">
+    <a class="btn btn-primary brz" href="#" (click)="service.logOut()">Log out</a>
+  </div>
+</div>
+
+<div class="container mx-auto">
+  <div class="card bg-base-200 shadow-xl mx-auto w-1/2 brz" *ngIf="doctor">
+    <div class="card-body">
+      <article class="prose ms-5">
+        <h2>{{ doctor.firstname }} {{ doctor.lastname }} profile</h2>
+        <p class="text-lg font-bold">First name: {{ doctor.firstname }}</p>
+
+        <p class="text-lg font-bold">Last name: {{ doctor.lastname }}</p>
+
+        <p class="text-lg font-bold">Date of birth: {{ doctor.dateOfBirth }}</p>
+
+        <p class="text-lg font-bold">Age: {{ doctor.age }}</p>
+
+        <p class="text-lg font-bold">Gender: {{ doctor.gender }}</p>
+
+        <p class="text-lg font-bold">Address: {{ doctor.address }}</p>
+
+        <p class="text-lg font-bold">Email: {{ doctor.email }}</p>
+
+        <p class="text-lg font-bold">Phone: {{ doctor.phone }}</p>
+
+        <p class="text-lg font-bold">Specialization: {{ doctor.specialization }}</p>
+
+        <p class="text-lg font-bold">Place of work: {{ doctor.placeOfWork }}</p>
+
+        <p class="text-lg font-bold">License number: {{ doctor.licenseNumber }}</p>
+
+        <p class="text-lg font-bold">License issuing date: {{ doctor.licenseIssuingDate }}</p>
+
+        <p class="text-lg font-bold">License issuing authority: {{ doctor.licenseIssuingAuthority }}</p>
+
+        <p class="text-lg font-bold">One appointment time: {{ calendar?.oneAppointmentTime }}</p>
+        <p class="text-lg font-bold">The beginning of the work day: {{ calendar?.workStartTime }}</p>
+        <p class="text-lg font-bold">End of the working day: {{ calendar?.workEndTime }}</p>
+
+      </article>
+    </div>
+  </div>
+</div>

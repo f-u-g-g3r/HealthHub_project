@@ -45,7 +45,7 @@
           <td>{{ inactivatedDoctor.uuid }}</td>
           <td>{{ inactivatedDoctor.configured }}</td>
           <td>
-            <button class="btn btn-primary h-auto brz w-28" (click)="">Show more</button>
+            <a class="btn btn-primary h-auto brz w-28" href="/admin/show-doctor/{{inactivatedDoctor.id}}">Show more</a>
 <!--            <button class="btn btn-success brz" [disabled]="!inactivatedDoctor.configured" (click)="activateDoctor(inactivatedDoctor.id)">Activate</button>-->
           </td>
         </tr>
