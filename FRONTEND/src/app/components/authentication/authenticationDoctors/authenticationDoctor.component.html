@@ -6,22 +6,22 @@
     </article>
     <form #registerForm="ngForm" (ngSubmit)="registerDoctor(registerForm)">
       <div>
-        <label for="firstname" class="label">First name</label>
+        <label for="firstname" class="label">First name<b class="me-auto text-red-500">*</b></label>
           <input type="text" class="input input-bordered w-full brz" id="firstName" name="firstname" ngModel #firstname="ngModel"/>
       </div>
 
       <div class="mt-4">
-        <label for="lastname" class="label">Last name</label>
+        <label for="lastname" class="label">Last name<b class="me-auto text-red-500">*</b></label>
           <input type="text" class="input input-bordered w-full brz" id="lastname" name="lastname" ngModel #lastname="ngModel"/>
       </div>
 
       <div class="mt-4">
-        <label for="dateOfBirth" class="label">Date of birth</label>
+        <label for="dateOfBirth" class="label">Date of birth<b class="me-auto text-red-500">*</b></label>
           <input type="date" class="input input-bordered w-full brz" id="dateOfBirth" name="dateOfBirth" ngModel #dateOfBirth="ngModel"/>
       </div>
 
       <div class="mt-4">
-        <label for="gender" class="label">Gender</label>
+        <label for="gender" class="label">Gender<b class="me-auto text-red-500">*</b></label>
           <select class="select select-bordered w-full brz" name="gender" id="gender" ngModel #gender="ngModel">
             <option value="Male">Male</option>
             <option value="Female">Female</option>
@@ -29,45 +29,45 @@
       </div>
 
       <div class="mt-4">
-        <label for="address" class="label">Address</label>
+        <label for="address" class="label">Address<b class="me-auto text-red-500">*</b></label>
           <input type="text" class="input input-bordered w-full brz" id="address" name="address" ngModel #address="ngModel"/>
       </div>
 
       <div class="mt-4">
-        <label for="email" class="label">Email</label>
+        <label for="email" class="label">Email<b class="me-auto text-red-500">*</b></label>
           <input type="text" class="input input-bordered w-full brz" id="email" name="email" ngModel #email="ngModel"/>
       </div>
 
       <div class="mt-4">
-        <label for="phone" class="label">Phone number</label>
+        <label for="phone" class="label">Phone number<b class="me-auto text-red-500">*</b></label>
           <input type="text" class="input input-bordered w-full brz" id="phone" name="phone" ngModel #phone="ngModel"/>
       </div>
 
       <div class="mt-4">
-        <label for="specialization" class="label">Specialization</label>
+        <label for="specialization" class="label">Specialization<b class="me-auto text-red-500">*</b></label>
           <input type="text" class="input input-bordered w-full brz" id="specialization" name="specialization" ngModel
                  #specialization="ngModel"/>
       </div>
 
       <div class="mt-4">
-        <label for="placeOfWork" class="label">Place of work</label>
+        <label for="placeOfWork" class="label">Place of work<b class="me-auto text-red-500">*</b></label>
           <input type="text" class="input input-bordered w-full brz" id="placeOfWork" name="placeOfWork" ngModel #placeOfWork="ngModel"/>
       </div>
 
       <div class="mt-4">
-        <label for="licenseNumber" class="label">License number</label>
+        <label for="licenseNumber" class="label">License number<b class="me-auto text-red-500">*</b></label>
           <input type="text" class="input input-bordered w-full brz" id="licenseNumber" name="licenseNumber" ngModel
                  #licenseNumber="ngModel"/>
       </div>
 
       <div class="mt-4">
-        <label for="licenseIssuingDate" class="label">License issuing date</label>
+        <label for="licenseIssuingDate" class="label">License issuing date<b class="me-auto text-red-500">*</b></label>
           <input type="date" class="input input-bordered w-full brz" id="licenseIssuingDate" name="licenseIssuingDate" ngModel
                  #licenseIssuingDate="ngModel"/>
       </div>
 
       <div class="mt-4">
-        <label for="licenseIssuingAuthority" class="label">License issuing authority</label>
+        <label for="licenseIssuingAuthority" class="label">License issuing authority<b class="me-auto text-red-500">*</b></label>
           <input type="text" class="input input-bordered w-full brz" id="licenseIssuingAuthority" name="licenseIssuingAuthority" ngModel
                  #licenseIssuingAuthority="ngModel"/>
       </div>

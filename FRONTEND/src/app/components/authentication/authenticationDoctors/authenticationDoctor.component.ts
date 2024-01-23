@@ -12,8 +12,9 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 })
 export class AuthenticationDoctorComponent implements OnInit{
 
+  public isFormInvalid: boolean | undefined;
   ngOnInit(): void {
-      
+
   }
 
   constructor(private authenticationService: AuthenticationService, private router: Router) {
@@ -21,11 +22,16 @@ export class AuthenticationDoctorComponent implements OnInit{
   }
 
   public registerDoctor(form: NgForm) {
-    const formFields = form.value;
-    this.authenticationService.registerDoctor(formFields).subscribe({
-      next: (response: DoctorAuthResponse) => this.authenticate(response),
-      error: console.error
-    });
+    if (form.invalid) {
+      this.isFormInvalid = false;
+      return
+    } else {
+      const formFields = form.value;
+      this.authenticationService.registerDoctor(formFields).subscribe({
+        next: (response: DoctorAuthResponse) => this.authenticate(response),
+        error: console.error
+      });
+    }
   }
 
   private authenticate(response: DoctorAuthResponse) {

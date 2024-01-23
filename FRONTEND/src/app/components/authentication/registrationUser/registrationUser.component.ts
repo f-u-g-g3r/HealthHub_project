@@ -9,7 +9,8 @@ import {AuthenticationResponse} from "../../../interfaces/requests&responses/aut
   templateUrl: './registrationUser.component.html',
   styleUrls: ['./registrationUser.component.css']
 })
-export class RegistrationUserComponent  implements OnInit{
+export class RegistrationUserComponent implements OnInit {
+  public isFormValid: boolean | undefined;
 
   constructor(private authenticationService: AuthenticationService, private router: Router) {
 
@@ -22,14 +23,19 @@ export class RegistrationUserComponent  implements OnInit{
   }
 
   public registerUser(registerForm: NgForm) {
-    const formFields = registerForm.value;
-    this.authenticationService.register(formFields).subscribe({
-      next: (response: AuthenticationResponse) => {
-        sessionStorage.setItem('password', formFields["password"])
-        this.authenticateUser(response);
-      },
-      error: console.error
-    });
+    if (registerForm.invalid) {
+      this.isFormValid = false;
+      return;
+    } else {
+      const formFields = registerForm.value;
+      this.authenticationService.register(formFields).subscribe({
+        next: (response: AuthenticationResponse) => {
+          sessionStorage.setItem('password', formFields["password"])
+          this.authenticateUser(response);
+        },
+        error: console.error
+      });
+    }
   }
 
   private authenticateUser(response: AuthenticationResponse) {

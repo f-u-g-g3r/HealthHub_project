@@ -54,4 +54,12 @@ export class AdminsHomeComponent implements OnInit {
     });
   }
 
+  public getOneDoctor(docId: number) {
+    this.userService.getOneDoctor(docId).subscribe({
+      next: (response) => {
+
+      }
+    })
+  }
+
 }

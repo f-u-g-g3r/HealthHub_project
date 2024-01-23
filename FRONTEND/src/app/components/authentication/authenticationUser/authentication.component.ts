@@ -11,6 +11,7 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
   styleUrls: ['./authentication.component.css']
 })
 export class AuthenticationComponent implements OnInit{
+  public isFormValid: boolean | undefined;
 
   constructor(private authenticationService: AuthenticationService, private router: Router) {
 
@@ -23,18 +24,25 @@ export class AuthenticationComponent implements OnInit{
   }
 
   public validateUser(loginForm: NgForm) {
-    const formFields = loginForm.value;
-    this.authenticationService.authenticate(formFields).subscribe({
-      next: (response: AuthenticationResponse) => {
-        sessionStorage.setItem('password', formFields["password"])
-        if (response.role === "DOCTOR") {
-          this.authenticateDoctor(response);
-        } else if (response.role === "USER" || response.role === "ADMIN") {
-          this.authenticateUser(response);
-        }
-      },
-      error: console.error
-    });
+    if (loginForm.invalid) {
+      this.isFormValid = false;
+      return;
+    } else {
+      const formFields = loginForm.value;
+      this.authenticationService.authenticate(formFields).subscribe({
+        next: (response: AuthenticationResponse) => {
+          sessionStorage.setItem('password', formFields["password"])
+          if (response.role === "DOCTOR") {
+            this.authenticateDoctor(response);
+          } else if (response.role === "USER" || response.role === "ADMIN") {
+            this.authenticateUser(response);
+          }
+        },
+        error: console.error
+      });
+    }
+
+
   }
 
 

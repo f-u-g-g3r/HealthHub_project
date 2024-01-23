@@ -278,8 +278,8 @@
   <div class="modal-box brz">
     <h3 class="font-bold text-lg">Choose family doctor</h3>
     <form #chooseFamDoctor="ngForm" (ngSubmit)="setFamilyDoctor(chooseFamDoctor)">
-      <select name="familyDoctor" class="select select-bordered w-full mt-5" [(ngModel)]="famDocId" required>
-        <option [value]="null" disabled [selected]="famDocId === null">Select a doctor</option>
+      <select name="familyDoctor" class="select select-bordered w-full mt-5 brz" [(ngModel)]="famDocId" required>
+        <option [value]="null" disabled [selected]="famDocId === null" class="brz">Select a doctor</option>
         <ng-container *ngFor="let oneDoctor of doctors">
           <option [value]="oneDoctor.id">
             {{oneDoctor.firstname}} {{oneDoctor.lastname}}
