@@ -34,7 +34,6 @@
           <td>Firstname</td>
           <td>Lastname</td>
           <td>UUID</td>
-          <td>Set up working hours</td>
           <td>Action</td>
         </tr>
         </thead>
@@ -43,10 +42,8 @@
           <td>{{ inactivatedDoctor.firstname }}</td>
           <td>{{ inactivatedDoctor.lastname }}</td>
           <td>{{ inactivatedDoctor.uuid }}</td>
-          <td>{{ inactivatedDoctor.configured }}</td>
           <td>
             <a class="btn btn-primary h-auto brz w-28" href="/admin/show-doctor/{{inactivatedDoctor.id}}">Show more</a>
-<!--            <button class="btn btn-success brz" [disabled]="!inactivatedDoctor.configured" (click)="activateDoctor(inactivatedDoctor.id)">Activate</button>-->
           </td>
         </tr>
         </tbody>
@@ -73,7 +70,8 @@
           <td>{{ activatedDoctor.lastname }}</td>
           <td>{{ activatedDoctor.uuid }}</td>
           <td>
-            <button class="btn btn-error brz" (click)="inactivateDoctor(activatedDoctor.id)">Deactivate</button>
+            <a class="btn btn-primary h-auto brz w-28 mb-5" href="/admin/show-doctor/{{activatedDoctor.id}}">Show more</a>
+            <button class="btn btn-error brz w-28" (click)="inactivateDoctor(activatedDoctor.id)">Deactivate</button>
           </td>
         </tr>
         </tbody>

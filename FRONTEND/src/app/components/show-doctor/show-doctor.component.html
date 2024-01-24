@@ -23,7 +23,7 @@
 </div>
 
 <div class="container mx-auto">
-  <div class="card bg-base-200 shadow-xl mx-auto w-1/2 brz" *ngIf="doctor">
+  <div class="card bg-base-200 shadow-xl mx-auto w-1/2 brz mb-20" *ngIf="doctor">
     <div class="card-body">
       <article class="prose ms-5">
         <h2>{{ doctor.firstname }} {{ doctor.lastname }} profile</h2>
@@ -58,6 +58,12 @@
         <p class="text-lg font-bold">End of the working day: {{ calendar?.workEndTime }}</p>
 
       </article>
+      <div class="flex justify-center w-1/2 mx-auto mt-5">
+        <a href="/admins-home" class="btn btn-secondary brz me-auto w-32">Back</a>
+
+        <button *ngIf="doctor.status == 'INACTIVE'" class="btn btn-success brz ms-auto w-32" [disabled]="!doctor.configured" (click)="activateDoctor(doctor.id)">Activate</button>
+        <button *ngIf="doctor.status == 'ACTIVE'" class="btn btn-error brz ms-auto w-32" (click)="inactivateDoctor(doctor.id)">Deactivate</button>
+      </div>
     </div>
   </div>
 </div>

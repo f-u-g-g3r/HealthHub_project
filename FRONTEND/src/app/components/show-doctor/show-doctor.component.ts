@@ -45,4 +45,18 @@ export class ShowDoctorComponent {
 
   }
 
+  public activateDoctor(docId: number) {
+    this.userService.activateDoctor(docId).subscribe({
+      next: () => this.router.navigate(['/admins-home']),
+      error: console.error
+    });
+  }
+
+  public inactivateDoctor(docId: number) {
+    this.userService.deactivateDoctor(docId).subscribe({
+      next: () => this.router.navigate(['/admins-home']),
+      error: console.error
+    });
+  }
+
 }

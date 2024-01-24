@@ -40,26 +40,11 @@ export class AdminsHomeComponent implements OnInit {
     });
   }
 
-  public activateDoctor(docId: number) {
-    this.userService.activateDoctor(docId).subscribe({
-      next: () => window.location.reload(),
-      error: console.error
-    });
-  }
-
   public inactivateDoctor(docId: number) {
     this.userService.deactivateDoctor(docId).subscribe({
       next: () => window.location.reload(),
       error: console.error
     });
-  }
-
-  public getOneDoctor(docId: number) {
-    this.userService.getOneDoctor(docId).subscribe({
-      next: (response) => {
-
-      }
-    })
   }
 
 }
