@@ -2,13 +2,16 @@ package com.artjomkuznetsov.healthhub.controllers;
 
 
 import com.artjomkuznetsov.healthhub.assemblers.UserModelAssembler;
+import com.artjomkuznetsov.healthhub.exceptions.CalendarNotFoundException;
 import com.artjomkuznetsov.healthhub.exceptions.DoctorNotFoundException;
 import com.artjomkuznetsov.healthhub.exceptions.UserNotFoundException;
-import com.artjomkuznetsov.healthhub.models.Doctor;
+import com.artjomkuznetsov.healthhub.models.Calendar;
+import com.artjomkuznetsov.healthhub.models.Schedule;
 import com.artjomkuznetsov.healthhub.models.User;
+import com.artjomkuznetsov.healthhub.repositories.CalendarRepository;
 import com.artjomkuznetsov.healthhub.repositories.DoctorRepository;
+import com.artjomkuznetsov.healthhub.repositories.ScheduleRepository;
 import com.artjomkuznetsov.healthhub.repositories.UserRepository;
-import com.artjomkuznetsov.healthhub.security.config.JwtService;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
@@ -16,7 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -28,12 +30,16 @@ public class UserController {
     private final UserModelAssembler assembler;
     private final MedCardController medCardController;
     private final DoctorRepository doctorRepository;
+    private final CalendarRepository calendarRepository;
+    private final ScheduleRepository scheduleRepository;
 
-    public UserController(UserRepository repository, UserModelAssembler assembler, MedCardController medCardController, DoctorRepository doctorRepository) {
+    public UserController(UserRepository repository, CalendarRepository calendarRepository, ScheduleRepository scheduleRepository, UserModelAssembler assembler, MedCardController medCardController, DoctorRepository doctorRepository) {
         this.repository = repository;
         this.assembler = assembler;
         this.medCardController = medCardController;
         this.doctorRepository = doctorRepository;
+        this.calendarRepository = calendarRepository;
+        this.scheduleRepository = scheduleRepository;
     }
 
     // Aggregate root
@@ -50,9 +56,7 @@ public class UserController {
     @GetMapping("/users-by-doctor/{doctorId}")
     @CrossOrigin(origins="*")
     public List<User> getUsersByDoctorId(@PathVariable Long doctorId) {
-        List<User> users = repository.findByFamilyDoctorId(doctorId);
-
-        return users;
+        return repository.findByFamilyDoctorId(doctorId);
     }
 
 
@@ -81,6 +85,28 @@ public class UserController {
         if (!doctorRepository.existsById(familyDoctorId)) {
             throw new DoctorNotFoundException(familyDoctorId);
         }
+        /*
+        Очистить все записи к бывшему доктору.
+         */
+        if (user.getFamilyDoctorId() != null) {
+            System.out.println("sss");
+            Long oldDoctorId = user.getFamilyDoctorId();
+            Calendar oldDoctorCalendar = calendarRepository.findByOwnerId(oldDoctorId)
+                    .orElseThrow(() -> new CalendarNotFoundException(oldDoctorId));
+            List<Schedule> oldDoctorSchedule = oldDoctorCalendar.getSchedule();
+
+
+            for (Schedule schedule : oldDoctorSchedule) {
+
+                if (schedule.getPatientId().equals(userId)) {
+                    Long id = schedule.getId();
+                    scheduleRepository.deleteById(id);
+                    System.out.println(scheduleRepository.findById(id));
+                }
+            }
+        }
+        // -----
+
         user.setFamilyDoctorId(familyDoctorId);
         repository.save(user);
         medCardController.setFamilyDoctor(user.getMedCardID(), familyDoctorId);
