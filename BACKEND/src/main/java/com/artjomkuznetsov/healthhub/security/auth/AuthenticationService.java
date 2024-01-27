@@ -157,7 +157,7 @@ public class AuthenticationService {
         String jwtToken = jwtService.generateToken(extraClaims, doctor);
 
 
-        return new DoctorAuthenticationResponse(jwtToken, doctor.getId(), doctor.getRole());
+        return new DoctorAuthenticationResponse(jwtToken, doctor.getId(), doctor.getRole(), doctor.getStatus());
     }
 
     private boolean isUsernameNotTaken(String username) {

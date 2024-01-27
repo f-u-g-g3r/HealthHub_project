@@ -18,6 +18,7 @@ import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -69,11 +70,10 @@ public class UserController {
     }
 
     @GetMapping("/users/uuid/{uuid}")
-    @CrossOrigin(origins="*", maxAge=3600)
-    public User oneByUuid(@PathVariable("uuid") String uuid) {
-        User user = repository.findByUuid(uuid)
+    @CrossOrigin(origins="*")
+    public User oneByUuid(@PathVariable String uuid) {
+        return repository.findByUuid(uuid)
                 .orElseThrow(() -> new UserNotFoundException(uuid));
-        return user;
     }
 
     @GetMapping("/users/family-doctor/{userId}/{familyDoctorId}")
@@ -85,27 +85,10 @@ public class UserController {
         if (!doctorRepository.existsById(familyDoctorId)) {
             throw new DoctorNotFoundException(familyDoctorId);
         }
-        /*
-        Очистить все записи к бывшему доктору.
-         */
         if (user.getFamilyDoctorId() != null) {
-            System.out.println("sss");
-            Long oldDoctorId = user.getFamilyDoctorId();
-            Calendar oldDoctorCalendar = calendarRepository.findByOwnerId(oldDoctorId)
-                    .orElseThrow(() -> new CalendarNotFoundException(oldDoctorId));
-            List<Schedule> oldDoctorSchedule = oldDoctorCalendar.getSchedule();
-
-
-            for (Schedule schedule : oldDoctorSchedule) {
-
-                if (schedule.getPatientId().equals(userId)) {
-                    Long id = schedule.getId();
-                    scheduleRepository.deleteById(id);
-                    System.out.println(scheduleRepository.findById(id));
-                }
-            }
+            List<Schedule> patientSchedules = scheduleRepository.findAllByPatientId(userId);
+            scheduleRepository.deleteAll(patientSchedules);
         }
-        // -----
 
         user.setFamilyDoctorId(familyDoctorId);
         repository.save(user);

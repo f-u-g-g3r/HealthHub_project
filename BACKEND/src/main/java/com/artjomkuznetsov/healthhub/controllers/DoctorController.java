@@ -1,11 +1,13 @@
 package com.artjomkuznetsov.healthhub.controllers;
 
 import com.artjomkuznetsov.healthhub.assemblers.DoctorModelAssembler;
-import com.artjomkuznetsov.healthhub.models.Doctor;
-import com.artjomkuznetsov.healthhub.models.DoctorMinimal;
-import com.artjomkuznetsov.healthhub.models.Status;
+import com.artjomkuznetsov.healthhub.exceptions.MedCardNotFoundException;
+import com.artjomkuznetsov.healthhub.models.*;
 import com.artjomkuznetsov.healthhub.repositories.DoctorRepository;
 import com.artjomkuznetsov.healthhub.exceptions.DoctorNotFoundException;
+import com.artjomkuznetsov.healthhub.repositories.MedCardRepository;
+import com.artjomkuznetsov.healthhub.repositories.ScheduleRepository;
+import com.artjomkuznetsov.healthhub.repositories.UserRepository;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
@@ -25,10 +27,20 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class DoctorController {
     private final DoctorRepository repository;
     private final DoctorModelAssembler assembler;
+    private final ScheduleRepository scheduleRepository;
+    private final UserRepository userRepository;
+    private final MedCardRepository medCardRepository;
 
-    public DoctorController(DoctorRepository repository, DoctorModelAssembler assembler) {
+    public DoctorController(DoctorRepository repository,
+                            DoctorModelAssembler assembler,
+                            ScheduleRepository scheduleRepository,
+                            UserRepository userRepository,
+                            MedCardRepository medCardRepository) {
         this.repository = repository;
         this.assembler = assembler;
+        this.scheduleRepository = scheduleRepository;
+        this.userRepository = userRepository;
+        this.medCardRepository = medCardRepository;
     }
 
     @GetMapping("/doctors")
@@ -95,6 +107,23 @@ public class DoctorController {
                     newDoctor.setId(id);
                     return repository.save(newDoctor);
                 });
+
+        if (newDoctor.getStatus() == Status.INACTIVE) {
+            List<Schedule> doctorSchedules = scheduleRepository.findAllByDoctorId(id);
+            scheduleRepository.deleteAll(doctorSchedules);
+
+            List<User> users = userRepository.findByFamilyDoctorId(id);
+            for (User user : users) {
+                MedCard userMedCard = medCardRepository.findById(user.getMedCardID())
+                        .orElseThrow(() -> new MedCardNotFoundException(user.getMedCardID()));
+
+                userMedCard.setFamilyDoctorID(null);
+                medCardRepository.save(userMedCard);
+                user.setFamilyDoctorId(null);
+                userRepository.save(user);
+            }
+        }
+
         EntityModel<Doctor> entityModel = assembler.toModel(updatedDoctor);
 
         return ResponseEntity

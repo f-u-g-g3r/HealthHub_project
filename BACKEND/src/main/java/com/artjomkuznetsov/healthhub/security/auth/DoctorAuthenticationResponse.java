@@ -20,6 +20,12 @@ public class DoctorAuthenticationResponse {
         this.role = role;
         this.isEmailTaken = false;
         this.status = Status.INACTIVE;
+    }public DoctorAuthenticationResponse(String token, Long doctorId, Role role, Status status) {
+        this.token = token;
+        this.doctorId = doctorId;
+        this.role = role;
+        this.isEmailTaken = false;
+        this.status = status;
     }
 
     public String getToken() {

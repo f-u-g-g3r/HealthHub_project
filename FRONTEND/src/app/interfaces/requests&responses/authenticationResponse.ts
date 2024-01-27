@@ -5,5 +5,5 @@ export interface AuthenticationResponse {
     uid: number;
     doctorId: number;
     medCardId: number;
-    doctorStatus: string;
+    status: string;
 }

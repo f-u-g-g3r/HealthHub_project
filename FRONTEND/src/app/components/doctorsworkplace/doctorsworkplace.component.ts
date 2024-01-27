@@ -4,6 +4,7 @@ import { User } from 'src/app/interfaces/user';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { UserService } from 'src/app/services/user.service';
 import {NgForm} from "@angular/forms";
+import {unusedExport} from "@angular/compiler/testing";
 
 
 @Component({
@@ -14,6 +15,9 @@ import {NgForm} from "@angular/forms";
 export class DoctorsworkplaceComponent implements OnInit {
   public patients: User[] = [];
   public foundUser!: User;
+  public status = sessionStorage.getItem('doctorStatus');
+
+
 
   public searchPatientModalIsOpen = false;
   public foundUserModalIsOpen = false;
@@ -24,7 +28,7 @@ export class DoctorsworkplaceComponent implements OnInit {
     if (sessionStorage.getItem("role") != "DOCTOR") {
       this.router.navigate(["/home"]);
     }
-
+    console.log(this.status);
     this.getDoctorsUsers();
   }
 
@@ -41,11 +45,16 @@ export class DoctorsworkplaceComponent implements OnInit {
     this.router.navigate(["/doctors-workplace/patient/", patientId]);
   }
 
+  public isDisabled(famDocId: number) {
+    return famDocId != null;
+  }
+
   public findPatientByUuid(data: any) {
     const uuid = data['uuid'];
     this.userService.getUserByUuid(uuid).subscribe({
       next: (response: User) => {
          this.foundUser = response
+        console.log(response)
       },
           error: console.error
       });
@@ -64,7 +73,11 @@ export class DoctorsworkplaceComponent implements OnInit {
     if (!isNaN(Number(value))) {
       this.userService.getUserByUuid(value).subscribe({
         next: (response: User) => {
-          this.patients = [response];
+          if (response.familyDoctorId.toString() == sessionStorage.getItem('docId')) {
+            this.patients = [response];
+          } else {
+            this.patients = [];
+          }
         },
         error: console.error
       });
@@ -86,4 +99,6 @@ export class DoctorsworkplaceComponent implements OnInit {
 
 
   }
+
+  protected readonly unusedExport = unusedExport;
 }

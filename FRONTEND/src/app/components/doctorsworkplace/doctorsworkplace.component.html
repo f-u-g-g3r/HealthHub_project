@@ -28,7 +28,13 @@
   </div>
 </div>
 
-<div class="container mx-auto">
+<div class="container mx-auto" *ngIf="status != 'ACTIVE'">
+  <p class="text-2xl font-medium text-center mt-20">Your account status is 'INACTIVE'.</p>
+  <p class="text-2xl font-medium text-center mt-3"> You need to set up your working hours and ensure that your profile information is complete and valid.</p>
+  <p class="text-2xl font-medium text-center mt-3">If this is done, you need to wait for administrator to verify the information and activate your account.</p>
+</div>
+
+<div class="container mx-auto" *ngIf="status == 'ACTIVE'">
   <article class="prose">
     <h2>Patient List</h2>
   </article>
@@ -97,8 +103,8 @@
 
     <div class="modal-action">
       <form method="dialog">
-        <button class="btn mx-2 brz" (click)="foundUserModalIsOpen = false;searchPatientModalIsOpen = true" onclick="search_patient.showModal(); found_user.close();">Back</button>
-        <button class="btn btn-success mx-2 brz" (click)="addPatientToDoctor(foundUser); foundUserModalIsOpen = false;" onclick="found_user.close()">Add patient</button>
+        <button class="btn mx-2 brz" (click)="foundUserModalIsOpen = false;searchPatientModalIsOpen = true;" onclick="search_patient.showModal(); found_user.close();">Back</button>
+        <button class="btn btn-success mx-2 brz" [disabled]="isDisabled(foundUser.familyDoctorId)" (click)="addPatientToDoctor(foundUser); foundUserModalIsOpen = false;" onclick="found_user.close()">Add patient</button>
       </form>
     </div>
   </div>
