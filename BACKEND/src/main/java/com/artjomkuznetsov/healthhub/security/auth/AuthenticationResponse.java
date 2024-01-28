@@ -6,13 +6,19 @@ import java.util.Objects;
 
 public class AuthenticationResponse {
     private String token;
-    private Boolean isEmailTaken;
+    private boolean isEmailTaken;
+    private boolean isAgeValid;
     private Role role;
     private Long uid;
     private Long medCardId;
 
-    public AuthenticationResponse(String token) {
-        this.isEmailTaken = true;
+    public AuthenticationResponse(String message) {
+        if (message.equals("Email is taken") ) {
+            this.isEmailTaken = true;
+        } else if (message.equals("Age is not valid")) {
+            this.isAgeValid = false;
+        }
+
     }
 
     public AuthenticationResponse(String token, Long uid, Long medCardId, Role role) {
@@ -21,6 +27,7 @@ public class AuthenticationResponse {
         this.role = role;
         this.medCardId = medCardId;
         this.isEmailTaken = false;
+        this.isAgeValid = true;
     }
 
     public String getToken() {
@@ -31,7 +38,7 @@ public class AuthenticationResponse {
         this.token = token;
     }
 
-    public Boolean getEmailTaken() {
+    public Boolean isEmailTaken() {
         return isEmailTaken;
     }
 
@@ -63,17 +70,25 @@ public class AuthenticationResponse {
         this.role = role;
     }
 
+    public boolean isAgeValid() {
+        return isAgeValid;
+    }
+
+    public void setAgeValid(boolean ageValid) {
+        isAgeValid = ageValid;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AuthenticationResponse that = (AuthenticationResponse) o;
-        return Objects.equals(token, that.token) && Objects.equals(isEmailTaken, that.isEmailTaken) && role == that.role && Objects.equals(uid, that.uid) && Objects.equals(medCardId, that.medCardId);
+        return isEmailTaken == that.isEmailTaken && isAgeValid == that.isAgeValid && Objects.equals(token, that.token) && role == that.role && Objects.equals(uid, that.uid) && Objects.equals(medCardId, that.medCardId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(token, isEmailTaken, role, uid, medCardId);
+        return Objects.hash(token, isEmailTaken, isAgeValid, role, uid, medCardId);
     }
 
     @Override
@@ -81,6 +96,7 @@ public class AuthenticationResponse {
         return "AuthenticationResponse{" +
                 "token='" + token + '\'' +
                 ", isEmailTaken=" + isEmailTaken +
+                ", isAgeValid=" + isAgeValid +
                 ", role=" + role +
                 ", uid=" + uid +
                 ", medCardId=" + medCardId +

@@ -9,6 +9,7 @@ import com.artjomkuznetsov.healthhub.models.User;
 import com.artjomkuznetsov.healthhub.repositories.CalendarRepository;
 import com.artjomkuznetsov.healthhub.repositories.DoctorRepository;
 import com.artjomkuznetsov.healthhub.repositories.UserRepository;
+import com.artjomkuznetsov.healthhub.security.auth.exceptions.AgeIsNotValidException;
 import com.artjomkuznetsov.healthhub.security.auth.exceptions.UsernameAlreadyTakenException;
 import com.artjomkuznetsov.healthhub.security.config.JwtService;
 
@@ -21,7 +22,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 
@@ -64,6 +64,12 @@ public class AuthenticationService {
             isUsernameNotTaken(newUser.getEmail());
         } catch (UsernameAlreadyTakenException e) {
             return new AuthenticationResponse("Email is taken");
+        }
+
+        try {
+            isAgeValid(newUser.getAge());
+        } catch (AgeIsNotValidException e) {
+            return new AuthenticationResponse("Age is not valid");
         }
 
         newUser.setUuid(generateUUID());
@@ -160,11 +166,15 @@ public class AuthenticationService {
         return new DoctorAuthenticationResponse(jwtToken, doctor.getId(), doctor.getRole(), doctor.getStatus());
     }
 
-    private boolean isUsernameNotTaken(String username) {
-        if (userRepository.findByEmail(username).isEmpty() && doctorRepository.findByEmail(username).isEmpty()) {
-            return true;
-        } else {
+    private void isUsernameNotTaken(String username) {
+        if (userRepository.findByEmail(username).isPresent() && doctorRepository.findByEmail(username).isPresent()) {
             throw new UsernameAlreadyTakenException(username);
+        }
+    }
+
+    private void isAgeValid(int age) {
+        if (age <= 0) {
+            throw new AgeIsNotValidException();
         }
     }
 

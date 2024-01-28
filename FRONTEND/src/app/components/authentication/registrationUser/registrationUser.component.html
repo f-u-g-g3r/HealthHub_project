@@ -25,12 +25,15 @@
         </div>
 
         <div class="mt-4">
+
+
           <label for="dateOfBirth" class="label">Date of birth<b class="me-auto text-red-500">*</b></label>
           <input type="date" class="input input-bordered w-full brz" id="dateOfBirth" name="dateOfBirth" ngModel
                  #dateOfBirth="ngModel" required/>
           <div *ngIf="dateOfBirth.invalid && (dateOfBirth.dirty || dateOfBirth.touched)" class="formInvalid">
             <div *ngIf="dateOfBirth.errors?.['required']">Date of birth is required.</div>
           </div>
+          <div *ngIf="isAgeValid == false" class="formInvalid">Age cannot be lower than 1</div>
         </div>
 
         <div class="mt-4">

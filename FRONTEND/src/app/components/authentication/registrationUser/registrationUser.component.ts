@@ -11,6 +11,7 @@ import {AuthenticationResponse} from "../../../interfaces/requests&responses/aut
 })
 export class RegistrationUserComponent implements OnInit {
   public isFormValid: boolean | undefined;
+  public isAgeValid: boolean | undefined;
 
   constructor(private authenticationService: AuthenticationService, private router: Router) {
 
@@ -30,6 +31,9 @@ export class RegistrationUserComponent implements OnInit {
       const formFields = registerForm.value;
       this.authenticationService.register(formFields).subscribe({
         next: (response: AuthenticationResponse) => {
+          if (!response.ageValid) {
+            this.isAgeValid = false;
+          }
           sessionStorage.setItem('password', formFields["password"])
           this.authenticateUser(response);
         },

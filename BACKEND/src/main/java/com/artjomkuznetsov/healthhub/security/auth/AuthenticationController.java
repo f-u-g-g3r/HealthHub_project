@@ -19,25 +19,24 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    @CrossOrigin(origins="*")
+    @CrossOrigin(origins = "*")
     public ResponseEntity<?> register(@RequestBody User newUser) {
         return ResponseEntity.ok(authenticationService.registerUser(newUser));
     }
 
     @PostMapping("/authenticate")
-    @CrossOrigin(origins="*")
+    @CrossOrigin(origins = "*")
     public ResponseEntity<?> authenticate(@RequestBody AuthenticationRequest request) {
         if (doctorRepository.findByEmail(request.getEmail()).isPresent()) {
             return ResponseEntity.ok(authenticationService.authenticateDoctor(request));
-        }
-        else {
+        } else {
             return ResponseEntity.ok(authenticationService.authenticate(request));
         }
 
     }
 
     @PostMapping("/register-doctor")
-    @CrossOrigin(origins="*")
+    @CrossOrigin(origins = "*")
     public ResponseEntity<?> registerDoctor(@RequestBody Doctor newDoctor) {
         return ResponseEntity.ok(authenticationService.registerDoctor(newDoctor));
     }
