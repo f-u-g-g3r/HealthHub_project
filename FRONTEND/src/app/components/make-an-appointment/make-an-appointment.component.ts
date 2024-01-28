@@ -17,6 +17,7 @@ export class MakeAnAppointmentComponent {
   constructor(private router: Router, public service: AuthenticationService, public userService: UserService) {}
   public availableTime:string[] = [];
   public isReadyForTime = false;
+  public isTimeChoosen = false;
   public formSubmitted = false;
   public isMade = false;
 

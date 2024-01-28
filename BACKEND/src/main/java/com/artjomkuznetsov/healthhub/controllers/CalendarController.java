@@ -3,15 +3,20 @@ package com.artjomkuznetsov.healthhub.controllers;
 import com.artjomkuznetsov.healthhub.assemblers.CalendarAssembler;
 import com.artjomkuznetsov.healthhub.exceptions.CalendarNotFoundException;
 import com.artjomkuznetsov.healthhub.exceptions.DoctorNotFoundException;
+import com.artjomkuznetsov.healthhub.exceptions.InvalidDateException;
 import com.artjomkuznetsov.healthhub.models.Calendar;
 import com.artjomkuznetsov.healthhub.models.Doctor;
 import com.artjomkuznetsov.healthhub.models.Schedule;
 import com.artjomkuznetsov.healthhub.repositories.CalendarRepository;
 import com.artjomkuznetsov.healthhub.repositories.DoctorRepository;
 import com.artjomkuznetsov.healthhub.repositories.ScheduleRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +25,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -59,6 +65,30 @@ public class CalendarController {
         return assembler.toModel(calendar);
     }
 
+    @GetMapping("/calendars/schedules/{doctorId}")
+    @CrossOrigin(origins = "*")
+    public Page<Schedule> getDoctorSchedules(@PathVariable Long doctorId,
+                                             @RequestParam Optional<String> sortBy,
+                                             @RequestParam Optional<Integer> page,
+                                             @RequestParam Optional<String> direction) {
+        System.out.println(sortBy);
+        if (direction.isPresent() && direction.get().equals("DESC")) {
+            return scheduleRepository.findAllByDoctorId(doctorId,
+                    PageRequest.of(
+                            page.orElse(0),
+                            5,
+                            Sort.Direction.DESC, sortBy.orElse("date")
+                    ));
+        } else {
+            return scheduleRepository.findAllByDoctorId(doctorId,
+                    PageRequest.of(
+                            page.orElse(0),
+                            5,
+                            Sort.Direction.ASC, sortBy.orElse("date")
+                    ));
+        }
+    }
+
     @PutMapping("/calendars/{ownerId}")
     @CrossOrigin(origins = "*")
     public ResponseEntity<?> updateCalendar(@RequestBody Calendar newCalendar, @PathVariable Long ownerId) {
@@ -91,6 +121,18 @@ public class CalendarController {
     @PutMapping("/calendars/schedule/{ownerId}")
     @CrossOrigin(origins = "*")
     public ResponseEntity<?> updateSchedule(@RequestBody Schedule newSchedule, @PathVariable Long ownerId) {
+
+        LocalDate currentDate = LocalDate.now();
+        try {
+            if (newSchedule.getDate().isBefore(currentDate) || newSchedule.getDate().equals(currentDate)) {
+                throw new InvalidDateException(newSchedule.getDate());
+            }
+        } catch (InvalidDateException e) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("Invalid date: " + e.getMessage());
+        }
+
         Calendar updatedCalendar = repository.findByOwnerId(ownerId)
                 .map(calendar -> {
                     if (newSchedule != null) {
@@ -122,6 +164,15 @@ public class CalendarController {
     @GetMapping("/calendars/availableTime/{ownerId}/{date}")
     @CrossOrigin(origins = "*")
     public List<String> getAvailableTimeByDate(@PathVariable Long ownerId, @PathVariable LocalDate date) {
+        LocalDate currentDate = LocalDate.now();
+        try {
+            if (date.isBefore(currentDate) || date.equals(currentDate)) {
+                throw new InvalidDateException(date);
+            }
+        } catch (InvalidDateException e) {
+            return new ArrayList<>();
+        }
+
         Calendar calendar = repository.findByOwnerId(ownerId)
                 .orElseThrow(() -> new CalendarNotFoundException(ownerId));
 
@@ -151,6 +202,8 @@ public class CalendarController {
 
         return availableTime;
     }
+
+
 
     @DeleteMapping("/calendars/schedules/{scheduleId}/{patientId}")
     @CrossOrigin(origins = "*")

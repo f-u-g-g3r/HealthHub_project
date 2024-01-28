@@ -15,6 +15,7 @@ import { UpdatedDoctor } from '../interfaces/updatedDoctor'
 import {Calendar} from "../interfaces/calendar";
 import {Schedule} from "../interfaces/schedule";
 import {DoctorMinimal} from "../interfaces/doctorMinimal";
+import {SchedulesPage} from "../interfaces/schedulesPage";
 
 @Injectable({
   providedIn: 'root'
@@ -111,6 +112,10 @@ export class UserService {
 
   public getDoctorSchedule(docId: any): Observable<Calendar> {
     return this.http.get<Calendar>(`${this.serverUrl}/calendars/${docId}`, this.httpOptions);
+  }
+
+  public getDoctorSchedule2(docId: any, direction: string, page: number): Observable<SchedulesPage> {
+    return this.http.get<SchedulesPage>(`${this.serverUrl}/calendars/schedules/${docId}?direction=${direction}&page=${page}`, this.httpOptions);
   }
 
   public updateDoctorCalendar(docId: any, newCalendar: any): Observable<Calendar> {
