@@ -18,7 +18,6 @@ public class AuthenticationResponse {
         } else if (message.equals("Age is not valid")) {
             this.isAgeValid = false;
         }
-
     }
 
     public AuthenticationResponse(String token, Long uid, Long medCardId, Role role) {

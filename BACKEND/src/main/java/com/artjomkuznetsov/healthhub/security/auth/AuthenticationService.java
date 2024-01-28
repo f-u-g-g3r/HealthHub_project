@@ -67,7 +67,7 @@ public class AuthenticationService {
         }
 
         try {
-            isAgeValid(newUser.getAge());
+            isAgeValid(newUser.getAge(), "user");
         } catch (AgeIsNotValidException e) {
             return new AuthenticationResponse("Age is not valid");
         }
@@ -91,6 +91,12 @@ public class AuthenticationService {
             isUsernameNotTaken(newDoctor.getEmail());
         } catch (UsernameAlreadyTakenException e) {
             return new DoctorAuthenticationResponse("Email is taken");
+        }
+
+        try {
+            isAgeValid(newDoctor.getAge(), "doctor");
+        } catch (AgeIsNotValidException e) {
+            return new DoctorAuthenticationResponse("Age is not valid");
         }
 
         newDoctor.setUuid(generateUUID());
@@ -172,8 +178,10 @@ public class AuthenticationService {
         }
     }
 
-    private void isAgeValid(int age) {
-        if (age <= 0) {
+    private void isAgeValid(int age, String entity) {
+        if (age <= 0 && entity.equals("user")) {
+            throw new AgeIsNotValidException();
+        } else if (age < 18 && entity.equals("doctor")) {
             throw new AgeIsNotValidException();
         }
     }

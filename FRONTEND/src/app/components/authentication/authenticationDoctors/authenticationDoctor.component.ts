@@ -13,8 +13,11 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 export class AuthenticationDoctorComponent implements OnInit{
 
   public isFormInvalid: boolean | undefined;
+  public isAgeValid: boolean | undefined;
   ngOnInit(): void {
-
+    if (sessionStorage.getItem('token')) {
+      this.router.navigate(["/home"]);
+    }
   }
 
   constructor(private authenticationService: AuthenticationService, private router: Router) {
@@ -28,7 +31,12 @@ export class AuthenticationDoctorComponent implements OnInit{
     } else {
       const formFields = form.value;
       this.authenticationService.registerDoctor(formFields).subscribe({
-        next: (response: DoctorAuthResponse) => this.authenticate(response),
+        next: (response: DoctorAuthResponse) => {
+          if (!response.ageValid) {
+            this.isAgeValid = false;
+          }
+          this.authenticate(response)
+        },
         error: console.error
       });
     }

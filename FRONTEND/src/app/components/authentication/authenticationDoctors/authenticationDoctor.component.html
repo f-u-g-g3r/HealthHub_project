@@ -19,6 +19,7 @@
         <label for="dateOfBirth" class="label">Date of birth<b class="me-auto text-red-500">*</b></label>
           <input type="date" class="input input-bordered w-full brz" id="dateOfBirth" name="dateOfBirth" ngModel #dateOfBirth="ngModel"/>
       </div>
+      <div *ngIf="isAgeValid == false" class="formInvalid">Age cannot be lower than 18</div>
 
       <div class="mt-4">
         <label for="gender" class="label">Gender<b class="me-auto text-red-500">*</b></label>
