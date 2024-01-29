@@ -16,6 +16,7 @@ import {Calendar} from "../interfaces/calendar";
 import {Schedule} from "../interfaces/schedule";
 import {DoctorMinimal} from "../interfaces/doctorMinimal";
 import {SchedulesPage} from "../interfaces/schedulesPage";
+import {UsersPage} from "../interfaces/usersPage";
 
 @Injectable({
   providedIn: 'root'
@@ -48,8 +49,8 @@ export class UserService {
     return this.http.get<User>(`${this.serverUrl}/users/family-doctor/${uid}/${docId}`, this.httpOptions);
   }
 
-  public getUsersByDoctorId(docId: any): Observable<User[]> {
-    return this.http.get<User[]>(`${this.serverUrl}/users-by-doctor/${docId}`, this.httpOptions);
+  public getUsersByDoctorId(docId: any, direction: string, page: number, sortBy: string): Observable<UsersPage> {
+    return this.http.get<UsersPage>(`${this.serverUrl}/users-by-doctor/${docId}?direction=${direction}&page=${page}&sort=${sortBy}`, this.httpOptions);
   }
 
   public getUserByUuid(uuid: string): Observable<User> {
@@ -140,6 +141,10 @@ export class UserService {
 
   public deleteSchedule(scheduleId: any, uid:any): Observable<void> {
     return this.http.delete<void>(`${this.serverUrl}/calendars/schedules/${scheduleId}/${uid}`, this.httpOptions);
+  }
+
+  public getSchedulesByDate(docId: any, date: string): Observable<SchedulesPage> {
+    return this.http.get<SchedulesPage>(`${this.serverUrl}/calendars/schedules/${docId}/${date}`, this.httpOptions);
   }
 
   public isDoctorCalendarConfigured(docId: any): Observable<boolean> {

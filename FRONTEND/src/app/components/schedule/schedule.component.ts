@@ -7,6 +7,8 @@ import {Schedule} from "../../interfaces/schedule";
 import {DoctorMinimal} from "../../interfaces/doctorMinimal";
 import {User} from "../../interfaces/user";
 import {SchedulesPage} from "../../interfaces/schedulesPage";
+import {isEmpty} from "rxjs";
+import {NgModel} from "@angular/forms";
 
 @Component({
   selector: 'app-schedule',
@@ -27,18 +29,44 @@ export class ScheduleComponent {
 
   ngOnInit(): void {
     this.service.checkAuthentication('DOCTOR');
-    this.getSchedules();
+    this.getSchedules(false);
 
   }
 
-  public getSchedules() {
+  public findByDate(date: NgModel) {
+    if (date.value != '') {
+      this.userService.getSchedulesByDate(sessionStorage.getItem('docId'), date.value).subscribe({
+        next: (response) => {
+          this.schedules = {
+            content: response.content,
+            pageable: {
+              pageNumber: response.pageable.pageNumber,
+            },
+            last: response.last,
+            totalPages: response.totalPages,
+            first: response.first,
+          };
+          this.patientsArr = this.getPatientNames();
+          this.totalPagesArr = [];
+          for (let i = 1; i < this.schedules.totalPages + 1; i++) {
+              this.totalPagesArr.push(i);
+          }
+        },
+        error: console.error
+      });
+    }
+  }
+
+  public getSchedules(changeSorting:boolean) {
     let sorting = '';
+    if (changeSorting) {
+      this.ascSorting = !this.ascSorting;
+    }
     if (this.ascSorting) {
       sorting = 'ASC'
     } else {
       sorting = 'DESC'
     }
-    this.ascSorting = !this.ascSorting;
 
     this.userService.getDoctorSchedule2(sessionStorage.getItem("docId"), sorting, this.page).subscribe({
       next: (response) => {
@@ -52,11 +80,9 @@ export class ScheduleComponent {
           first: response.first,
         };
         this.patientsArr = this.getPatientNames();
-        if (this.totalPagesArr.length == 0) {
-          for (let i = 1; i < this.schedules.totalPages + 1; i++) {
-            this.totalPagesArr.push(i);
-          }
-          console.log(this.totalPagesArr);
+        this.totalPagesArr = [];
+        for (let i = 1; i < this.schedules.totalPages + 1; i++) {
+          this.totalPagesArr.push(i);
         }
       },
       error: console.error
@@ -94,4 +120,6 @@ export class ScheduleComponent {
 
     return patientsArr;
   }
+
+  protected readonly console = console;
 }

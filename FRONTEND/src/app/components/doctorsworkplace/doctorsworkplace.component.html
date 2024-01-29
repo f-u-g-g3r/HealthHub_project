@@ -34,6 +34,8 @@
   <p class="text-2xl font-medium text-center mt-3">If this is done, you need to wait for administrator to verify the information and activate your account.</p>
 </div>
 
+
+
 <div class="container mx-auto" *ngIf="status == 'ACTIVE'">
   <article class="prose">
     <h2>Patient List</h2>
@@ -41,11 +43,15 @@
   <a class="btn btn-neutral brz my-3" (click)="searchPatientModalIsOpen = true" onclick="search_patient.showModal()">Add new patient</a>
   <div class="form-control flex flex-row my-3">
     <form #searchForm="ngForm" (ngSubmit)="search(searchForm)">
-      <input type="text" name="query" placeholder="Search (By name or unique ID)" class="input input-bordered w-64 brz" ngModel #query="ngModel" />
-      <input type="submit" value="Find" class="btn btn-primary brz ms-5" *ngIf="!searchForm.submitted">
-      <input type="button" class="btn btn-primary brz ms-5" value="Clear" *ngIf="searchForm.submitted" (click)="getDoctorsUsers(); searchForm.resetForm()">
+      <input type="text" name="query" placeholder="Search (By name or unique ID)" class="input input-bordered w-64 brz"
+             [disabled]="searchForm.submitted" ngModel #query="ngModel" />
+      <input type="submit" value="Find" class="btn btn-primary brz ms-5" [disabled]="query.value == '' || query.value == null" *ngIf="!searchForm.submitted">
+      <input type="button" class="btn btn-primary brz ms-5" value="Clear" *ngIf="searchForm.submitted" (click)="getDoctorsUsers(false); searchForm.resetForm()">
     </form>
   </div>
+
+    <p *ngIf="patients.content.length == 0" class="text-center text-2xl">No patients were found matching the specified criteria.</p>
+    <div *ngIf="patients.content.length > 0">
     <table class="table table-zebra">
       <thead>
         <tr>
@@ -55,13 +61,21 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let patient of patients; index as i;" (click)="viewPatientDetails(patient.id)" class="hover">
+        <tr *ngFor="let patient of patients.content; index as i;" (click)="viewPatientDetails(patient.id)" class="hover">
           <td>{{i+1}}</td>
           <td>{{ patient.firstname + " " + patient.lastname }}</td>
           <td>{{ patient.uuid }}</td>
         </tr>
       </tbody>
     </table>
+
+  <div class="flex flex-wrap justify-center mt-10">
+    <span *ngFor="let onePage of totalPagesArr">
+      <button class="btn btn-outline text-xl brz mx-3 w-12" (click)="page = onePage - 1; getDoctorsUsers(false)"
+              [disabled]="patients.pageable.pageNumber == onePage - 1">{{onePage}}</button>
+    </span>
+  </div>
+    </div>
 </div>
 
 
@@ -80,16 +94,6 @@
     <button>close</button>
   </form>
 </dialog>
-
-
- <!--
-
- TODO
- закончить модальное окно
- добавить поиск по имени, выдача результата в виде таблицы с основной информацией
- добавить функцию вычисления возраста человека основываясь на дате рождения
-
- -->
 
 <dialog id="found_user" class="modal">
   <div class="modal-box brz" *ngIf="foundUserModalIsOpen">
