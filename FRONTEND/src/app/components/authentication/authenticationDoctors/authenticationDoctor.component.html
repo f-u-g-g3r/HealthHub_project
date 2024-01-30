@@ -7,76 +7,126 @@
     <form #registerForm="ngForm" (ngSubmit)="registerDoctor(registerForm)">
       <div>
         <label for="firstname" class="label">First name<b class="me-auto text-red-500">*</b></label>
-          <input type="text" class="input input-bordered w-full brz" id="firstName" name="firstname" ngModel #firstname="ngModel"/>
+          <input type="text" class="input input-bordered w-full brz" id="firstName" name="firstname"
+                 ngModel #firstname="ngModel" required/>
+        <div *ngIf="firstname.invalid && (firstname.dirty || firstname.touched)" class="formInvalid">
+          <div *ngIf="firstname.errors?.['required']">Firstname is required.</div>
+        </div>
       </div>
 
       <div class="mt-4">
         <label for="lastname" class="label">Last name<b class="me-auto text-red-500">*</b></label>
-          <input type="text" class="input input-bordered w-full brz" id="lastname" name="lastname" ngModel #lastname="ngModel"/>
+          <input type="text" class="input input-bordered w-full brz" id="lastname" name="lastname"
+                 ngModel #lastname="ngModel" required/>
+        <div *ngIf="lastname.invalid && (lastname.dirty || lastname.touched)" class="formInvalid">
+          <div *ngIf="lastname.errors?.['required']">Lastname is required.</div>
+        </div>
       </div>
 
       <div class="mt-4">
         <label for="dateOfBirth" class="label">Date of birth<b class="me-auto text-red-500">*</b></label>
-          <input type="date" class="input input-bordered w-full brz" id="dateOfBirth" name="dateOfBirth" ngModel #dateOfBirth="ngModel"/>
+          <input type="date" class="input input-bordered w-full brz" id="dateOfBirth" name="dateOfBirth"
+                 ngModel #dateOfBirth="ngModel" required/>
+        <div *ngIf="dateOfBirth.invalid && (dateOfBirth.dirty || dateOfBirth.touched)" class="formInvalid">
+          <div *ngIf="dateOfBirth.errors?.['required']">Date of birth is required.</div>
+        </div>
+        <div *ngIf="isAgeValid == false" class="formInvalid">Age cannot be lower than 18</div>
       </div>
-      <div *ngIf="isAgeValid == false" class="formInvalid">Age cannot be lower than 18</div>
+
 
       <div class="mt-4">
         <label for="gender" class="label">Gender<b class="me-auto text-red-500">*</b></label>
-          <select class="select select-bordered w-full brz" name="gender" id="gender" ngModel #gender="ngModel">
+          <select class="select select-bordered w-full brz" name="gender" id="gender"
+                  ngModel #gender="ngModel" required>
             <option value="Male">Male</option>
             <option value="Female">Female</option>
           </select>
+        <div *ngIf="gender.invalid && (gender.dirty || gender.touched)" class="formInvalid">
+          <div *ngIf="gender.errors?.['required']">Gender is required.</div>
+        </div>
       </div>
 
       <div class="mt-4">
         <label for="address" class="label">Address<b class="me-auto text-red-500">*</b></label>
-          <input type="text" class="input input-bordered w-full brz" id="address" name="address" ngModel #address="ngModel"/>
+          <input type="text" class="input input-bordered w-full brz" id="address" name="address"
+                 ngModel #address="ngModel" required/>
+        <div *ngIf="address.invalid && (address.dirty || address.touched)" class="formInvalid">
+          <div *ngIf="address.errors?.['required']">Address is required.</div>
+        </div>
       </div>
 
       <div class="mt-4">
         <label for="email" class="label">Email<b class="me-auto text-red-500">*</b></label>
-          <input type="text" class="input input-bordered w-full brz" id="email" name="email" ngModel #email="ngModel"/>
+          <input type="text" class="input input-bordered w-full brz" id="email" name="email"
+                 ngModel #email="ngModel" required/>
+        <div *ngIf="email.invalid && (email.dirty || email.touched)" class="formInvalid">
+          <div *ngIf="email.errors?.['required']">Email is required.</div>
+        </div>
       </div>
 
       <div class="mt-4">
         <label for="phone" class="label">Phone number<b class="me-auto text-red-500">*</b></label>
-          <input type="text" class="input input-bordered w-full brz" id="phone" name="phone" ngModel #phone="ngModel"/>
+          <input type="text" class="input input-bordered w-full brz" id="phone" name="phone"
+                 ngModel #phone="ngModel" required/>
+        <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="formInvalid">
+          <div *ngIf="phone.errors?.['required']">Phone number is required.</div>
+        </div>
       </div>
 
       <div class="mt-4">
         <label for="specialization" class="label">Specialization<b class="me-auto text-red-500">*</b></label>
           <input type="text" class="input input-bordered w-full brz" id="specialization" name="specialization" ngModel
-                 #specialization="ngModel"/>
+                 #specialization="ngModel" required/>
+        <div *ngIf="specialization.invalid && (specialization.dirty || specialization.touched)" class="formInvalid">
+          <div *ngIf="specialization.errors?.['required']">Specialization is required.</div>
+        </div>
       </div>
 
       <div class="mt-4">
         <label for="placeOfWork" class="label">Place of work<b class="me-auto text-red-500">*</b></label>
-          <input type="text" class="input input-bordered w-full brz" id="placeOfWork" name="placeOfWork" ngModel #placeOfWork="ngModel"/>
+          <input type="text" class="input input-bordered w-full brz" id="placeOfWork" name="placeOfWork"
+                 ngModel #placeOfWork="ngModel" required/>
+        <div *ngIf="placeOfWork.invalid && (placeOfWork.dirty || placeOfWork.touched)" class="formInvalid">
+          <div *ngIf="placeOfWork.errors?.['required']">Place of work is required.</div>
+        </div>
       </div>
 
       <div class="mt-4">
         <label for="licenseNumber" class="label">License number<b class="me-auto text-red-500">*</b></label>
           <input type="text" class="input input-bordered w-full brz" id="licenseNumber" name="licenseNumber" ngModel
-                 #licenseNumber="ngModel"/>
+                 #licenseNumber="ngModel" required/>
+        <div *ngIf="licenseNumber.invalid && (licenseNumber.dirty || licenseNumber.touched)" class="formInvalid">
+          <div *ngIf="licenseNumber.errors?.['required']">License number is required.</div>
+        </div>
       </div>
 
       <div class="mt-4">
         <label for="licenseIssuingDate" class="label">License issuing date<b class="me-auto text-red-500">*</b></label>
-          <input type="date" class="input input-bordered w-full brz" id="licenseIssuingDate" name="licenseIssuingDate" ngModel
-                 #licenseIssuingDate="ngModel"/>
+          <input type="date" class="input input-bordered w-full brz" id="licenseIssuingDate" name="licenseIssuingDate"
+                 ngModel #licenseIssuingDate="ngModel" required/>
+        <div *ngIf="licenseIssuingDate.invalid && (licenseIssuingDate.dirty || licenseIssuingDate.touched)" class="formInvalid">
+          <div *ngIf="licenseIssuingDate.errors?.['required']">License issuing date is required.</div>
+        </div>
       </div>
 
       <div class="mt-4">
         <label for="licenseIssuingAuthority" class="label">License issuing authority<b class="me-auto text-red-500">*</b></label>
-          <input type="text" class="input input-bordered w-full brz" id="licenseIssuingAuthority" name="licenseIssuingAuthority" ngModel
-                 #licenseIssuingAuthority="ngModel"/>
+          <input type="text" class="input input-bordered w-full brz" id="licenseIssuingAuthority" name="licenseIssuingAuthority"
+                 ngModel #licenseIssuingAuthority="ngModel" required/>
+        <div *ngIf="licenseIssuingAuthority.invalid && (licenseIssuingAuthority.dirty || licenseIssuingAuthority.touched)" class="formInvalid">
+          <div *ngIf="licenseIssuingAuthority.errors?.['required']">License issuing authority is required.</div>
+        </div>
       </div>
 
 
       <div class="mt-4">
         <label for="password" class="label">Password</label>
-          <input type="password" class="input input-bordered w-full brz" id="password" name="password" ngModel #password="ngModel"/>
+          <input type="password" class="input input-bordered w-full brz" id="password" name="password"
+                 ngModel #password="ngModel" required minlength="8"/>
+        <div *ngIf="password.invalid && (password.dirty || password.touched)" class="formInvalid">
+          <div *ngIf="password.errors?.['minlength']">Password must be at least 8 characters long.</div>
+          <div *ngIf="password.errors?.['required']">Password is required.</div>
+        </div>
       </div>
 
       <button type="submit" class="btn btn-primary mt-3 mb-10 brz">Register</button>

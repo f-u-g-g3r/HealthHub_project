@@ -63,10 +63,10 @@
         <div class="my-5">
           <label for="date" class="label">Date</label>
           <input type="date" class="input input-bordered w-full brz" id="date" name="date" ngModel #date="ngModel"
-                 (ngModelChange)="getTime(appointmentForm)"/>
+                 (change)="getTime(appointmentForm)"/>
         </div>
 
-        <div class="flex flex-wrap justify-center" *ngIf="isReadyForTime && !formSubmitted">
+        <div class="flex flex-wrap justify-center" *ngIf="isReadyForTime">
           <div class="flex items-center mx-3 my-2" *ngFor="let time of availableTime">
             <input type="radio" ngModel #appTime="ngModel" id="time_{{time}}" name="appTime" class="hidden"
                    (click)="handleRadioChange($event.target); isTimeChoosen = true;" value="{{time}}">

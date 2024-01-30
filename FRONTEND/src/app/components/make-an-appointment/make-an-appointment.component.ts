@@ -72,6 +72,7 @@ export class MakeAnAppointmentComponent {
         this.isMade = true;
         this.isReadyForTime = false;
         this.formSubmitted = true;
+        this.isTimeChoosen = false;
         form.resetForm();
       },
       error: console.error

@@ -150,5 +150,4 @@ export class UserService {
   public isDoctorCalendarConfigured(docId: any): Observable<boolean> {
     return this.http.get<boolean>(`${this.serverUrl}/calendars/isConfigured/${docId}`, this.httpOptions);
   }
-
 }
