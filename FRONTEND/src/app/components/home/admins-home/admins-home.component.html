@@ -25,47 +25,96 @@
 <div class="container mx-auto">
   <div class="flex flex-row">
     <div class="basis-1/3 ms-auto me-20">
-      <article class="prose text-center">
-        <h3>Inactivated doctors</h3>
-      </article>
-      <table class="table table-zebra table-lg">
+      <p class="text-2xl font-medium text-center mb-10">Inactivated doctors</p>
+      <table class="table table-zebra">
         <thead>
         <tr>
-          <td>Firstname</td>
-          <td>Lastname</td>
-          <td>UUID</td>
-          <td>Action</td>
+          <th><a class="btn btn-outline brz w-32 stroke-black hover:stroke-white" (click)="getInactivatedDoctors(true,'firstname')">Firstname
+            <span *ngIf="currentInactivatedSorting == 'firstname' && ascSortingForInactivated"><svg height="16" class="" id="Layer_1" style="enable-background:new 0 0 32 32;" version="1.1" viewBox="0 0 128 128" width="16" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g><line style="fill:none;stroke-width:12;stroke-linecap:square;stroke-miterlimit:10;" x1="111" x2="64" y1="40.5" y2="87.499"/><line
+              style="fill:none;stroke-width:12;stroke-linecap:square;stroke-miterlimit:10;" x1="64"
+              x2="17"
+              y1="87.499" y2="40.5"/></g></svg></span>
+            <span *ngIf="currentInactivatedSorting == 'firstname' && !ascSortingForInactivated"><svg height="16" id="Layer_1" style="enable-background:new 0 0 32 32;" version="1.1" viewBox="0 0 128 128" rotate="180" width="16" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g transform="rotate(180, 64, 64)"><line style="fill:none;stroke-width:12;stroke-linecap:square;stroke-miterlimit:10;" x1="111" x2="64" y1="40.5" y2="87.499"/><line
+              style="fill:none;stroke-width:12;stroke-linecap:square;stroke-miterlimit:10;" x1="64"
+              x2="17"
+              y1="87.499" y2="40.5"/></g></svg></span>
+          </a></th>
+          <th><a class="btn btn-outline brz w-32 stroke-black hover:stroke-white" (click)="getInactivatedDoctors(true, 'lastname')">Lastname
+            <span *ngIf="currentInactivatedSorting == 'lastname' && ascSortingForInactivated"><svg height="16" class="" id="Layer_1" style="enable-background:new 0 0 32 32;" version="1.1" viewBox="0 0 128 128" width="16" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g><line style="fill:none;stroke-width:12;stroke-linecap:square;stroke-miterlimit:10;" x1="111" x2="64" y1="40.5" y2="87.499"/><line
+              style="fill:none;stroke-width:12;stroke-linecap:square;stroke-miterlimit:10;" x1="64"
+              x2="17"
+              y1="87.499" y2="40.5"/></g></svg></span>
+            <span *ngIf="currentInactivatedSorting == 'lastname' && !ascSortingForInactivated"><svg height="16" id="Layer_1" style="enable-background:new 0 0 32 32;" version="1.1" viewBox="0 0 128 128" rotate="180" width="16" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g transform="rotate(180, 64, 64)"><line style="fill:none;stroke-width:12;stroke-linecap:square;stroke-miterlimit:10;" x1="111" x2="64" y1="40.5" y2="87.499"/><line
+              style="fill:none;stroke-width:12;stroke-linecap:square;stroke-miterlimit:10;" x1="64"
+              x2="17"
+              y1="87.499" y2="40.5"/></g></svg></span>
+          </a></th>
+          <th>UUID</th>
+          <th><a class="btn btn-outline brz w-36 stroke-black hover:stroke-white" (click)="getInactivatedDoctors(true, 'isConfigured')">Configured
+            <span *ngIf="currentInactivatedSorting == 'isConfigured' && ascSortingForInactivated"><svg height="16" class="" id="Layer_1" style="enable-background:new 0 0 32 32;" version="1.1" viewBox="0 0 128 128" width="16" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g><line style="fill:none;stroke-width:12;stroke-linecap:square;stroke-miterlimit:10;" x1="111" x2="64" y1="40.5" y2="87.499"/><line
+              style="fill:none;stroke-width:12;stroke-linecap:square;stroke-miterlimit:10;" x1="64"
+              x2="17"
+              y1="87.499" y2="40.5"/></g></svg></span>
+            <span *ngIf="currentInactivatedSorting == 'isConfigured' && !ascSortingForInactivated"><svg height="16" id="Layer_1" style="enable-background:new 0 0 32 32;" version="1.1" viewBox="0 0 128 128" rotate="180" width="16" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g transform="rotate(180, 64, 64)"><line style="fill:none;stroke-width:12;stroke-linecap:square;stroke-miterlimit:10;" x1="111" x2="64" y1="40.5" y2="87.499"/><line
+              style="fill:none;stroke-width:12;stroke-linecap:square;stroke-miterlimit:10;" x1="64"
+              x2="17"
+              y1="87.499" y2="40.5"/></g></svg></span>
+          </a></th>
+          <th>Action</th>
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let inactivatedDoctor of inactivatedDoctors">
+        <tr *ngFor="let inactivatedDoctor of inactivatedDoctors.content">
           <td>{{ inactivatedDoctor.firstname }}</td>
           <td>{{ inactivatedDoctor.lastname }}</td>
           <td>{{ inactivatedDoctor.uuid }}</td>
+          <td *ngIf="inactivatedDoctor.configured" class="text-green-600 capitalize text-xl font-medium text-center">{{ inactivatedDoctor.configured }}</td>
+          <td *ngIf="!inactivatedDoctor.configured" class="text-red-600 capitalize text-xl font-medium text-center">{{ inactivatedDoctor.configured }}</td>
           <td>
             <a class="btn btn-primary h-auto brz w-28" href="/admin/show-doctor/{{inactivatedDoctor.id}}">Show more</a>
           </td>
         </tr>
         </tbody>
       </table>
+      <div class="flex flex-wrap justify-center mt-10">
+        <span *ngFor="let onePage of totalInactivatedPagesArr">
+          <button class="btn btn-outline text-xl brz mx-3 w-12" (click)="pageInactivated = onePage - 1; getInactivatedDoctors(false, currentInactivatedSorting)"
+                  [disabled]="inactivatedDoctors.pageable.pageNumber == onePage - 1">{{onePage}}</button>
+        </span>
+      </div>
     </div>
 
     <div class="basis-1/3 me-auto ms-20">
-      <article class="prose text-center">
-        <h3>Activated doctors</h3>
-      </article>
-
-      <table class="table table-zebra table-lg">
+      <p class="text-2xl font-medium text-center mb-10">Activated doctors</p>
+      <table class="table table-zebra">
         <thead>
         <tr>
-          <td>Firstname</td>
-          <td>Lastname</td>
-          <td>UUID</td>
-          <td>Action</td>
+          <th><a class="btn btn-outline brz w-32 stroke-black hover:stroke-white" (click)="getActivatedDoctors(true,'firstname')">Firstname
+            <span *ngIf="currentActivatedSorting == 'firstname' && ascSortingForActivated"><svg height="16" class="" id="Layer_1" style="enable-background:new 0 0 32 32;" version="1.1" viewBox="0 0 128 128" width="16" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g><line style="fill:none;stroke-width:12;stroke-linecap:square;stroke-miterlimit:10;" x1="111" x2="64" y1="40.5" y2="87.499"/><line
+              style="fill:none;stroke-width:12;stroke-linecap:square;stroke-miterlimit:10;" x1="64"
+              x2="17"
+              y1="87.499" y2="40.5"/></g></svg></span>
+            <span *ngIf="currentActivatedSorting == 'firstname' && !ascSortingForActivated"><svg height="16" id="Layer_1" style="enable-background:new 0 0 32 32;" version="1.1" viewBox="0 0 128 128" rotate="180" width="16" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g transform="rotate(180, 64, 64)"><line style="fill:none;stroke-width:12;stroke-linecap:square;stroke-miterlimit:10;" x1="111" x2="64" y1="40.5" y2="87.499"/><line
+              style="fill:none;stroke-width:12;stroke-linecap:square;stroke-miterlimit:10;" x1="64"
+              x2="17"
+              y1="87.499" y2="40.5"/></g></svg></span>
+          </a></th>
+          <th><a class="btn btn-outline brz w-32 stroke-black hover:stroke-white" (click)="getActivatedDoctors(true,'lastname')">Lastname
+            <span *ngIf="currentActivatedSorting == 'lastname' && ascSortingForActivated"><svg height="16" class="" id="Layer_1" style="enable-background:new 0 0 32 32;" version="1.1" viewBox="0 0 128 128" width="16" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g><line style="fill:none;stroke-width:12;stroke-linecap:square;stroke-miterlimit:10;" x1="111" x2="64" y1="40.5" y2="87.499"/><line
+              style="fill:none;stroke-width:12;stroke-linecap:square;stroke-miterlimit:10;" x1="64"
+              x2="17"
+              y1="87.499" y2="40.5"/></g></svg></span>
+            <span *ngIf="currentActivatedSorting == 'lastname' && !ascSortingForActivated"><svg height="16" id="Layer_1" style="enable-background:new 0 0 32 32;" version="1.1" viewBox="0 0 128 128" rotate="180" width="16" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g transform="rotate(180, 64, 64)"><line style="fill:none;stroke-width:12;stroke-linecap:square;stroke-miterlimit:10;" x1="111" x2="64" y1="40.5" y2="87.499"/><line
+              style="fill:none;stroke-width:12;stroke-linecap:square;stroke-miterlimit:10;" x1="64"
+              x2="17"
+              y1="87.499" y2="40.5"/></g></svg></span>
+          </a></th>
+          <th>UUID</th>
+          <th>Action</th>
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let activatedDoctor of activatedDoctors">
+        <tr *ngFor="let activatedDoctor of activatedDoctors.content">
           <td>{{ activatedDoctor.firstname }}</td>
           <td>{{ activatedDoctor.lastname }}</td>
           <td>{{ activatedDoctor.uuid }}</td>
@@ -76,6 +125,12 @@
         </tr>
         </tbody>
       </table>
+      <div class="flex flex-wrap justify-center mt-10">
+        <span *ngFor="let onePage of totalActivatedPagesArr">
+          <button class="btn btn-outline text-xl brz mx-3 w-12" (click)="pageActivated = onePage - 1; getActivatedDoctors(false, currentActivatedSorting)"
+                  [disabled]="activatedDoctors.pageable.pageNumber == onePage - 1">{{onePage}}</button>
+        </span>
+      </div>
     </div>
 
   </div>

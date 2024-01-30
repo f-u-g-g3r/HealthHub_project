@@ -8,6 +8,9 @@ import com.artjomkuznetsov.healthhub.exceptions.DoctorNotFoundException;
 import com.artjomkuznetsov.healthhub.repositories.MedCardRepository;
 import com.artjomkuznetsov.healthhub.repositories.ScheduleRepository;
 import com.artjomkuznetsov.healthhub.repositories.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
@@ -18,6 +21,7 @@ import javax.print.Doc;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -137,19 +141,44 @@ public class DoctorController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/doctors/inactivated")
+    @GetMapping("/doctors/page/inactivated")
+    @CrossOrigin(origins = "*")
+    public Page<Doctor> inactivated(@RequestParam Optional<String> sortBy,
+                                    @RequestParam Optional<Integer> page,
+                                    @RequestParam Optional<String> direction) {
+        System.out.println(123421421);
+        Sort.Direction sort = Sort.Direction.ASC;
+        if (direction.isPresent() && direction.get().equals("DESC")) {
+            sort = Sort.Direction.DESC;
+        }
+        return repository.findAllByStatus(Status.INACTIVE,
+                PageRequest.of(
+                        page.orElse(0),
+                        3,
+                        sort, sortBy.orElse("id")
+                ));
+    }
+    @GetMapping("/doctors/page/activated")
     @CrossOrigin(origins="*")
-    public List<Doctor> inactivated() {
-        return repository.findAllByStatus(Status.INACTIVE);
+    public Page<Doctor> activated(@RequestParam Optional<String> sortBy,
+                                  @RequestParam Optional<Integer> page,
+                                  @RequestParam Optional<String> direction) {
+        Sort.Direction sort = Sort.Direction.ASC;
+        if (direction.isPresent() && direction.get().equals("DESC")) {
+            sort = Sort.Direction.DESC;
+        }
+        return repository.findAllByStatus(Status.ACTIVE,
+                PageRequest.of(
+                        page.orElse(0),
+                        3,
+                        sort, sortBy.orElse("id")
+                ));
     }
 
     @GetMapping("/doctors/activated")
     @CrossOrigin(origins="*")
     public List<Doctor> activated() {
-        List<Doctor> doctors = repository.findAllByStatus(Status.ACTIVE);
-
-        Collections.sort(doctors, Comparator.comparing(Doctor::getFirstname));
-        return doctors;
+        return repository.findAllByStatus(Status.ACTIVE);
     }
 
 

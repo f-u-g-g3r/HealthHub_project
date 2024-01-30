@@ -60,8 +60,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         for (String part : uriParts) {
             if (part.equals("activated") || part.equals("inactivated")) {
-                filterChain.doFilter(request, response);
-                return;
+                isPermitted = true;
             }
 
             if (part.equals("uuid") && jwtService.extractRole(jwt).equals("DOCTOR")) {

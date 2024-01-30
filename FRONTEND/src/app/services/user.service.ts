@@ -17,6 +17,7 @@ import {Schedule} from "../interfaces/schedule";
 import {DoctorMinimal} from "../interfaces/doctorMinimal";
 import {SchedulesPage} from "../interfaces/schedulesPage";
 import {UsersPage} from "../interfaces/usersPage";
+import {DoctorsPage} from "../interfaces/doctorsPage";
 
 @Injectable({
   providedIn: 'root'
@@ -95,13 +96,18 @@ export class UserService {
     return this.http.put<Doctor>(`${this.serverUrl}/doctors/${docId}`, doctor, this.httpOptions);
   }
 
-  public getInactivatedDoctors(): Observable<Doctor[]> {
-    return this.http.get<Doctor[]>(`${this.serverUrl}/doctors/inactivated`, this.httpOptions);
+  public getInactivatedDoctorsPage(direction: string, page: number, sortBy: string): Observable<DoctorsPage> {
+    return this.http.get<DoctorsPage>(`${this.serverUrl}/doctors/page/inactivated?direction=${direction}&page=${page}&sortBy=${sortBy}`, this.httpOptions);
+  }
+
+  public getActivatedDoctorsPage(direction: string, page: number, sortBy: string): Observable<DoctorsPage> {
+    return this.http.get<DoctorsPage>(`${this.serverUrl}/doctors/page/activated?direction=${direction}&page=${page}&sortBy=${sortBy}`, this.httpOptions);
   }
 
   public getActivatedDoctors(): Observable<Doctor[]> {
     return this.http.get<Doctor[]>(`${this.serverUrl}/doctors/activated`, this.httpOptions);
   }
+
 
   public activateDoctor(docId: any): Observable<Doctor> {
     return this.http.put<Doctor>(`${this.serverUrl}/doctors/${docId}`, {"status": "ACTIVE"}, this.httpOptions);
