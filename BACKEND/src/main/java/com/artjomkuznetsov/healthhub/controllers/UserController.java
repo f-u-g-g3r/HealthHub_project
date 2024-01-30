@@ -12,6 +12,9 @@ import com.artjomkuznetsov.healthhub.repositories.CalendarRepository;
 import com.artjomkuznetsov.healthhub.repositories.DoctorRepository;
 import com.artjomkuznetsov.healthhub.repositories.ScheduleRepository;
 import com.artjomkuznetsov.healthhub.repositories.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -55,14 +59,27 @@ public class UserController {
     }
 
     @GetMapping("/users-by-doctor/{doctorId}")
-    @CrossOrigin(origins="*")
-    public List<User> getUsersByDoctorId(@PathVariable Long doctorId) {
-        return repository.findByFamilyDoctorId(doctorId);
+    @CrossOrigin(origins = "*")
+    public Page<User> getUsersByDoctorId(@PathVariable Long doctorId,
+                                         @RequestParam Optional<String> sortBy,
+                                         @RequestParam Optional<Integer> page,
+                                         @RequestParam Optional<String> direction) {
+        Sort.Direction sort = Sort.Direction.ASC;
+        if (direction.isPresent() && direction.get().equals("DESC")) {
+            sort = Sort.Direction.DESC;
+        }
+
+        return repository.findByFamilyDoctorId(doctorId,
+                PageRequest.of(
+                        page.orElse(0),
+                        5,
+                        sort, sortBy.orElse("id")
+                ));
     }
 
 
     @GetMapping("/users/{id}")
-    @CrossOrigin(origins="*", maxAge=3600)
+    @CrossOrigin(origins = "*", maxAge = 3600)
     public EntityModel<User> one(@PathVariable("id") Long id) {
         User user = repository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
@@ -70,14 +87,14 @@ public class UserController {
     }
 
     @GetMapping("/users/uuid/{uuid}")
-    @CrossOrigin(origins="*")
+    @CrossOrigin(origins = "*")
     public User oneByUuid(@PathVariable String uuid) {
         return repository.findByUuid(uuid)
                 .orElseThrow(() -> new UserNotFoundException(uuid));
     }
 
     @GetMapping("/users/family-doctor/{userId}/{familyDoctorId}")
-    @CrossOrigin(origins="*", maxAge=3600)
+    @CrossOrigin(origins = "*", maxAge = 3600)
     public ResponseEntity<?> setFamilyDoctor(@PathVariable Long userId, @PathVariable Long familyDoctorId) {
         User user = repository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
@@ -102,7 +119,7 @@ public class UserController {
     }
 
     @PutMapping("/users/{id}")
-    @CrossOrigin(origins="*", maxAge=3600)
+    @CrossOrigin(origins = "*", maxAge = 3600)
     public ResponseEntity<?> replaceUser(@RequestBody User newUser, @PathVariable Long id) {
         User updatedUser = repository.findById(id)
                 .map(user -> {
@@ -135,7 +152,6 @@ public class UserController {
     }
 
 
-
     @DeleteMapping("/users/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
         repository.deleteById(id);
@@ -146,7 +162,6 @@ public class UserController {
     public ResponseEntity<?> options() {
         return ResponseEntity.ok().build();
     }
-
 
 
 }

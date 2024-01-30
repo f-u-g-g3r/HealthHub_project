@@ -71,22 +71,16 @@ public class CalendarController {
                                              @RequestParam Optional<String> sortBy,
                                              @RequestParam Optional<Integer> page,
                                              @RequestParam Optional<String> direction) {
-        System.out.println(sortBy);
+        Sort.Direction sort = Sort.Direction.ASC;
         if (direction.isPresent() && direction.get().equals("DESC")) {
-            return scheduleRepository.findAllByDoctorId(doctorId,
-                    PageRequest.of(
-                            page.orElse(0),
-                            5,
-                            Sort.Direction.DESC, sortBy.orElse("date")
-                    ));
-        } else {
-            return scheduleRepository.findAllByDoctorId(doctorId,
-                    PageRequest.of(
-                            page.orElse(0),
-                            5,
-                            Sort.Direction.ASC, sortBy.orElse("date")
-                    ));
+            sort = Sort.Direction.DESC;
         }
+        return scheduleRepository.findAllByDoctorId(doctorId,
+                PageRequest.of(
+                        page.orElse(0),
+                        5,
+                        sort, sortBy.orElse("date")
+                ));
     }
 
     @PutMapping("/calendars/{ownerId}")
@@ -160,6 +154,26 @@ public class CalendarController {
         return scheduleRepository.findAllByPatientId(patientId);
     }
 
+    @GetMapping("/calendars/schedules/{doctorId}/{date}")
+    @CrossOrigin(origins = "*")
+    public Page<Schedule> getSchedulesByDate(@PathVariable Long doctorId,
+                                             @PathVariable LocalDate date,
+                                             @RequestParam Optional<String> sortBy,
+                                             @RequestParam Optional<Integer> page,
+                                             @RequestParam Optional<String> direction) {
+        Sort.Direction sort = Sort.Direction.ASC;
+        if (direction.isPresent() && direction.get().equals("DESC")) {
+            sort = Sort.Direction.DESC;
+        }
+        return scheduleRepository.findAllByDoctorIdAndDate(doctorId, date,
+                PageRequest.of(
+                        page.orElse(0),
+                        5,
+                        sort, sortBy.orElse("date")
+                ));
+
+    }
+
 
     @GetMapping("/calendars/availableTime/{ownerId}/{date}")
     @CrossOrigin(origins = "*")
@@ -202,7 +216,6 @@ public class CalendarController {
 
         return availableTime;
     }
-
 
 
     @DeleteMapping("/calendars/schedules/{scheduleId}/{patientId}")
