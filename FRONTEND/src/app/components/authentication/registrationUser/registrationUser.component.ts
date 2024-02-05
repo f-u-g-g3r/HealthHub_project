@@ -47,7 +47,7 @@ export class RegistrationUserComponent implements OnInit {
     sessionStorage.setItem("uid", response.uid.toString());
     sessionStorage.setItem("medCardId", response.medCardId.toString());
     sessionStorage.setItem("role", response.role);
-    //this.router.navigate(["/home"]);
+    this.router.navigate(["/home"]);
   }
 
 }

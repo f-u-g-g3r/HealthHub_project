@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { MedCard } from 'src/app/interfaces/medCard';
-import { AuthenticationService } from 'src/app/services/authentication.service';
-import { UserService } from 'src/app/services/user.service';
-import { themeChange } from 'theme-change';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {MedCard} from 'src/app/interfaces/medCard';
+import {AuthenticationService} from 'src/app/services/authentication.service';
+import {UserService} from 'src/app/services/user.service';
+import {themeChange} from 'theme-change';
 import {DoctorMinimal} from "../../../interfaces/doctorMinimal";
 import {Doctor} from "../../../interfaces/doctor";
 import {NgForm} from "@angular/forms";
@@ -22,11 +22,13 @@ export class HomeComponent implements OnInit {
   public doctors: Doctor[] | undefined;
 
 
-  constructor(private router: Router, public service: AuthenticationService, public userService: UserService) {}
+  constructor(private router: Router, public service: AuthenticationService, public userService: UserService) {
+  }
 
   ngOnInit(): void {
     this.service.checkAuthentication("USER");
     this.getMedInfo();
+    this.getFamDoctor();
     this.getAllDoctors();
   }
 
@@ -34,13 +36,21 @@ export class HomeComponent implements OnInit {
     this.userService.getOneMedcard(sessionStorage.getItem('uid')).subscribe({
       next: response => {
         this.medCard = response;
-        this.famDocId = response.familyDoctorID;
+      },
+      error: console.error
+    });
+  }
+
+  private getFamDoctor() {
+    this.userService.getOneUser(sessionStorage.getItem('uid')).subscribe({
+      next: response => {
+        this.famDocId = response.familyDoctorId;
         if (this.famDocId != null) {
           this.getDoctor()
         }
       },
       error: console.error
-    });
+    })
   }
 
   public getDoctor() {

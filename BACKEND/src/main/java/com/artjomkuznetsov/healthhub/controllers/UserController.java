@@ -8,10 +8,7 @@ import com.artjomkuznetsov.healthhub.exceptions.UserNotFoundException;
 import com.artjomkuznetsov.healthhub.models.Calendar;
 import com.artjomkuznetsov.healthhub.models.Schedule;
 import com.artjomkuznetsov.healthhub.models.User;
-import com.artjomkuznetsov.healthhub.repositories.CalendarRepository;
-import com.artjomkuznetsov.healthhub.repositories.DoctorRepository;
-import com.artjomkuznetsov.healthhub.repositories.ScheduleRepository;
-import com.artjomkuznetsov.healthhub.repositories.UserRepository;
+import com.artjomkuznetsov.healthhub.repositories.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -33,18 +30,12 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class UserController {
     private final UserRepository repository;
     private final UserModelAssembler assembler;
-    private final MedCardController medCardController;
-    private final DoctorRepository doctorRepository;
-    private final CalendarRepository calendarRepository;
-    private final ScheduleRepository scheduleRepository;
+    private final MedCardRepository medCardRepository;
 
-    public UserController(UserRepository repository, CalendarRepository calendarRepository, ScheduleRepository scheduleRepository, UserModelAssembler assembler, MedCardController medCardController, DoctorRepository doctorRepository) {
+    public UserController(UserRepository repository, UserModelAssembler assembler, MedCardRepository medCardRepository) {
         this.repository = repository;
         this.assembler = assembler;
-        this.medCardController = medCardController;
-        this.doctorRepository = doctorRepository;
-        this.calendarRepository = calendarRepository;
-        this.scheduleRepository = scheduleRepository;
+        this.medCardRepository = medCardRepository;
     }
 
     // Aggregate root

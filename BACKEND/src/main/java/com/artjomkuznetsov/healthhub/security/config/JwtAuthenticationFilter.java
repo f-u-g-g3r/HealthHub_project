@@ -27,7 +27,6 @@ import java.util.function.Function;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
-    private static final Logger logger = Logger.getLogger(JwtAuthenticationFilter.class.getName());
 
     @Autowired
     public JwtAuthenticationFilter(JwtService jwtService, UserDetailsService userDetailsService) {
@@ -49,7 +48,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         boolean isPermitted = false;
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            logger.info("Authorization header is missing or does not start with 'Bearer'");
             filterChain.doFilter(request, response);
             return;
         }
@@ -63,7 +61,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String[] uriParts = requestURI.split("/");
 
         for (String part : uriParts) {
-            logger.info("Checking part of URI: " + part);
             if (part.equals("activated") || part.equals("inactivated")) {
                 isPermitted = true;
             }
@@ -104,7 +101,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 isPermitted = true;
             }
         }
-        logger.info("isPermitted: " + isPermitted);
 
         if (!isPermitted) {
             if (uriParts.length > 2) {
@@ -115,10 +111,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         }
 
-        logger.info("firstIf: " + (isPermitted || userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null && id.equals(userId) || jwtService.extractRole(jwt).equals("ADMIN")));
         if (isPermitted || userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null && id.equals(userId) || jwtService.extractRole(jwt).equals("ADMIN")) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
-            logger.info("secondIf: " + jwtService.isTokenValid(jwt, userDetails));
             if (jwtService.isTokenValid(jwt, userDetails)) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
