@@ -83,43 +83,46 @@ public class UserController {
     public EntityModel<User> one(@PathVariable("id") Long id) {
         User user = repository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
+        System.out.println(user.toString());
         return assembler.toModel(user);
     }
 
     @GetMapping("/users/uuid/{uuid}")
     @CrossOrigin(origins = "*")
-    public User oneByUuid(@PathVariable String uuid) {
-        return repository.findByUuid(uuid)
+    public EntityModel<User> oneByUuid(@PathVariable String uuid) {
+        User user = repository.findByUuid(uuid)
                 .orElseThrow(() -> new UserNotFoundException(uuid));
+        return assembler.toModel(user);
     }
 
-    @GetMapping("/users/family-doctor/{userId}/{familyDoctorId}")
-    @CrossOrigin(origins = "*", maxAge = 3600)
-    public ResponseEntity<?> setFamilyDoctor(@PathVariable Long userId, @PathVariable Long familyDoctorId) {
-        User user = repository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(userId));
-
-        if (!doctorRepository.existsById(familyDoctorId)) {
-            throw new DoctorNotFoundException(familyDoctorId);
-        }
-        if (user.getFamilyDoctorId() != null) {
-            List<Schedule> patientSchedules = scheduleRepository.findAllByPatientId(userId);
-            scheduleRepository.deleteAll(patientSchedules);
-        }
-
-        user.setFamilyDoctorId(familyDoctorId);
-        repository.save(user);
-        medCardController.setFamilyDoctor(user.getMedCardID(), familyDoctorId);
-
-        EntityModel<User> entityModel = assembler.toModel(user);
-
-        return ResponseEntity
-                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
-                .body(entityModel);
-    }
+    // delete this
+//    @GetMapping("/users/family-doctor/{userId}/{familyDoctorId}")
+//    @CrossOrigin(origins = "*", maxAge = 3600)
+//    public ResponseEntity<?> setFamilyDoctor(@PathVariable Long userId, @PathVariable Long familyDoctorId) {
+//        User user = repository.findById(userId)
+//                .orElseThrow(() -> new UserNotFoundException(userId));
+//
+//        if (!doctorRepository.existsById(familyDoctorId)) {
+//            throw new DoctorNotFoundException(familyDoctorId);
+//        }
+//        if (user.getFamilyDoctorId() != null) {
+//            List<Schedule> patientSchedules = scheduleRepository.findAllByPatientId(userId);
+//            scheduleRepository.deleteAll(patientSchedules);
+//        }
+//
+//        user.setFamilyDoctorId(familyDoctorId);
+//        repository.save(user);
+//        medCardController.setFamilyDoctor(user.getMedCardID(), familyDoctorId);
+//
+//        EntityModel<User> entityModel = assembler.toModel(user);
+//
+//        return ResponseEntity
+//                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+//                .body(entityModel);
+//    }
 
     @PutMapping("/users/{id}")
-    @CrossOrigin(origins = "*", maxAge = 3600)
+    @CrossOrigin(origins = "*")
     public ResponseEntity<?> replaceUser(@RequestBody User newUser, @PathVariable Long id) {
         User updatedUser = repository.findById(id)
                 .map(user -> {
@@ -131,9 +134,11 @@ public class UserController {
                     if (newUser.getEmail() != null) user.setEmail(newUser.getEmail());
                     if (newUser.getPhone() != null) user.setPhone(newUser.getPhone());
                     if (newUser.getRole() != null) user.setRole(newUser.getRole());
-                    if (newUser.getFamilyDoctorId() != null) user.setFamilyDoctorId(newUser.getFamilyDoctorId());
+                    if (newUser.getFamilyDoctorId() != null) {
+                        user.setFamilyDoctorId(newUser.getFamilyDoctorId());
+                    }
+
                     if (newUser.getPassword() != null) user.setPassword(newUser.getPassword());
-                    if (newUser.getMedCardID() != null) user.setMedCardID(newUser.getMedCardID());
                     if (newUser.getUuid() != null) user.setUuid(newUser.getUuid());
                     return repository.save(user);
                 })
@@ -147,8 +152,6 @@ public class UserController {
         return ResponseEntity
                 .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
                 .body(entityModel);
-
-
     }
 
 

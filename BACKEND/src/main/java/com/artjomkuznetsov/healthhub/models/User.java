@@ -18,6 +18,10 @@ public class User implements UserDetails {
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;
+
+    @OneToOne(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private MedCard medCard;
+
     private String uuid;
     private String firstname;
     private String lastname;
@@ -28,7 +32,6 @@ public class User implements UserDetails {
     private String email;
     private String phone;
     private String password;
-    private Long medCardID;
     private String token;
     private Long familyDoctorId;
 
@@ -45,7 +48,7 @@ public class User implements UserDetails {
         this.role = role;
     }
 
-    public User(String firstname, String lastname, LocalDate dateOfBirth, String gender, String address, String email, String phone, String password, Long medCardID, String token, Long familyDoctorId, String uuid) {
+    public User(String firstname, String lastname, LocalDate dateOfBirth, String gender, String address, String email, String phone, String password, MedCard medCard, String token, Long familyDoctorId, String uuid) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.dateOfBirth = dateOfBirth;
@@ -54,11 +57,16 @@ public class User implements UserDetails {
         this.email = email;
         this.phone = phone;
         this.password = password;
-        this.medCardID = medCardID;
+        this.medCard = medCard;
         this.role = Role.USER;
         this.token = token;
         this.familyDoctorId = familyDoctorId;
         this.uuid = uuid;
+    }
+
+    public void addMedCard(MedCard medCard) {
+        medCard.setOwner(this);
+        this.medCard = medCard;
     }
 
     public void setId(Long id) {
@@ -141,12 +149,12 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public Long getMedCardID() {
-        return medCardID;
+    public Long getMedCard() {
+        return medCard.getId();
     }
 
-    public void setMedCardID(Long medCardID) {
-        this.medCardID = medCardID;
+    public void setMedCard(MedCard medCard) {
+        this.medCard = medCard;
     }
 
     public Role getRole() {
@@ -194,33 +202,17 @@ public class User implements UserDetails {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return age == user.age && Objects.equals(id, user.id) && Objects.equals(uuid, user.uuid) && Objects.equals(firstname, user.firstname) && Objects.equals(lastname, user.lastname) && Objects.equals(dateOfBirth, user.dateOfBirth) && Objects.equals(gender, user.gender) && Objects.equals(address, user.address) && Objects.equals(email, user.email) && Objects.equals(phone, user.phone) && Objects.equals(password, user.password) && Objects.equals(medCardID, user.medCardID) && Objects.equals(token, user.token) && Objects.equals(familyDoctorId, user.familyDoctorId) && role == user.role;
+        return age == user.age && Objects.equals(id, user.id) && Objects.equals(uuid, user.uuid) && Objects.equals(firstname, user.firstname) && Objects.equals(lastname, user.lastname) && Objects.equals(dateOfBirth, user.dateOfBirth) && Objects.equals(gender, user.gender) && Objects.equals(address, user.address) && Objects.equals(email, user.email) && Objects.equals(phone, user.phone) && Objects.equals(password, user.password) && Objects.equals(token, user.token) && Objects.equals(familyDoctorId, user.familyDoctorId) && role == user.role;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, uuid, firstname, lastname, dateOfBirth, age, gender, address, email, phone, password, medCardID, token, familyDoctorId, role);
+        return Objects.hash(id, uuid, firstname, lastname, dateOfBirth, age, gender, address, email, phone, password, token, familyDoctorId, role);
     }
 
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", uuid='" + uuid + '\'' +
-                ", firstname='" + firstname + '\'' +
-                ", lastname='" + lastname + '\'' +
-                ", dateOfBirth=" + dateOfBirth +
-                ", age=" + age +
-                ", gender='" + gender + '\'' +
-                ", address='" + address + '\'' +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                ", password='" + password + '\'' +
-                ", medCardID=" + medCardID +
-                ", token='" + token + '\'' +
-                ", familyDoctorId=" + familyDoctorId +
-                ", role=" + role +
-                '}';
+        return "User";
     }
 
     @Override

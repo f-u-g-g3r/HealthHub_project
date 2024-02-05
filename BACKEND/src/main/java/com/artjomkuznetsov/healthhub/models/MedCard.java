@@ -13,7 +13,10 @@ import java.util.Objects;
 @Table(name = "medcards")
 public class MedCard {
     private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;
-    private Long ownerID;
+
+    @OneToOne
+    @JoinColumn(name = "owner_id")
+    private User owner;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "medcard_id")
@@ -33,23 +36,21 @@ public class MedCard {
 
     private String bloodType;
     private String rhFactor;
-    private Long familyDoctorID;
 
     public MedCard() {}
 
-    public MedCard(Long ownerID, List<MedHistory> medHistory, String bloodType, String rhFactor, List<Allergy> allergies, List<ChronicDisease> chronicDiseases, List<ResultOfSurvey> resultsOfSurveys, Long familyDoctorID) {
-        this.ownerID = ownerID;
+    public MedCard(User owner, List<MedHistory> medHistory, String bloodType, String rhFactor, List<Allergy> allergies, List<ChronicDisease> chronicDiseases, List<ResultOfSurvey> resultsOfSurveys) {
+        this.owner = owner;
         this.medHistory = medHistory;
         this.bloodType = bloodType;
         this.rhFactor = rhFactor;
         this.allergies = allergies;
         this.chronicDiseases = chronicDiseases;
         this.resultsOfSurveys = resultsOfSurveys;
-        this.familyDoctorID = familyDoctorID;
     }
 
-    public MedCard(Long ownerID) {
-        this.ownerID = ownerID;
+    public MedCard(User owner) {
+        this.owner = owner;
     }
 
     public Long getId() {
@@ -60,12 +61,12 @@ public class MedCard {
         this.id = id;
     }
 
-    public Long getOwnerID() {
-        return ownerID;
+    public Long getOwner() {
+        return owner.getId();
     }
 
-    public void setOwnerID(Long ownerID) {
-        this.ownerID = ownerID;
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 
     public List<MedHistory> getMedHistory() {
@@ -116,39 +117,30 @@ public class MedCard {
         this.resultsOfSurveys = resultsOfSurveys;
     }
 
-    public Long getFamilyDoctorID() {
-        return familyDoctorID;
-    }
-
-    public void setFamilyDoctorID(Long familyDoctorID) {
-        this.familyDoctorID = familyDoctorID;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MedCard medCard = (MedCard) o;
-        return Objects.equals(id, medCard.id) && Objects.equals(ownerID, medCard.ownerID) && Objects.equals(medHistory, medCard.medHistory) && Objects.equals(allergies, medCard.allergies) && Objects.equals(chronicDiseases, medCard.chronicDiseases) && Objects.equals(resultsOfSurveys, medCard.resultsOfSurveys) && Objects.equals(bloodType, medCard.bloodType) && Objects.equals(rhFactor, medCard.rhFactor) && Objects.equals(familyDoctorID, medCard.familyDoctorID);
+        return Objects.equals(id, medCard.id) && Objects.equals(medHistory, medCard.medHistory) && Objects.equals(allergies, medCard.allergies) && Objects.equals(chronicDiseases, medCard.chronicDiseases) && Objects.equals(resultsOfSurveys, medCard.resultsOfSurveys) && Objects.equals(bloodType, medCard.bloodType) && Objects.equals(rhFactor, medCard.rhFactor);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, ownerID, medHistory, allergies, chronicDiseases, resultsOfSurveys, bloodType, rhFactor, familyDoctorID);
+        return Objects.hash(id, medHistory, allergies, chronicDiseases, resultsOfSurveys, bloodType, rhFactor);
     }
 
     @Override
     public String toString() {
         return "MedCard{" +
                 "id=" + id +
-                ", ownerID=" + ownerID +
-                ", medHistory='" + medHistory + '\'' +
+                ", owner=" + owner +
+                ", medHistory=" + medHistory +
+                ", allergies=" + allergies +
+                ", chronicDiseases=" + chronicDiseases +
+                ", resultsOfSurveys=" + resultsOfSurveys +
                 ", bloodType='" + bloodType + '\'' +
                 ", rhFactor='" + rhFactor + '\'' +
-                ", allergies='" + allergies + '\'' +
-                ", chronicDiseases='" + chronicDiseases + '\'' +
-                ", resultsOfSurveys='" + resultsOfSurveys + '\'' +
-                ", familyDoctorID=" + familyDoctorID +
                 '}';
     }
 }

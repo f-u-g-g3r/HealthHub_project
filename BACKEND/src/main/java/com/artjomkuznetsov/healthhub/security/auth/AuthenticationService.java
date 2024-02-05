@@ -8,6 +8,7 @@ import com.artjomkuznetsov.healthhub.models.MedCard;
 import com.artjomkuznetsov.healthhub.models.User;
 import com.artjomkuznetsov.healthhub.repositories.CalendarRepository;
 import com.artjomkuznetsov.healthhub.repositories.DoctorRepository;
+import com.artjomkuznetsov.healthhub.repositories.MedCardRepository;
 import com.artjomkuznetsov.healthhub.repositories.UserRepository;
 import com.artjomkuznetsov.healthhub.security.auth.exceptions.AgeIsNotValidException;
 import com.artjomkuznetsov.healthhub.security.auth.exceptions.UsernameAlreadyTakenException;
@@ -36,6 +37,7 @@ public class AuthenticationService {
     private final UserController userController;
     private final DoctorRepository doctorRepository;
     private final CalendarRepository calendarRepository;
+    private final MedCardRepository medCardRepository;
 
 
 
@@ -47,7 +49,8 @@ public class AuthenticationService {
             MedCardController medCardController,
             UserController userController,
             DoctorRepository doctorRepository,
-            CalendarRepository calendarRepository
+            CalendarRepository calendarRepository,
+            MedCardRepository medCardRepository
     ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -57,6 +60,7 @@ public class AuthenticationService {
         this.userController = userController;
         this.doctorRepository = doctorRepository;
         this.calendarRepository = calendarRepository;
+        this.medCardRepository = medCardRepository;
     }
 
     public AuthenticationResponse registerUser(User newUser) {
@@ -74,8 +78,11 @@ public class AuthenticationService {
 
         newUser.setUuid(generateUUID());
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+
+        MedCard medCard = new MedCard(newUser);
+        newUser.addMedCard(medCard);
         userRepository.save(newUser);
-        setUidToNewMedCard(newUser);
+
 
         HashMap extraClaims = new HashMap();
         extraClaims.put("id", newUser.getId());
@@ -83,7 +90,7 @@ public class AuthenticationService {
 
         String jwtToken =jwtService.generateToken(extraClaims, newUser);
 
-        return new AuthenticationResponse(jwtToken, newUser.getId(), newUser.getMedCardID(), newUser.getRole());
+        return new AuthenticationResponse(jwtToken, newUser.getId(), medCard.getId(), newUser.getRole());
     }
 
     public DoctorAuthenticationResponse registerDoctor(Doctor newDoctor) {
@@ -121,24 +128,6 @@ public class AuthenticationService {
         return new DoctorAuthenticationResponse(jwtToken, newDoctor.getId(), newDoctor.getRole());
     }
 
-
-
-    private void setUidToNewMedCard(User user) {
-        Long uid = user.getId();
-        ResponseEntity<?> medCard = medCardController.newMedCard(new MedCard(uid));
-        EntityModel<MedCard> entityMedCard = (EntityModel<MedCard>) medCard.getBody();
-        Long medCardId = entityMedCard.getContent().getId();
-        setMedCardIdToUser(user, medCardId);
-    }
-
-    private User setMedCardIdToUser(User entity, Long medCardId) {
-        entity.setMedCardID(medCardId);
-        ResponseEntity<?> responseEntity = userController.replaceUser(entity, entity.getId());
-        EntityModel<User> entityModel = (EntityModel<User>) responseEntity.getBody();
-        User resultUser = entityModel.getContent();
-        return resultUser;
-    }
-
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
@@ -152,7 +141,7 @@ public class AuthenticationService {
 
         String jwtToken = jwtService.generateToken(extraClaims, user);
 
-        return new AuthenticationResponse(jwtToken, user.getId(), user.getMedCardID(), user.getRole());
+        return new AuthenticationResponse(jwtToken, user.getId(), user.getMedCard(), user.getRole());
     }
 
     public DoctorAuthenticationResponse authenticateDoctor(AuthenticationRequest request) {

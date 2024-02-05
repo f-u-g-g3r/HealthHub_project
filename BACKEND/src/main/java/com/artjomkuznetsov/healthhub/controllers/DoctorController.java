@@ -118,11 +118,6 @@ public class DoctorController {
 
             List<User> users = userRepository.findByFamilyDoctorId(id);
             for (User user : users) {
-                MedCard userMedCard = medCardRepository.findById(user.getMedCardID())
-                        .orElseThrow(() -> new MedCardNotFoundException(user.getMedCardID()));
-
-                userMedCard.setFamilyDoctorID(null);
-                medCardRepository.save(userMedCard);
                 user.setFamilyDoctorId(null);
                 userRepository.save(user);
             }
@@ -178,6 +173,7 @@ public class DoctorController {
     @GetMapping("/doctors/activated")
     @CrossOrigin(origins="*")
     public List<Doctor> activated() {
+        System.out.println("activated");
         return repository.findAllByStatus(Status.ACTIVE);
     }
 

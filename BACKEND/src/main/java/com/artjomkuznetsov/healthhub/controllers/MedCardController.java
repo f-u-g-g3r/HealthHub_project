@@ -6,10 +6,12 @@ import com.artjomkuznetsov.healthhub.exceptions.MedCardNotFoundException;
 import com.artjomkuznetsov.healthhub.models.MedCard;
 import com.artjomkuznetsov.healthhub.models.medcard.MedHistory;
 import com.artjomkuznetsov.healthhub.repositories.MedCardRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,6 +29,7 @@ public class MedCardController {
         this.repository = repository;
         this.assembler = assembler;
     }
+
 
     @GetMapping("/med-cards")
     public CollectionModel<EntityModel<MedCard>> all() {
@@ -50,11 +53,13 @@ public class MedCardController {
 
     @GetMapping("/med-cards/{id}")
     @CrossOrigin(origins="*")
-    public EntityModel<MedCard> one(@PathVariable Long id) {
+    @Transactional
+    public MedCard one(@PathVariable Long id) {
         MedCard medCard = repository.findById(id)
                 .orElseThrow(() -> new MedCardNotFoundException(id));
+        System.out.println(medCard.toString());
 
-        return assembler.toModel(medCard);
+        return medCard;
     }
 
     @PutMapping("/med-cards/{id}")
@@ -68,8 +73,6 @@ public class MedCardController {
                     if (newMedCard.getAllergies() != null) medCard.setAllergies(newMedCard.getAllergies());
                     if (newMedCard.getChronicDiseases() != null) medCard.setChronicDiseases(newMedCard.getChronicDiseases());
                     if (newMedCard.getResultsOfSurveys() != null) medCard.setResultsOfSurveys(newMedCard.getResultsOfSurveys());
-                    if (newMedCard.getOwnerID() != null) medCard.setOwnerID(newMedCard.getOwnerID());
-                    if (newMedCard.getFamilyDoctorID() != null) medCard.setFamilyDoctorID(newMedCard.getFamilyDoctorID());
                     return repository.save(medCard);
                 })
                 .orElseGet(() -> {
@@ -90,11 +93,11 @@ public class MedCardController {
     }
 
 
-    public void setFamilyDoctor(Long medCardId, Long familyDoctorId) {
-        MedCard medCard = repository.findById(medCardId)
-                .orElseThrow(() -> new MedCardNotFoundException(medCardId));
-
-        medCard.setFamilyDoctorID(familyDoctorId);
-        repository.save(medCard);
-    }
+//    public void setFamilyDoctor(Long medCardId, Long familyDoctorId) {
+//        MedCard medCard = repository.findById(medCardId)
+//                .orElseThrow(() -> new MedCardNotFoundException(medCardId));
+//
+//        medCard.setFamilyDoctorID(familyDoctorId);
+//        repository.save(medCard);
+//    }
 }
