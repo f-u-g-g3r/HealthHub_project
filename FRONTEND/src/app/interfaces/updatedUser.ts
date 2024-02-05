@@ -5,4 +5,5 @@ export interface UpdatedUser{
     address: string;
     email: string;
     phone: string;
+    familyDoctorId: number;
 }

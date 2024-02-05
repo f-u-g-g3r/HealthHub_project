@@ -46,8 +46,8 @@ export class UserService {
     return this.http.put<User>(`${this.serverUrl}/users/${uid}`, user, this.httpOptions);
   }
 
-  public setFamilyDoctor(uid: any, docId: any): Observable<User> {
-    return this.http.get<User>(`${this.serverUrl}/users/family-doctor/${uid}/${docId}`, this.httpOptions);
+  public setFamilyDoctor(uid: any, data: {familyDoctorId: number}): Observable<User> {
+    return this.http.put<User>(`${this.serverUrl}/users/${uid}`, data, this.httpOptions);
   }
 
   public getUsersByDoctorId(docId: any, direction: string, page: number, sortBy: string): Observable<UsersPage> {

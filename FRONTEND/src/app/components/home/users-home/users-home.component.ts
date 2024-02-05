@@ -7,6 +7,7 @@ import { themeChange } from 'theme-change';
 import {DoctorMinimal} from "../../../interfaces/doctorMinimal";
 import {Doctor} from "../../../interfaces/doctor";
 import {NgForm} from "@angular/forms";
+import {UpdatedUser} from "../../../interfaces/updatedUser";
 
 @Component({
   selector: 'app-home',
@@ -63,7 +64,10 @@ export class HomeComponent implements OnInit {
   public setFamilyDoctor(form: NgForm) {
     const data = form.value;
     if (data['familyDoctor'] != null) {
-      this.userService.setFamilyDoctor(sessionStorage.getItem("uid"), data['familyDoctor']).subscribe({
+      let updatedData = {
+        familyDoctorId: data['familyDoctor']
+      };
+      this.userService.setFamilyDoctor(sessionStorage.getItem("uid"), updatedData).subscribe({
         next: response => {
           this.getMedInfo();
         },

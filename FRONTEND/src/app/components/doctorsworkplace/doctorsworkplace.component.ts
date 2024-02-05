@@ -4,7 +4,6 @@ import { User } from 'src/app/interfaces/user';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { UserService } from 'src/app/services/user.service';
 import {NgForm} from "@angular/forms";
-import {unusedExport} from "@angular/compiler/testing";
 import {UsersPage} from "../../interfaces/usersPage";
 
 
@@ -82,7 +81,11 @@ export class DoctorsworkplaceComponent implements OnInit {
   }
 
   public addPatientToDoctor(user: User) {
-    this.userService.setFamilyDoctor(user.id, sessionStorage.getItem('docId')).subscribe({
+    let updatedData = {
+    // @ts-ignore
+      familyDoctorId: parseInt(sessionStorage.getItem('docId'))
+    };
+    this.userService.setFamilyDoctor(user.id, updatedData).subscribe({
       next: () => this.getDoctorsUsers(false),
       error: console.error
     });
@@ -157,9 +160,5 @@ export class DoctorsworkplaceComponent implements OnInit {
         this.totalPagesArr.push(i);
       }
     }
-
-
   }
-
-  protected readonly unusedExport = unusedExport;
 }
