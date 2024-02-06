@@ -30,12 +30,10 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class UserController {
     private final UserRepository repository;
     private final UserModelAssembler assembler;
-    private final MedCardRepository medCardRepository;
 
-    public UserController(UserRepository repository, UserModelAssembler assembler, MedCardRepository medCardRepository) {
+    public UserController(UserRepository repository, UserModelAssembler assembler) {
         this.repository = repository;
         this.assembler = assembler;
-        this.medCardRepository = medCardRepository;
     }
 
     // Aggregate root
@@ -74,7 +72,6 @@ public class UserController {
     public EntityModel<User> one(@PathVariable("id") Long id) {
         User user = repository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
-        System.out.println(user.toString());
         return assembler.toModel(user);
     }
 
@@ -85,32 +82,6 @@ public class UserController {
                 .orElseThrow(() -> new UserNotFoundException(uuid));
         return assembler.toModel(user);
     }
-
-    // delete this
-//    @GetMapping("/users/family-doctor/{userId}/{familyDoctorId}")
-//    @CrossOrigin(origins = "*", maxAge = 3600)
-//    public ResponseEntity<?> setFamilyDoctor(@PathVariable Long userId, @PathVariable Long familyDoctorId) {
-//        User user = repository.findById(userId)
-//                .orElseThrow(() -> new UserNotFoundException(userId));
-//
-//        if (!doctorRepository.existsById(familyDoctorId)) {
-//            throw new DoctorNotFoundException(familyDoctorId);
-//        }
-//        if (user.getFamilyDoctorId() != null) {
-//            List<Schedule> patientSchedules = scheduleRepository.findAllByPatientId(userId);
-//            scheduleRepository.deleteAll(patientSchedules);
-//        }
-//
-//        user.setFamilyDoctorId(familyDoctorId);
-//        repository.save(user);
-//        medCardController.setFamilyDoctor(user.getMedCardID(), familyDoctorId);
-//
-//        EntityModel<User> entityModel = assembler.toModel(user);
-//
-//        return ResponseEntity
-//                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
-//                .body(entityModel);
-//    }
 
     @PutMapping("/users/{id}")
     @CrossOrigin(origins = "*")

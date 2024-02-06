@@ -49,6 +49,7 @@ public class CalendarController {
     }
 
     @GetMapping("/calendars")
+    @CrossOrigin(origins = "*")
     public CollectionModel<EntityModel<Calendar>> all() {
         List<EntityModel<Calendar>> calendars = repository.findAll().stream()
                 .map(assembler::toModel)
@@ -150,8 +151,13 @@ public class CalendarController {
 
     @GetMapping("/calendars/user-appointments/{patientId}")
     @CrossOrigin(origins = "*")
-    public List<Schedule> getSchedulesByPatientId(@PathVariable Long patientId) {
-        return scheduleRepository.findAllByPatientId(patientId);
+    public CollectionModel<EntityModel<Schedule>> getSchedulesByPatientId(@PathVariable Long patientId) {
+        List<EntityModel<Schedule>> schedules = scheduleRepository.findAllByPatientId(patientId).stream()
+                .map(schedule -> EntityModel.of(schedule,
+                        linkTo(methodOn(CalendarController.class).getSchedulesByPatientId(patientId)).withSelfRel()))
+                .collect(Collectors.toList());
+        return CollectionModel.of(schedules,
+                linkTo(methodOn(CalendarController.class).getSchedulesByPatientId(patientId)).withSelfRel());
     }
 
     @GetMapping("/calendars/schedules/{doctorId}/{date}")

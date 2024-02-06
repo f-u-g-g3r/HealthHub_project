@@ -53,13 +53,10 @@ public class MedCardController {
 
     @GetMapping("/med-cards/{id}")
     @CrossOrigin(origins="*")
-    @Transactional
-    public MedCard one(@PathVariable Long id) {
+    public EntityModel<MedCard> one(@PathVariable Long id) {
         MedCard medCard = repository.findById(id)
                 .orElseThrow(() -> new MedCardNotFoundException(id));
-        System.out.println(medCard.toString());
-
-        return medCard;
+        return assembler.toModel(medCard);
     }
 
     @PutMapping("/med-cards/{id}")
@@ -91,13 +88,4 @@ public class MedCardController {
         repository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
-
-
-//    public void setFamilyDoctor(Long medCardId, Long familyDoctorId) {
-//        MedCard medCard = repository.findById(medCardId)
-//                .orElseThrow(() -> new MedCardNotFoundException(medCardId));
-//
-//        medCard.setFamilyDoctorID(familyDoctorId);
-//        repository.save(medCard);
-//    }
 }

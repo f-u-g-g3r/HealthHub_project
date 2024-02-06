@@ -57,6 +57,7 @@ export class HomeComponent implements OnInit {
     this.userService.getDoctorsName(this.famDocId).subscribe({
       next: response => {
         this.doctor = response;
+        console.log(response)
       },
       error: console.error
     });
@@ -65,7 +66,8 @@ export class HomeComponent implements OnInit {
   public getAllDoctors() {
     this.userService.getActivatedDoctors().subscribe({
       next: response => {
-        this.doctors = response;
+        console.log(response._embedded)
+        this.doctors = response._embedded;
       },
       error: console.error
     });

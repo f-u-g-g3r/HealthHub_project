@@ -104,8 +104,8 @@ export class UserService {
     return this.http.get<DoctorsPage>(`${this.serverUrl}/doctors/page/activated?direction=${direction}&page=${page}&sortBy=${sortBy}`, this.httpOptions);
   }
 
-  public getActivatedDoctors(): Observable<Doctor[]> {
-    return this.http.get<Doctor[]>(`${this.serverUrl}/doctors/activated`, this.httpOptions);
+  public getActivatedDoctors(): Observable<{_embedded: Doctor[]}> {
+    return this.http.get<{_embedded: {doctorList: { Doctor[]}}>(`${this.serverUrl}/doctors/activated`, this.httpOptions);
   }
 
 

@@ -1,7 +1,6 @@
 package com.artjomkuznetsov.healthhub.controllers;
 
 import com.artjomkuznetsov.healthhub.assemblers.DoctorModelAssembler;
-import com.artjomkuznetsov.healthhub.exceptions.MedCardNotFoundException;
 import com.artjomkuznetsov.healthhub.models.*;
 import com.artjomkuznetsov.healthhub.repositories.DoctorRepository;
 import com.artjomkuznetsov.healthhub.exceptions.DoctorNotFoundException;
@@ -17,9 +16,6 @@ import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.print.Doc;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -33,18 +29,15 @@ public class DoctorController {
     private final DoctorModelAssembler assembler;
     private final ScheduleRepository scheduleRepository;
     private final UserRepository userRepository;
-    private final MedCardRepository medCardRepository;
 
     public DoctorController(DoctorRepository repository,
                             DoctorModelAssembler assembler,
                             ScheduleRepository scheduleRepository,
-                            UserRepository userRepository,
-                            MedCardRepository medCardRepository) {
+                            UserRepository userRepository) {
         this.repository = repository;
         this.assembler = assembler;
         this.scheduleRepository = scheduleRepository;
         this.userRepository = userRepository;
-        this.medCardRepository = medCardRepository;
     }
 
     @GetMapping("/doctors")
@@ -60,11 +53,28 @@ public class DoctorController {
 
     @GetMapping("/doctors-name/{id}")
     @CrossOrigin(origins="*")
-    public DoctorMinimal doctorName(@PathVariable Long id) {
+    public EntityModel<DoctorMinimal> oneDoctorName(@PathVariable Long id) {
         Doctor doctor = repository.findById(id)
                 .orElseThrow(() -> new DoctorNotFoundException(id));
+        DoctorMinimal doctorMinimal = new DoctorMinimal(doctor.getFirstname(), doctor.getLastname(), doctor.getPhone());
+        return EntityModel.of(doctorMinimal,
+                linkTo(methodOn(DoctorController.class).oneDoctorName(id)).withSelfRel(),
+                linkTo(methodOn(DoctorController.class).allDoctorsName()).withRel("all"));
+    }
 
-        return new DoctorMinimal(doctor.getFirstname(), doctor.getLastname(), doctor.getPhone());
+    @GetMapping("/doctors-name")
+    @CrossOrigin(origins = "*")
+    public CollectionModel<EntityModel<DoctorMinimal>> allDoctorsName() {
+        List<EntityModel<DoctorMinimal>> doctors = repository.findAll().stream()
+                .map(doctor -> {
+                    DoctorMinimal doctorMinimal = new DoctorMinimal(doctor.getFirstname(), doctor.getLastname(), doctor.getPhone());
+                    return EntityModel.of(doctorMinimal,
+                            linkTo(methodOn(DoctorController.class).oneDoctorName(doctor.getId())).withRel("one"),
+                            linkTo(methodOn(DoctorController.class).allDoctorsName()).withSelfRel());
+
+                })
+                .collect(Collectors.toList());
+        return CollectionModel.of(doctors, linkTo(methodOn(DoctorController.class).allDoctorsName()).withSelfRel());
     }
 
     @PostMapping("/doctors")
@@ -172,10 +182,11 @@ public class DoctorController {
 
     @GetMapping("/doctors/activated")
     @CrossOrigin(origins="*")
-    public List<Doctor> activated() {
-        System.out.println("activated");
-        return repository.findAllByStatus(Status.ACTIVE);
+    public CollectionModel<EntityModel<Doctor>> activated() {
+        List<EntityModel<Doctor>> doctors = repository.findAllByStatus(Status.ACTIVE).stream()
+                .map(assembler::toModel)
+                .collect(Collectors.toList());
+        return CollectionModel.of(doctors,
+                linkTo(methodOn(DoctorController.class).all()).withSelfRel());
     }
-
-
 }
