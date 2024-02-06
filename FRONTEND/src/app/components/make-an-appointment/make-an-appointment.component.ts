@@ -51,8 +51,8 @@ export class MakeAnAppointmentComponent {
     let data = form.value;
     if (data['date'] !== "") {
       this.userService.getAvailableTimeByDate(this.familyDocId, data['date']).subscribe({
-        next: (response: string[]) => {
-          this.availableTime = response;
+        next: (response) => {
+          this.availableTime = response._embedded.stringList;
           this.isReadyForTime = true;
         },
         error: console.error

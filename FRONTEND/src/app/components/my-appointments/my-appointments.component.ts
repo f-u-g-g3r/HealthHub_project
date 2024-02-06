@@ -22,8 +22,8 @@ export class MyAppointmentsComponent {
 
   public getMyAppointments() {
     this.userService.getUserAppointments(sessionStorage.getItem("uid")).subscribe({
-      next: (response: Schedule[]) => {
-        this.schedules = response;
+      next: (response) => {
+        this.schedules = response._embedded.scheduleList;
         this.doctorsArr = this.getDoctorsNames();
       },
       error: console.error

@@ -183,14 +183,14 @@ public class CalendarController {
 
     @GetMapping("/calendars/availableTime/{ownerId}/{date}")
     @CrossOrigin(origins = "*")
-    public List<String> getAvailableTimeByDate(@PathVariable Long ownerId, @PathVariable LocalDate date) {
+    public CollectionModel<String> getAvailableTimeByDate(@PathVariable Long ownerId, @PathVariable LocalDate date) {
         LocalDate currentDate = LocalDate.now();
         try {
             if (date.isBefore(currentDate) || date.equals(currentDate)) {
                 throw new InvalidDateException(date);
             }
         } catch (InvalidDateException e) {
-            return new ArrayList<>();
+
         }
 
         Calendar calendar = repository.findByOwnerId(ownerId)
@@ -219,8 +219,7 @@ public class CalendarController {
                     .plusHours(oneAppointmentTime.getHour())
                     .plusMinutes(oneAppointmentTime.getMinute());
         }
-
-        return availableTime;
+        return CollectionModel.of(availableTime, linkTo(methodOn(CalendarController.class).getAvailableTimeByDate(ownerId, date)).withSelfRel());
     }
 
 
