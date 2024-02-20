@@ -11,6 +11,7 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,6 +33,7 @@ public class MedCardController {
 
 
     @GetMapping("/med-cards")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public CollectionModel<EntityModel<MedCard>> all() {
         List<EntityModel<MedCard>> medCards = repository.findAll().stream()
                 .map(assembler::toModel)
@@ -42,7 +44,7 @@ public class MedCardController {
     }
 
     @PostMapping("/med-cards")
-    @CrossOrigin(origins="*")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> newMedCard(@RequestBody MedCard newMedCard) {
         EntityModel<MedCard> entityModel = assembler.toModel(repository.save(newMedCard));
 
@@ -52,18 +54,16 @@ public class MedCardController {
     }
 
     @GetMapping("/med-cards/{id}")
-    @CrossOrigin(origins="*")
-    @Transactional
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DOCTOR') or hasAuthority('USER') and #id == authentication.principal.id")
     public MedCard one(@PathVariable Long id) {
         MedCard medCard = repository.findById(id)
                 .orElseThrow(() -> new MedCardNotFoundException(id));
-        System.out.println(medCard.toString());
 
         return medCard;
     }
 
-    @PutMapping("/med-cards/{id}")
-    @CrossOrigin(origins="*")
+    @PatchMapping("/med-cards/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DOCTOR') or hasAuthority('USER') and #id == authentication.principal.id")
     public ResponseEntity<?> replaceMedCard(@RequestBody MedCard newMedCard, @PathVariable Long id) {
         MedCard updatedMedCard = repository.findById(id)
                 .map(medCard -> {
@@ -87,17 +87,9 @@ public class MedCardController {
     }
 
     @DeleteMapping("/med-cards/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> deleteMedCard(@PathVariable Long id) {
         repository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
-
-
-//    public void setFamilyDoctor(Long medCardId, Long familyDoctorId) {
-//        MedCard medCard = repository.findById(medCardId)
-//                .orElseThrow(() -> new MedCardNotFoundException(medCardId));
-//
-//        medCard.setFamilyDoctorID(familyDoctorId);
-//        repository.save(medCard);
-//    }
 }

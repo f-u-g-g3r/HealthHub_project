@@ -18,6 +18,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -49,6 +50,7 @@ public class CalendarController {
     }
 
     @GetMapping("/calendars")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public CollectionModel<EntityModel<Calendar>> all() {
         List<EntityModel<Calendar>> calendars = repository.findAll().stream()
                 .map(assembler::toModel)
@@ -58,7 +60,7 @@ public class CalendarController {
     }
 
     @GetMapping("/calendars/{doctorId}")
-    @CrossOrigin(origins = "*")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('DOCTOR') and #doctorId == authentication.principal.id")
     public EntityModel<Calendar> one(@PathVariable Long doctorId) {
         Calendar calendar = repository.findByOwnerId(doctorId)
                 .orElseThrow(() -> new CalendarNotFoundException(doctorId));
@@ -66,7 +68,7 @@ public class CalendarController {
     }
 
     @GetMapping("/calendars/schedules/{doctorId}")
-    @CrossOrigin(origins = "*")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('DOCTOR') and #doctorId == authentication.principal.id")
     public Page<Schedule> getDoctorSchedules(@PathVariable Long doctorId,
                                              @RequestParam Optional<String> sortBy,
                                              @RequestParam Optional<Integer> page,
@@ -84,7 +86,7 @@ public class CalendarController {
     }
 
     @PutMapping("/calendars/{ownerId}")
-    @CrossOrigin(origins = "*")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('DOCTOR') and #ownerId == authentication.principal.id")
     public ResponseEntity<?> updateCalendar(@RequestBody Calendar newCalendar, @PathVariable Long ownerId) {
         Calendar updatedCalendar = repository.findByOwnerId(ownerId)
                 .map(calendar -> {
@@ -113,7 +115,7 @@ public class CalendarController {
     }
 
     @PutMapping("/calendars/schedule/{ownerId}")
-    @CrossOrigin(origins = "*")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('DOCTOR') and #ownerId == authentication.principal.id")
     public ResponseEntity<?> updateSchedule(@RequestBody Schedule newSchedule, @PathVariable Long ownerId) {
 
         LocalDate currentDate = LocalDate.now();
@@ -149,13 +151,13 @@ public class CalendarController {
     }
 
     @GetMapping("/calendars/user-appointments/{patientId}")
-    @CrossOrigin(origins = "*")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DOCTOR') or hasAuthority('USER') and #patientId == authentication.principal.id")
     public List<Schedule> getSchedulesByPatientId(@PathVariable Long patientId) {
         return scheduleRepository.findAllByPatientId(patientId);
     }
 
     @GetMapping("/calendars/schedules/{doctorId}/{date}")
-    @CrossOrigin(origins = "*")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('DOCTOR') and #doctorId == authentication.principal.id")
     public Page<Schedule> getSchedulesByDate(@PathVariable Long doctorId,
                                              @PathVariable LocalDate date,
                                              @RequestParam Optional<String> sortBy,
@@ -176,7 +178,7 @@ public class CalendarController {
 
 
     @GetMapping("/calendars/availableTime/{ownerId}/{date}")
-    @CrossOrigin(origins = "*")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('DOCTOR') and #ownerId == authentication.principal.id")
     public List<String> getAvailableTimeByDate(@PathVariable Long ownerId, @PathVariable LocalDate date) {
         LocalDate currentDate = LocalDate.now();
         try {
@@ -219,8 +221,8 @@ public class CalendarController {
 
 
     @DeleteMapping("/calendars/schedules/{scheduleId}/{patientId}")
-    @CrossOrigin(origins = "*")
-    public ResponseEntity<?> deleteSchedule(@PathVariable Long scheduleId) {
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DOCTOR') or hasAuthority('USER') and #patientId == authentication.principal.id")
+    public ResponseEntity<?> deleteSchedule(@PathVariable Long scheduleId, @PathVariable Long patientId) {
         scheduleRepository.deleteById(scheduleId);
         return ResponseEntity.noContent().build();
     }

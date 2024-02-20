@@ -1,11 +1,9 @@
 package com.artjomkuznetsov.healthhub.controllers;
 
 import com.artjomkuznetsov.healthhub.assemblers.DoctorModelAssembler;
-import com.artjomkuznetsov.healthhub.exceptions.MedCardNotFoundException;
 import com.artjomkuznetsov.healthhub.models.*;
 import com.artjomkuznetsov.healthhub.repositories.DoctorRepository;
 import com.artjomkuznetsov.healthhub.exceptions.DoctorNotFoundException;
-import com.artjomkuznetsov.healthhub.repositories.MedCardRepository;
 import com.artjomkuznetsov.healthhub.repositories.ScheduleRepository;
 import com.artjomkuznetsov.healthhub.repositories.UserRepository;
 import org.springframework.data.domain.Page;
@@ -15,11 +13,8 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import javax.print.Doc;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -33,21 +28,19 @@ public class DoctorController {
     private final DoctorModelAssembler assembler;
     private final ScheduleRepository scheduleRepository;
     private final UserRepository userRepository;
-    private final MedCardRepository medCardRepository;
 
     public DoctorController(DoctorRepository repository,
                             DoctorModelAssembler assembler,
                             ScheduleRepository scheduleRepository,
-                            UserRepository userRepository,
-                            MedCardRepository medCardRepository) {
+                            UserRepository userRepository) {
         this.repository = repository;
         this.assembler = assembler;
         this.scheduleRepository = scheduleRepository;
         this.userRepository = userRepository;
-        this.medCardRepository = medCardRepository;
     }
 
     @GetMapping("/doctors")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public CollectionModel<EntityModel<Doctor>> all() {
         List<EntityModel<Doctor>> doctors = repository.findAll().stream()
                 .map(assembler::toModel)
@@ -59,7 +52,6 @@ public class DoctorController {
 
 
     @GetMapping("/doctors-name/{id}")
-    @CrossOrigin(origins="*")
     public DoctorMinimal doctorName(@PathVariable Long id) {
         Doctor doctor = repository.findById(id)
                 .orElseThrow(() -> new DoctorNotFoundException(id));
@@ -68,6 +60,7 @@ public class DoctorController {
     }
 
     @PostMapping("/doctors")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> newDoctor(@RequestBody Doctor newDoctor) {
         EntityModel<Doctor> entityModel = assembler.toModel(repository.save(newDoctor));
 
@@ -77,7 +70,7 @@ public class DoctorController {
     }
 
     @GetMapping("/doctors/{id}")
-    @CrossOrigin(origins="*")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('DOCTOR') and #id == authentication.principal.id")
     public EntityModel<Doctor> one(@PathVariable Long id) {
         Doctor doctor = repository.findById(id)
                 .orElseThrow(() -> new DoctorNotFoundException(id));
@@ -86,7 +79,7 @@ public class DoctorController {
     }
 
     @PutMapping("/doctors/{id}")
-    @CrossOrigin(origins="*")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('DOCTOR') and #id == authentication.principal.id")
     public ResponseEntity<?> replaceDoctor(@RequestBody Doctor newDoctor, @PathVariable Long id) {
         Doctor updatedDoctor = repository.findById(id)
                 .map(doctor -> {
@@ -131,13 +124,14 @@ public class DoctorController {
     }
 
     @DeleteMapping("/doctors/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> deleteDoctor(@PathVariable Long id) {
         repository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/doctors/page/inactivated")
-    @CrossOrigin(origins = "*")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Page<Doctor> inactivated(@RequestParam Optional<String> sortBy,
                                     @RequestParam Optional<Integer> page,
                                     @RequestParam Optional<String> direction) {
@@ -154,7 +148,7 @@ public class DoctorController {
                 ));
     }
     @GetMapping("/doctors/page/activated")
-    @CrossOrigin(origins="*")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Page<Doctor> activated(@RequestParam Optional<String> sortBy,
                                   @RequestParam Optional<Integer> page,
                                   @RequestParam Optional<String> direction) {
@@ -171,9 +165,8 @@ public class DoctorController {
     }
 
     @GetMapping("/doctors/activated")
-    @CrossOrigin(origins="*")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DOCTOR', 'USER')")
     public List<Doctor> activated() {
-        System.out.println("activated");
         return repository.findAllByStatus(Status.ACTIVE);
     }
 

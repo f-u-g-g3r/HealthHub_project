@@ -31,9 +31,7 @@ public class SecurityConfig {
                         authorizeHttpRequests
                                 .requestMatchers(
                                         "/auth/**",
-                                        "/doctors-name/**",
-                                        "/doctors/inactivated",
-                                        "/doctors/activated"
+                                        "/doctors-name/**"
                                 )
                                 .permitAll()
                                 .anyRequest()

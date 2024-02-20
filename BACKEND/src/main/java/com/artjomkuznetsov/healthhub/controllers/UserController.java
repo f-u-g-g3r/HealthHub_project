@@ -16,6 +16,7 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -30,16 +31,15 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class UserController {
     private final UserRepository repository;
     private final UserModelAssembler assembler;
-    private final MedCardRepository medCardRepository;
 
-    public UserController(UserRepository repository, UserModelAssembler assembler, MedCardRepository medCardRepository) {
+    public UserController(UserRepository repository, UserModelAssembler assembler) {
         this.repository = repository;
         this.assembler = assembler;
-        this.medCardRepository = medCardRepository;
     }
 
     // Aggregate root
     @GetMapping("/users")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DOCTOR')")
     public CollectionModel<EntityModel<User>> all() {
         List<EntityModel<User>> users = repository.findAll().stream()
                 .map(assembler::toModel)
@@ -50,7 +50,7 @@ public class UserController {
     }
 
     @GetMapping("/users-by-doctor/{doctorId}")
-    @CrossOrigin(origins = "*")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DOCTOR')")
     public Page<User> getUsersByDoctorId(@PathVariable Long doctorId,
                                          @RequestParam Optional<String> sortBy,
                                          @RequestParam Optional<Integer> page,
@@ -70,7 +70,7 @@ public class UserController {
 
 
     @GetMapping("/users/{id}")
-    @CrossOrigin(origins = "*", maxAge = 3600)
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DOCTOR') or #id == authentication.principal.id and hasAuthority('USER')")
     public EntityModel<User> one(@PathVariable("id") Long id) {
         User user = repository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
@@ -79,41 +79,15 @@ public class UserController {
     }
 
     @GetMapping("/users/uuid/{uuid}")
-    @CrossOrigin(origins = "*")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DOCTOR')")
     public EntityModel<User> oneByUuid(@PathVariable String uuid) {
         User user = repository.findByUuid(uuid)
                 .orElseThrow(() -> new UserNotFoundException(uuid));
         return assembler.toModel(user);
     }
 
-    // delete this
-//    @GetMapping("/users/family-doctor/{userId}/{familyDoctorId}")
-//    @CrossOrigin(origins = "*", maxAge = 3600)
-//    public ResponseEntity<?> setFamilyDoctor(@PathVariable Long userId, @PathVariable Long familyDoctorId) {
-//        User user = repository.findById(userId)
-//                .orElseThrow(() -> new UserNotFoundException(userId));
-//
-//        if (!doctorRepository.existsById(familyDoctorId)) {
-//            throw new DoctorNotFoundException(familyDoctorId);
-//        }
-//        if (user.getFamilyDoctorId() != null) {
-//            List<Schedule> patientSchedules = scheduleRepository.findAllByPatientId(userId);
-//            scheduleRepository.deleteAll(patientSchedules);
-//        }
-//
-//        user.setFamilyDoctorId(familyDoctorId);
-//        repository.save(user);
-//        medCardController.setFamilyDoctor(user.getMedCardID(), familyDoctorId);
-//
-//        EntityModel<User> entityModel = assembler.toModel(user);
-//
-//        return ResponseEntity
-//                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
-//                .body(entityModel);
-//    }
-
-    @PutMapping("/users/{id}")
-    @CrossOrigin(origins = "*")
+    @PatchMapping("/users/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DOCTOR') or #id == authentication.principal.id and hasAuthority('USER')")
     public ResponseEntity<?> replaceUser(@RequestBody User newUser, @PathVariable Long id) {
         User updatedUser = repository.findById(id)
                 .map(user -> {
@@ -147,6 +121,7 @@ public class UserController {
 
 
     @DeleteMapping("/users/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DOCTOR')")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
         repository.deleteById(id);
         return ResponseEntity.noContent().build();

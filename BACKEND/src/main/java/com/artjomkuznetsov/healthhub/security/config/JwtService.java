@@ -41,7 +41,6 @@ public class JwtService {
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
-
     }
 
     private Claims extractAllClaims(String token) {

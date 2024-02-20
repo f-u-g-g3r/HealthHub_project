@@ -5,6 +5,7 @@ import com.artjomkuznetsov.healthhub.models.Doctor;
 import com.artjomkuznetsov.healthhub.models.User;
 import com.artjomkuznetsov.healthhub.repositories.DoctorRepository;
 import com.artjomkuznetsov.healthhub.repositories.UserRepository;
+import com.artjomkuznetsov.healthhub.security.customUserDetails.CustomUserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,38 +20,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class ApplicationConfig {
-    private final UserRepository userRepository;
-    private final DoctorRepository doctorRepository;
+    private final CustomUserDetailsImpl customUserDetails;
 
-    @Autowired
-    public ApplicationConfig(UserRepository userRepository, DoctorRepository doctorRepository) {
-        this.userRepository = userRepository;
-        this.doctorRepository = doctorRepository;
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return username -> {
-            User user = userRepository.findByEmail(username)
-                    .orElseGet(() -> {
-                        Doctor doctor = doctorRepository.findByEmail(username)
-                                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-                        return new User(doctor.getEmail(), doctor.getPassword(), doctor.getRole());
-
-
-                    });
-
-            return new org.springframework.security.core.userdetails.User(
-                    user.getEmail(),
-                    user.getPassword(),
-                    user.getAuthorities());
-        };
+    public ApplicationConfig(CustomUserDetailsImpl customUserDetails) {
+        this.customUserDetails = customUserDetails;
     }
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService());
+        authProvider.setUserDetailsService(customUserDetails);
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
@@ -59,7 +38,6 @@ public class ApplicationConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
-
 
 
     @Bean

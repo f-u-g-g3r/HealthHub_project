@@ -96,8 +96,7 @@ public class User implements UserDetails {
     public String getDateOfBirth() {
         if (dateOfBirth != null) {
             return dateOfBirth.format(DATE_FORMATTER);
-        }
-        else {
+        } else {
             return null;
         }
     }
