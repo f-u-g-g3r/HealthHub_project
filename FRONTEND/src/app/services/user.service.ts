@@ -104,8 +104,8 @@ export class UserService {
     return this.http.get<DoctorsPage>(`${this.serverUrl}/doctors/page/activated?direction=${direction}&page=${page}&sortBy=${sortBy}`, this.httpOptions);
   }
 
-  public getActivatedDoctors(): Observable<Doctor[]> {
-    return this.http.get<Doctor[]>(`${this.serverUrl}/doctors/activated`, this.httpOptions);
+  public getActivatedDoctors(): Observable<{_embedded: {doctorList: Doctor[]}}> {
+    return this.http.get<{_embedded: {doctorList: Doctor[]}}>(`${this.serverUrl}/doctors/activated`, this.httpOptions);
   }
 
 
@@ -129,16 +129,16 @@ export class UserService {
     return this.http.put<Calendar>(`${this.serverUrl}/calendars/${docId}`, newCalendar, this.httpOptions);
   }
 
-  public getAvailableTimeByDate(docId: any, date: string): Observable<string[]> {
-    return this.http.get<string[]>(`${this.serverUrl}/calendars/availableTime/${docId}/${date}`, this.httpOptions);
+  public getAvailableTimeByDate(docId: any, date: string): Observable<{_embedded: { stringList: string[]}}> {
+    return this.http.get<{_embedded: { stringList: string[]}}>(`${this.serverUrl}/calendars/availableTime/${docId}/${date}`, this.httpOptions);
   }
 
   public makeAnAppointment(schedule: any, docId: any): Observable<void> {
     return this.http.put<void>(`${this.serverUrl}/calendars/schedule/${docId}`, schedule, this.httpOptions);
   }
 
-  public getUserAppointments(uid:any): Observable<Schedule[]> {
-    return this.http.get<Schedule[]>(`${this.serverUrl}/calendars/user-appointments/${uid}`, this.httpOptions);
+  public getUserAppointments(uid:any): Observable<{_embedded: {scheduleList: Schedule[]}}> {
+    return this.http.get<{_embedded: {scheduleList: Schedule[]}}>(`${this.serverUrl}/calendars/user-appointments/${uid}`, this.httpOptions);
   }
 
   public getDoctorsName(docId: any): Observable<DoctorMinimal> {

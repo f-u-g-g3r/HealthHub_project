@@ -65,7 +65,8 @@ export class HomeComponent implements OnInit {
   public getAllDoctors() {
     this.userService.getActivatedDoctors().subscribe({
       next: response => {
-        this.doctors = response;
+        console.log(response._embedded)
+        this.doctors = response._embedded.doctorList;
       },
       error: console.error
     });
