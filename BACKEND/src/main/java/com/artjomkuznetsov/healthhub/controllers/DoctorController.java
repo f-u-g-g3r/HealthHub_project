@@ -52,11 +52,26 @@ public class DoctorController {
 
 
     @GetMapping("/doctors-name/{id}")
-    public DoctorMinimal doctorName(@PathVariable Long id) {
+    public EntityModel<DoctorMinimal> oneDoctorName(@PathVariable Long id) {
         Doctor doctor = repository.findById(id)
                 .orElseThrow(() -> new DoctorNotFoundException(id));
+        DoctorMinimal doctorMinimal = new DoctorMinimal(doctor.getFirstname(), doctor.getLastname(), doctor.getPhone());
+        return EntityModel.of(doctorMinimal,
+                linkTo(methodOn(DoctorController.class).oneDoctorName(id)).withSelfRel(),
+                linkTo(methodOn(DoctorController.class).allDoctorsName()).withRel("all"));
+    }
 
-        return new DoctorMinimal(doctor.getFirstname(), doctor.getLastname(), doctor.getPhone());
+    @GetMapping("/doctors-name")
+    public CollectionModel<EntityModel<DoctorMinimal>> allDoctorsName() {
+        List<EntityModel<DoctorMinimal>> doctors = repository.findAll().stream()
+                .map(doctor -> {
+                    DoctorMinimal doctorMinimal = new DoctorMinimal(doctor.getFirstname(), doctor.getLastname(), doctor.getPhone());
+                    return EntityModel.of(doctorMinimal,
+                            linkTo(methodOn(DoctorController.class).oneDoctorName(doctor.getId())).withRel("one"),
+                            linkTo(methodOn(DoctorController.class).allDoctorsName()).withSelfRel());
+                })
+                .collect(Collectors.toList());
+        return CollectionModel.of(doctors, linkTo(methodOn(DoctorController.class).allDoctorsName()).withSelfRel());
     }
 
     @PostMapping("/doctors")
@@ -166,8 +181,12 @@ public class DoctorController {
 
     @GetMapping("/doctors/activated")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'DOCTOR', 'USER')")
-    public List<Doctor> activated() {
-        return repository.findAllByStatus(Status.ACTIVE);
+    public CollectionModel<EntityModel<Doctor>> activated() {
+        List<EntityModel<Doctor>> doctors = repository.findAllByStatus(Status.ACTIVE).stream()
+                .map(assembler::toModel)
+                .collect(Collectors.toList());
+        return CollectionModel.of(doctors,
+                linkTo(methodOn(DoctorController.class).all()).withSelfRel());
     }
 
 

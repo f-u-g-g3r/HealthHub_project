@@ -55,11 +55,11 @@ public class MedCardController {
 
     @GetMapping("/med-cards/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'DOCTOR') or hasAuthority('USER') and #id == authentication.principal.id")
-    public MedCard one(@PathVariable Long id) {
+    public EntityModel<MedCard> one(@PathVariable Long id) {
         MedCard medCard = repository.findById(id)
                 .orElseThrow(() -> new MedCardNotFoundException(id));
 
-        return medCard;
+        return assembler.toModel(medCard);
     }
 
     @PatchMapping("/med-cards/{id}")

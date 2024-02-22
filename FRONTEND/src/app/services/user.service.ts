@@ -43,11 +43,11 @@ export class UserService {
   }
 
   public updateUser(uid: any, user: UpdatedUser): Observable<User> {
-    return this.http.put<User>(`${this.serverUrl}/users/${uid}`, user, this.httpOptions);
+    return this.http.patch<User>(`${this.serverUrl}/users/${uid}`, user, this.httpOptions);
   }
 
   public setFamilyDoctor(uid: any, data: {familyDoctorId: number}): Observable<User> {
-    return this.http.put<User>(`${this.serverUrl}/users/${uid}`, data, this.httpOptions);
+    return this.http.patch<User>(`${this.serverUrl}/users/${uid}`, data, this.httpOptions);
   }
 
   public getUsersByDoctorId(docId: any, direction: string, page: number, sortBy: string): Observable<UsersPage> {
@@ -129,8 +129,8 @@ export class UserService {
     return this.http.put<Calendar>(`${this.serverUrl}/calendars/${docId}`, newCalendar, this.httpOptions);
   }
 
-  public getAvailableTimeByDate(docId: any, date: string): Observable<{_embedded: { stringList: string[]}}> {
-    return this.http.get<{_embedded: { stringList: string[]}}>(`${this.serverUrl}/calendars/availableTime/${docId}/${date}`, this.httpOptions);
+  public getAvailableTimeByDate(docId: any, date: string): Observable<string[]> {
+    return this.http.get<string[]>(`${this.serverUrl}/calendars/availableTime/${docId}/${date}`, this.httpOptions);
   }
 
   public makeAnAppointment(schedule: any, docId: any): Observable<void> {

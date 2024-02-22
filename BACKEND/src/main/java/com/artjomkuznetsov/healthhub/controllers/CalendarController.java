@@ -152,8 +152,13 @@ public class CalendarController {
 
     @GetMapping("/calendars/user-appointments/{patientId}")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'DOCTOR') or hasAuthority('USER') and #patientId == authentication.principal.id")
-    public List<Schedule> getSchedulesByPatientId(@PathVariable Long patientId) {
-        return scheduleRepository.findAllByPatientId(patientId);
+    public CollectionModel<EntityModel<Schedule>> getSchedulesByPatientId(@PathVariable Long patientId) {
+        List<EntityModel<Schedule>> schedules = scheduleRepository.findAllByPatientId(patientId).stream()
+                .map(schedule -> EntityModel.of(schedule,
+                        linkTo(methodOn(CalendarController.class).getSchedulesByPatientId(patientId)).withSelfRel()))
+                .collect(Collectors.toList());
+        return CollectionModel.of(schedules,
+                linkTo(methodOn(CalendarController.class).getSchedulesByPatientId(patientId)).withSelfRel());
     }
 
     @GetMapping("/calendars/schedules/{doctorId}/{date}")

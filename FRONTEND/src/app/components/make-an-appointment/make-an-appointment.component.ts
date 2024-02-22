@@ -15,9 +15,9 @@ import {DoctorMinimal} from "../../interfaces/doctorMinimal";
 })
 export class MakeAnAppointmentComponent {
   constructor(private router: Router, public service: AuthenticationService, public userService: UserService) {}
-  public availableTime:string[] = [];
+  public availableTime!:string[];
   public isReadyForTime = false;
-  public isTimeChoosen = false;
+  public isTimeChosen = false;
   public formSubmitted = false;
   public isMade = false;
 
@@ -52,7 +52,7 @@ export class MakeAnAppointmentComponent {
     if (data['date'] !== "") {
       this.userService.getAvailableTimeByDate(this.familyDocId, data['date']).subscribe({
         next: (response) => {
-          this.availableTime = response._embedded.stringList;
+          this.availableTime = response;
           this.isReadyForTime = true;
         },
         error: console.error
@@ -72,7 +72,7 @@ export class MakeAnAppointmentComponent {
         this.isMade = true;
         this.isReadyForTime = false;
         this.formSubmitted = true;
-        this.isTimeChoosen = false;
+        this.isTimeChosen = false;
         form.resetForm();
       },
       error: console.error
