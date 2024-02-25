@@ -6,6 +6,7 @@ import com.artjomkuznetsov.healthhub.repositories.DoctorRepository;
 import com.artjomkuznetsov.healthhub.exceptions.DoctorNotFoundException;
 import com.artjomkuznetsov.healthhub.repositories.ScheduleRepository;
 import com.artjomkuznetsov.healthhub.repositories.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -15,6 +16,8 @@ import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -48,7 +51,6 @@ public class DoctorController {
         return CollectionModel.of(doctors,
                 linkTo(methodOn(DoctorController.class).all()).withSelfRel());
     }
-
 
 
     @GetMapping("/doctors-name/{id}")
@@ -100,7 +102,7 @@ public class DoctorController {
                 .map(doctor -> {
                     if (newDoctor.getFirstname() != null) doctor.setFirstname(newDoctor.getFirstname());
                     if (newDoctor.getLastname() != null) doctor.setLastname(newDoctor.getLastname());
-                    if (newDoctor.getDateOfBirth() != null)  doctor.setDateOfBirth(newDoctor.getDateOfBirth());
+                    if (newDoctor.getDateOfBirth() != null) doctor.setDateOfBirth(newDoctor.getDateOfBirth());
                     if (newDoctor.getGender() != null) doctor.setGender(newDoctor.getGender());
                     if (newDoctor.getAddress() != null) doctor.setAddress(newDoctor.getAddress());
                     if (newDoctor.getEmail() != null) doctor.setEmail(newDoctor.getEmail());
@@ -109,8 +111,10 @@ public class DoctorController {
                     if (newDoctor.getSpecialization() != null) doctor.setSpecialization(newDoctor.getSpecialization());
                     if (newDoctor.getPlaceOfWork() != null) doctor.setPlaceOfWork(newDoctor.getPlaceOfWork());
                     if (newDoctor.getLicenseNumber() != null) doctor.setLicenseNumber(newDoctor.getLicenseNumber());
-                    if (newDoctor.getLicenseIssuingDate() != null) doctor.setLicenseIssuingDate(newDoctor.getLicenseIssuingDate());
-                    if (newDoctor.getLicenseIssuingAuthority() != null) doctor.setLicenseIssuingAuthority(newDoctor.getLicenseIssuingAuthority());
+                    if (newDoctor.getLicenseIssuingDate() != null)
+                        doctor.setLicenseIssuingDate(newDoctor.getLicenseIssuingDate());
+                    if (newDoctor.getLicenseIssuingAuthority() != null)
+                        doctor.setLicenseIssuingAuthority(newDoctor.getLicenseIssuingAuthority());
                     if (newDoctor.getStatus() != null) doctor.setStatus(newDoctor.getStatus());
                     if (newDoctor.getCalendarId() != null) doctor.setCalendarId(newDoctor.getCalendarId());
                     return repository.save(doctor);
@@ -162,6 +166,7 @@ public class DoctorController {
                         sort, sortBy.orElse("id")
                 ));
     }
+
     @GetMapping("/doctors/page/activated")
     @PreAuthorize("hasAuthority('ADMIN')")
     public Page<Doctor> activated(@RequestParam Optional<String> sortBy,
@@ -189,5 +194,39 @@ public class DoctorController {
                 linkTo(methodOn(DoctorController.class).all()).withSelfRel());
     }
 
+    @GetMapping("/doctors/search")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DOCTOR', 'USER')")
+    public CollectionModel<EntityModel<Doctor>> searchDoctor(@RequestParam Optional<String> query) {
+        if (query.isPresent()) {
+            Doctor doctor = repository.findByUuid(query.get())
+                    .orElse(null);
+            if (doctor == null) {
+                List<Doctor> doctors = repository.findByFirstname(query.get())
+                                .orElse(null);
+                
+                if (doctors != null && doctors.isEmpty()) {
+                    doctors = repository.findByLastname(query.get())
+                            .orElse(null);
+                }
 
+                if (doctors != null) {
+                    List<EntityModel<Doctor>> entityModels = doctors.stream()
+                            .map(assembler::toModel)
+                            .toList();
+                    return CollectionModel.of(entityModels,
+                            linkTo(methodOn(DoctorController.class).all()).withSelfRel());
+                } else {
+                    return CollectionModel.empty();
+                }
+            } else {
+                List<EntityModel<Doctor>> entityModels = new ArrayList<>();
+                entityModels.add(assembler.toModel(doctor));
+                return CollectionModel.of(entityModels,
+                        linkTo(methodOn(DoctorController.class).all()).withSelfRel());
+            }
+
+        } else {
+            return CollectionModel.empty();
+        }
+    }
 }

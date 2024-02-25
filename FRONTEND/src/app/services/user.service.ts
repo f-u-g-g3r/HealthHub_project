@@ -156,4 +156,8 @@ export class UserService {
   public isDoctorCalendarConfigured(docId: any): Observable<boolean> {
     return this.http.get<boolean>(`${this.serverUrl}/calendars/isConfigured/${docId}`, this.httpOptions);
   }
+
+  public searchDoctor(query: string): Observable<{_embedded: {doctorList: Doctor[]}}> {
+    return this.http.get<{_embedded: {doctorList: Doctor[]}}>(`${this.serverUrl}/doctors/search?query=${query}`, this.httpOptions);
+  }
 }

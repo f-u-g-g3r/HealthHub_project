@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import { Router } from '@angular/router';
 import { Doctor } from 'src/app/interfaces/doctor';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { UserService } from 'src/app/services/user.service';
 import {DoctorsPage} from "../../../interfaces/doctorsPage";
+import {NgModel} from "@angular/forms";
 
 @Component({
   selector: 'app-admins-home',
@@ -19,6 +20,9 @@ export class AdminsHomeComponent implements OnInit {
   public activatedDoctors!: DoctorsPage;
   public totalInactivatedPagesArr: number[] = [];
   public totalActivatedPagesArr: number[] = [];
+  public searched = false;
+
+  @ViewChild('queryInput') queryInput!: ElementRef;
 
   public currentInactivatedSorting: string = 'id';
   public currentActivatedSorting: string = 'id';
@@ -82,6 +86,38 @@ export class AdminsHomeComponent implements OnInit {
       },
       error: console.error
     });
+  }
+
+
+
+  public search(query: NgModel) {
+    let text = query.value;
+    this.searched = true;
+    this.userService.searchDoctor(text).subscribe({
+      next: (response) => {
+        let foundInactivated = [];
+        let foundActivated = [];
+        for (let doctor of response._embedded.doctorList) {
+          if (doctor.status === "INACTIVE") {
+            foundInactivated.push(doctor);
+          } else {
+            foundActivated.push(doctor);
+          }
+        }
+        this.inactivatedDoctors.content = foundInactivated;
+        this.activatedDoctors.content = foundActivated;
+
+      },
+      error: console.error
+    });
+  }
+
+  public clearSearch() {
+    this.searched = false;
+    this.getActivatedDoctors(false);
+    this.getInactivatedDoctors(false);
+    this.queryInput.nativeElement.value = '';
+
   }
 
   public inactivateDoctor(docId: number) {

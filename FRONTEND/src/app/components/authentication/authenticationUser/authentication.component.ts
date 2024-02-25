@@ -41,8 +41,6 @@ export class AuthenticationComponent implements OnInit{
         error: console.error
       });
     }
-
-
   }
 
 

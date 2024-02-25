@@ -13,6 +13,10 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
     Optional<Doctor> findByEmail(String email);
     Optional<Doctor> findByUuid(String uuid);
 
+    Optional<List<Doctor>> findByFirstname(String firstname);
+
+    Optional<List<Doctor>> findByLastname(String lastname);
+
     List<Doctor> findAllByStatus(Status status);
 
     Page<Doctor> findAllByStatus(Status status, PageRequest pageRequest);
